@@ -1,5 +1,6 @@
 import { Link } from '@inertiajs/react';
 import React from 'react'
+import { router } from "@inertiajs/react";
 
 interface Post{
     id: number;
@@ -9,6 +10,16 @@ interface Post{
     coordinates: {latitude: number, longitude: number};
     created_at: string;
     updated_at: string; 
+}
+
+
+
+interface Messages{
+    welcome: string;
+    login:string;
+    register:string;
+    auth: {user: number, name:string, email:string}
+    posts: Post[]
 }
 
 interface PaginatedLinks {
@@ -28,29 +39,23 @@ interface Props {
     posts: Paginated<Post>
 }
 
-export default function Posts({posts}: Props) {
+export default function Posts(props:Messages) {
+  
   return (
     <div>
+      <h1>{props.register}</h1>
 
-       {posts.data.map(post => {
-          
-
-           return (
-            <div key={post.id} className='border-2 p-5 m-2'>
-              <h1 key={post.id}>{post.title}</h1>
-              <div>{post.description}</div>
-            </div>
-              
-           )
-       })}
+      <Link href='/dashboard'>Go to dashboard</Link>
 
 
-       {posts.links.map( link => {
 
-            if (!link.active){
-               return <Link key={link.label} href={`${link.url}`}>{link.label}</Link>
-            }
-       })}  
+
+      <select onChange={(e) => router.visit(`lang/${e.target.value}`) } name="" id="">
+      <option value="">--Please choose an option-- </option>
+      <option value="lv">LV</option>
+     <option value="en">EN</option>
+
+      </select>
     </div>
   )
 }

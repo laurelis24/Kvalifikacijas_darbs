@@ -14,9 +14,12 @@ class PostController extends Controller
     public function index()
     {
       
-        $posts = Post::paginate(3);
+        $posts = Post::paginate();
         return Inertia::render('Posts', [
-            'posts' => $posts
+            'posts' => $posts,
+            'welcome' => __('welcome'),
+            'login' => __('login'),
+            'register' => __('register'),
         ]);
     }
 

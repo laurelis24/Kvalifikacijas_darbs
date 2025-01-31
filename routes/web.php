@@ -1,9 +1,10 @@
 <?php
-
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -17,6 +18,16 @@ Route::get('/', function () {
 
 Route::get('posts', [PostController::class, 'index'])
 ->middleware('auth', 'verified')->name('posts');
+
+
+Route::get('lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'lv'])) {
+        Session::put('locale', $locale);
+        App::setLocale($locale);
+    }
+    return redirect()->back();
+})->name('change.language');
+
 
 
 Route::get('/dashboard', function () {
