@@ -1,5 +1,14 @@
 {
     "welcome": "Laipni lūdzam mūsu vietnē!",
     "login": "Pieslēgties",
-    "register": "Reģistrēties"
+    "register": "Reģistrēties",
+   
+
+    "posts":{
+        "accept": "Apstiprināt",
+        "placeHolder": "--Lūdzu izvēlēties kategoriju--"
+    },
+
+
+    "test": "test"
 }

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Middleware\LanguageMiddleware;
+use App\Http\Middleware\HandleInertiaRequests;
+use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -12,12 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web(append: [
-            \App\Http\Middleware\HandleInertiaRequests::class,
-            \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
-            \App\Http\Middleware\LanguageMiddleware::class,
+            HandleInertiaRequests::class,
+            AddLinkHeadersForPreloadedAssets::class,
+            LanguageMiddleware::class
         ]);
-
-        //
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
