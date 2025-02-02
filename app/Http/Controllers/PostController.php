@@ -27,7 +27,7 @@ class PostController extends Controller
             
         }
         return Inertia::render("Posts", [
-            'posts' => __('posts'),
+            //'posts' => __('posts'),
             'categories' => $categories
         ]);
         // $posts = Post::paginate();

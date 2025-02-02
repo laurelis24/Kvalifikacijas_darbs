@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
+use Log;
 
 class ConfirmablePasswordController extends Controller
 {
@@ -25,6 +26,9 @@ class ConfirmablePasswordController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+
+        //Log::info($request);
+        
         if (! Auth::guard('web')->validate([
             'email' => $request->user()->email,
             'password' => $request->password,

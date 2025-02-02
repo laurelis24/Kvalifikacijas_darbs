@@ -94,7 +94,7 @@ Route::get('lang/{locale}', function ($locale) {
        Session::put('locale', $locale);
        App::setLocale($locale);
    }
-  // return redirect()
+   return redirect()->back();
 })->name('change.language');
 
 
