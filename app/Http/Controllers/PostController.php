@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\PostCategory;
-use App\Models\Translation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -16,19 +15,19 @@ class PostController extends Controller
      */
     public function index()
     {
-        
+
         $categories = PostCategory::all();
 
         foreach ($categories as $category) {
-            //Log::info($category->getTranslation('title', 'lv'));
+            // Log::info($category->getTranslation('title', 'lv'));
             $category->title = $category->getTranslation('title');
             $category->description = $category->getTranslation('description');
 
-            
         }
-        return Inertia::render("Posts", [
-            //'posts' => __('posts'),
-            'categories' => $categories
+
+        return Inertia::render('Posts', [
+            // 'posts' => __('posts'),
+            'categories' => $categories,
         ]);
         // $posts = Post::paginate();
         // return Inertia::render('Posts', [

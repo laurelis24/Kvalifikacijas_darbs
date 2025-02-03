@@ -1,14 +1,15 @@
 # Kvalifikācijas darbs
 
 ## Nosaukums
+
 Interaktīva lietotnes izstrāde informācijas apmaiņas nodrošināšanai.
 
 ## Technoloģijas
+
 - Laravel
 - ReactJS
 - TypeScript
 - InnertiaJS
-
 
 ## License
 

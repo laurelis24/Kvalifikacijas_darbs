@@ -10,9 +10,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class PostFactory extends Factory
 {
-
     protected $model = Post::class;
-    
+
     public function definition(): array
     {
         return [
@@ -20,8 +19,8 @@ class PostFactory extends Factory
             'description' => $this->faker->text(400), // Random description
             'coordinates' => json_encode([
                 'latitude' => $this->faker->latitude,
-                'longitude' => $this->faker->longitude
-            ]), 
+                'longitude' => $this->faker->longitude,
+            ]),
         ];
     }
 }

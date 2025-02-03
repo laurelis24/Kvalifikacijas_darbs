@@ -9,8 +9,8 @@ import { FormEventHandler } from 'react';
 
 export default function Login({ status, canResetPassword }: { status?: string; canResetPassword: boolean }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        username: '' ,
-        password: '' ,
+        username: '',
+        password: '',
         remember: false as boolean,
     });
 
@@ -41,7 +41,6 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                         autoComplete="username"
                         isFocused={true}
                         onChange={(e) => setData('username', e.target.value)}
-                        
                     />
 
                     <InputError message={errors.username} className="mt-2" />

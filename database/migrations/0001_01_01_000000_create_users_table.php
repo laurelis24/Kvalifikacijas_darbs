@@ -37,8 +37,7 @@ return new class extends Migration
             $table->integer('last_activity')->index();
         });
 
-
-        Schema::create('banned_users', function(Blueprint $table){
+        Schema::create('banned_users', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamp('banned_until')->nullable();
             $table->string('reason')->nullable();

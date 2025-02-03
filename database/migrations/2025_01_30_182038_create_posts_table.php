@@ -6,11 +6,10 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    
     public function up(): void
     {
 
-        Schema::create("posts_categories", function(Blueprint $table){
+        Schema::create('posts_categories', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
         });
@@ -18,20 +17,19 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->nullable()
-            ->constrained('posts_categories')
-            ->onDelete('restrict');
+                ->constrained('posts_categories')
+                ->onDelete('restrict');
             $table->string('title');
             $table->string('description', 2000);
-            $table->json("coordinates")->nullable();
+            $table->json('coordinates')->nullable();
             $table->timestamps();
         });
-
 
         Schema::create('posts_media', function (Blueprint $table) {
             $table->id();
             $table->foreignId('post_id')
-                  ->constrained('posts')
-                  ->onDelete('cascade');
+                ->constrained('posts')
+                ->onDelete('cascade');
             $table->enum('media_type', ['image', 'video']);
             $table->string('file_path');
             $table->timestamps();
@@ -40,16 +38,15 @@ return new class extends Migration
         Schema::create('post_comments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('post_id')
-                  ->constrained('posts')
-                  ->onDelete('cascade'); 
-            $table->foreignId('user_id') 
-                  ->constrained('users')
-                  ->onDelete('cascade');
-            $table->string('comment', 500); 
+                ->constrained('posts')
+                ->onDelete('cascade');
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->onDelete('cascade');
+            $table->string('comment', 500);
             $table->timestamps();
         });
 
-       
     }
 
     public function down(): void

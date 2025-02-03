@@ -1,13 +1,15 @@
-import React from 'react'
+import { Link, router } from "@inertiajs/react";
 
-interface Props{
-    error: {message:string, code:number};
+export interface ErrorProps {
+   message: string;
+   code: number;
+   back:string;
 }
 
-export default function Error(props:Props) {
-    console.log(props)
-  return (
-    
-    <div className='text-2xl font-bold'>{props.error.message}</div>
-  )
+export default function Error(props: ErrorProps) {
+ 
+ return <div className="grid h-screen place-content-center bg-white px-4">
+  <h1 className="uppercase tracking-widest text-gray-500">{props.code} | {props.message}</h1>
+   <Link href="/">{props.back}</Link>  
+</div>
 }

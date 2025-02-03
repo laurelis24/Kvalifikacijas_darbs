@@ -25,7 +25,6 @@ class PostCategory extends Model
         return $this->hasMany(Post::class);
     }
 
-
     public function translations(): MorphMany
     {
         return $this->morphMany(Translation::class, 'translatable');
@@ -34,16 +33,15 @@ class PostCategory extends Model
     public function getTranslation($field, $languageCode = null)
     {
 
-        $languageCode = $languageCode ?: Session::get("locale");
+        $languageCode = $languageCode ?: Session::get('locale');
 
-       
         $translation = $this->translations()
             ->where('translatable_id', $this->id)
             ->where('field', $field)
             ->where('language_code', $languageCode)
             ->first();
 
-            Log::info($translation->translation);
+        Log::info($translation->translation);
 
         return $translation ? $translation->translation : null;
     }

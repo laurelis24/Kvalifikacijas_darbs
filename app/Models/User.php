@@ -41,20 +41,17 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
-
     public function roles(): BelongsToMany
-{
-    return $this->belongsToMany(Role::class);
-}
+    {
+        return $this->belongsToMany(Role::class);
+    }
 
-
-public function hasRole($role): bool
+    public function hasRole($role): bool
     {
         return $this->roles()->where('name', $role)->exists();
     }
 
-
-    /**
+    /*
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

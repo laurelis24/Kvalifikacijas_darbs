@@ -58,12 +58,10 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
+
+    Route::middleware([RoleMiddleware::class.':admin'])->prefix('admin')->group(function () {
+        Route::get('/', function () {
+            return Inertia::render('Profile/AdminPanel');
+        })->name('admin.panel');
+    });
 });
-
-
-   Route::middleware(['auth', RoleMiddleware::class.':admin'])->group(function(){
-        Route::get("/admin", function(){
-            return Inertia::render("Profile/AdminPanel");
-        });
-   });
-    

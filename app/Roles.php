@@ -8,7 +8,8 @@ enum Roles: string
     case MODERATOR = 'moderator';
     case USER = 'user';
 
-    public static function all(): array {
+    public static function all(): array
+    {
         return array_column(Roles::cases(), 'value');
-}
+    }
 }

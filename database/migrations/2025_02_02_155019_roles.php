@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Roles;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function(Blueprint $table){
+        Schema::create('roles', function (Blueprint $table) {
             $table->id();
             $table->enum('name', Roles::all())->unique();
             $table->timestamps();

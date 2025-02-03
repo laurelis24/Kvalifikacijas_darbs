@@ -6,14 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    
     public function up(): void
     {
         Schema::create('translations', function (Blueprint $table) {
             $table->id();
             $table->morphs('translatable');
-            $table->string('language_code', 10); 
-            $table->text('translation'); 
+            $table->string('language_code', 10);
+            $table->text('translation');
             $table->string('field');
             $table->timestamps();
 

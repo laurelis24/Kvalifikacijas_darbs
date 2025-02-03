@@ -5,7 +5,7 @@
         "build": "tsc && vite build && vite build --ssr",
         "dev": "vite",
         "lint": "eslint resources/js --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore --fix",
-        "format": "npx prettier --write ."
+        "format": "npx prettier --write . && ./vendor/bin/pint"
     },
     "devDependencies": {
         "@headlessui/react": "^2.0.0",
