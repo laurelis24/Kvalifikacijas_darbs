@@ -21,7 +21,7 @@ return new class extends Migration
             ->constrained('posts_categories')
             ->onDelete('restrict');
             $table->string('title');
-            $table->text('description', 2000);
+            $table->string('description', 2000);
             $table->json("coordinates")->nullable();
             $table->timestamps();
         });

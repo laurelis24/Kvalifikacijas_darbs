@@ -1,7 +1,6 @@
 <?php
 
-
-use App\Roles;
+use App\Permissions;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,10 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function(Blueprint $table){
+        Schema::create('permissions', function(Blueprint $table) {
             $table->id();
-            $table->enum('name', Roles::all())->unique();
-            $table->timestamps();
+            $table->enum('name', Permissions::all())->unique();
+            $table->foreignId('role_id')->constrained()->onDelete('cascade'); 
+            $table->timestamps(); 
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('permissions');
     }
 };
