@@ -9,6 +9,7 @@ import { FormEventHandler, useRef, useState } from 'react';
 
 export default function DeleteUserForm({ className = '' }: { className?: string }) {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
+
     const passwordInput = useRef<HTMLInputElement>(null);
 
     const {

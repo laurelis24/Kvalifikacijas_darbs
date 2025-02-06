@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Middleware\RoleMiddleware;
 use App\Models\PostCategory;
 use App\Models\Translation;
 use App\Roles;
@@ -12,9 +11,6 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
-
-
-
 
 // Route::middleware('lang')
 
@@ -30,7 +26,7 @@ use Inertia\Inertia;
 // });
 
 Route::get('/', function () {
-    
+
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -90,11 +86,9 @@ Route::get('lang/{locale}', function ($locale) {
 })->name('change.language');
 
 Route::get('/dashboard', function () {
-    
-   
+
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
 
 /*
 Route::get('/dashboard/statistics', function () {
@@ -118,16 +112,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
 // routes/web.php
 
-
-Route::get('/404', function () {
-    return Inertia::render('Error');  // The custom 404 page component in React
-})->name('404');
-
 // Other routes go here
-
 
 function getTranslation($key, $languageCode = null)
 {

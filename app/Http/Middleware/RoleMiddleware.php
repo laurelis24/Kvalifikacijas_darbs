@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
@@ -13,13 +12,7 @@ class RoleMiddleware
     {
 
         if (! $request->user() || ! $request->user()->hasRole($role)) {
-            return Inertia::render('Error',
-                [
-                    'message' => "You do not have the required user role.",
-                    'code' => 403,
-                ]
-            )->toResponse($request)->setStatusCode(403);
-           
+            abort(403);
         }
 
         return $next($request);

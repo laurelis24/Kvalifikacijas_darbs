@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -61,7 +62,12 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware([RoleMiddleware::class.':admin'])->prefix('admin')->group(function () {
         Route::get('/', function () {
-            return Inertia::render('Profile/AdminPanel');
+            return Inertia::render('Admin/AdminPanel');
         })->name('admin.panel');
+
+        Route::get('/users', [UserController::class, 'index'])->name('admin.manage-users');
+        Route::delete('/users/delete/{user}', [UserController::class, 'destroy'])->name('admin.user-delete');
+        Route::post('/users/{user}', [UserController::class, 'banUser'])->name('admin.user-ban');
+        Route::delete('/remove/ban/{user}', [UserController::class, 'unbanUser'])->name('admin.user-unban');
     });
 });

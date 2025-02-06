@@ -6,6 +6,7 @@ export interface User {
     username: string;
     roles: string[];
     email: string;
+    isBanned: boolean;
     email_verified_at?: string;
 }
 

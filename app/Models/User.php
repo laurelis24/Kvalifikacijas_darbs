@@ -51,11 +51,18 @@ class User extends Authenticatable
         return $this->roles()->where('name', $role)->exists();
     }
 
-    /*
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    public function bannedUsers()
+    {
+        return $this->belongsToMany(User::class, 'banned_users', 'user_id', 'user_id')
+            ->withPivot('banned_until', 'reason')
+            ->withTimestamps();
+    }
+
+    public function isBanned(): bool
+    {
+        return $this->bannedUsers()->where('user_id', $this->id)->exists();
+    }
+
     protected function casts(): array
     {
         return [
