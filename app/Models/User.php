@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -60,7 +61,10 @@ class User extends Authenticatable
 
     public function isBanned(): bool
     {
-        return $this->bannedUsers()->where('user_id', $this->id)->exists();
+        return DB::table('banned_users')
+            ->where('user_id', $this->id)
+            ->where('banned_until', '>', now())
+            ->exists();
     }
 
     protected function casts(): array

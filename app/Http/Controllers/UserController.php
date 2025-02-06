@@ -119,21 +119,19 @@ class UserController extends Controller
     }
 
     // Check if a user is banned
-    public function checkBanStatus($userId)
+    public function checkBanStatus()
     {
-        $user = User::findOrFail($userId);
+        // $user = User::findOrFail($userId);
+        // $banRecord = $this->bannedUsers->where('user_id', $this->id)->first();
 
-        // Check if the user has a ban in the pivot table
-        $banRecord = $user->bannedUsers->where('user_id', $userId)->first();
+        // if ($banRecord && $banRecord->pivot->banned_until > now()) {
+        //     return response()->json([
+        //         'message' => 'User is banned.',
+        //         'banned_until' => $banRecord->pivot->banned_until,
+        //         'reason' => $banRecord->pivot->reason,
+        //     ]);
+        // }
 
-        if ($banRecord && $banRecord->pivot->banned_until > now()) {
-            return response()->json([
-                'message' => 'User is banned.',
-                'banned_until' => $banRecord->pivot->banned_until,
-                'reason' => $banRecord->pivot->reason,
-            ]);
-        }
-
-        return response()->json(['message' => 'User is not banned.']);
+        // return response()->json(['message' => 'User is not banned.']);
     }
 }
