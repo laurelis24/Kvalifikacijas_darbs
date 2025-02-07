@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
+use App\Roles;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Log;
 use Redirect;
 
 class UserController extends Controller
@@ -16,12 +19,15 @@ class UserController extends Controller
     {
 
         // TODO: add pagination
-        $users = User::whereNot('id', $request->user()->id)->get();
-
-        foreach ($users as $user) {
+        $users = User::whereNot('id', $request->user()->id)
+        ->get()
+        ->map(function ($user) {
+            $user->roles = $user->roles()->pluck('name');
             $user->isBanned = $user->isBanned();
-        }
+            return $user;
+        });
 
+    
         return Inertia::render('Admin/ManageUsers', [
             'users' => $users,
         ]);
@@ -116,6 +122,42 @@ class UserController extends Controller
         $user->bannedUsers()->detach($user->id);
 
         return Redirect::back();
+    }
+
+
+    public function giveRolePermission(Request $request, User $user) {
+
+        try {
+            $request->validate([
+                'adminChecked' => 'required|boolean',
+                'moderatorChecked' => 'required|boolean',
+             ]);
+    
+             $user = User::findOrFail($user->id);
+    
+             $adminRole = Role::where('name', Roles::ADMIN)->first();
+             $moderatorRole = Role::where('name', Roles::MODERATOR)->first();
+    
+             if ($request->input('adminChecked') && !$user->hasRole(Roles::ADMIN)){
+                $user->roles()->attach($adminRole->id);
+             } else if (!$request->input('adminChecked') && $user->hasRole(Roles::ADMIN)){
+                $user->roles()->detach($adminRole->id);
+             }
+    
+             if ($request->input('moderatorChecked') && !$user->hasRole(Roles::MODERATOR)){
+                $user->roles()->attach($moderatorRole->id);
+             } else if (!$request->input('moderatorChecked') && $user->hasRole(Roles::MODERATOR)){
+                $user->roles()->detach($moderatorRole->id);
+             }
+
+             return Redirect::back();
+    
+        } catch (\Throwable $th) {
+           abort(500);
+        }
+        
+       
+        
     }
 
     // Check if a user is banned

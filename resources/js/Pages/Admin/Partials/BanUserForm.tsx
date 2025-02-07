@@ -6,7 +6,7 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
 import { User } from '@/types';
 import { useForm } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 
 interface Props {
     show: boolean;
@@ -77,6 +77,10 @@ export default function BanUserForm(props: Props) {
                         isFocused
                         placeholder="Duration"
                     />
+                     <InputError message={errors.duration} className="mt-2" />
+
+                    <InputLabel htmlFor="reason" value="Reason" className="sr-only" />
+                    <p>Insert reason: </p>
                     <TextInput
                         id="reason"
                         type="text"
@@ -85,11 +89,10 @@ export default function BanUserForm(props: Props) {
                         value={data.reason}
                         onChange={(e) => setData('reason', e.target.value)}
                         className="mt-1 block w-3/4"
-                        isFocused
                         placeholder="Reason"
                     />
 
-                    <InputError message={errors.duration} className="mt-2" />
+                    <InputError message={errors.reason} className="mt-2" />
                 </div>
 
                 <div className="mt-6 flex justify-end">

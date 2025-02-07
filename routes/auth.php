@@ -68,6 +68,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/users', [UserController::class, 'index'])->name('admin.manage-users');
         Route::delete('/users/delete/{user}', [UserController::class, 'destroy'])->name('admin.user-delete');
         Route::post('/users/{user}', [UserController::class, 'banUser'])->name('admin.user-ban');
-        Route::delete('/remove/ban/{user}', [UserController::class, 'unbanUser'])->name('admin.user-unban');
+        Route::delete('/users/remove/ban/{user}', [UserController::class, 'unbanUser'])->name('admin.user-unban');
+        Route::put('/users/manage/roles/{user}', [UserController::class, 'giveRolePermission'])->name('admin.user-roles');
     });
 });
