@@ -11,12 +11,14 @@ return new class extends Migration
 
         Schema::create('posts_categories', function (Blueprint $table) {
             $table->id();
+            $table->string('title', 255)->unique();
+            $table->string('description', 2000);
             $table->timestamps();
         });
 
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->nullable()
+            $table->foreignId('category_id')
                 ->constrained('posts_categories')
                 ->onDelete('restrict');
             $table->string('title');
@@ -35,7 +37,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('post_comments', function (Blueprint $table) {
+        Schema::create('posts_comments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('post_id')
                 ->constrained('posts')
@@ -54,5 +56,6 @@ return new class extends Migration
         Schema::dropIfExists('posts');
         Schema::dropIfExists('posts_categories');
         Schema::dropIfExists('posts_media');
+        Schema::dropIfExists('posts_comments');
     }
 };

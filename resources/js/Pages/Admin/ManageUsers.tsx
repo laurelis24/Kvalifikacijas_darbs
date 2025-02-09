@@ -2,9 +2,9 @@ import Dropdown from '@/Components/Dropdown';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { User } from '@/types';
 import { SetStateAction, useState } from 'react';
+import AdminNavigation from './Partials/AdminNavigation';
 import BanUserForm from './Partials/BanUserForm';
 import EditUserForm from './Partials/UserRolesForm';
-import AdminNavigation from './Partials/AdminNavigation';
 
 interface Props {
     users: User[];
@@ -14,9 +14,7 @@ export default function ManageUsers(props: Props) {
     const [showEditUserForm, setShowEditUserForm] = useState(false);
     const [user, setUser] = useState<User>();
 
-
-    
-    const confirmForm = (action:React.Dispatch<SetStateAction<boolean>>) => {
+    const confirmForm = (action: React.Dispatch<SetStateAction<boolean>>) => {
         action(true);
     };
 
@@ -35,7 +33,7 @@ export default function ManageUsers(props: Props) {
     return (
         <AuthenticatedLayout>
             <div className="flex">
-            <AdminNavigation />
+                <AdminNavigation />
                 <ul role="list" className="divide-y divide-gray-100">
                     {props.users.map((user) => (
                         <li key={user.email} className="flex justify-between gap-x-6 py-5">
@@ -75,32 +73,31 @@ export default function ManageUsers(props: Props) {
                                 </Dropdown.Trigger>
 
                                 <Dropdown.Content>
-                                    
                                     {/* <Dropdown.Link href={route('profile.edit')}>Ban</Dropdown.Link> */}
                                     <button
-                                            onClick={() => {
-                                                confirmUser(user);
-                                                confirmForm(setShowEditUserForm);
-                                            }}
-                                            className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
-                                        >
-                                            Manage roles
-                                        </button>
+                                        onClick={() => {
+                                            confirmUser(user);
+                                            confirmForm(setShowEditUserForm);
+                                        }}
+                                        className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
+                                    >
+                                        Manage roles
+                                    </button>
                                     <Dropdown.Link
                                         onBefore={() => window.confirm(`Do you want to delete user: ${user.username}?`)}
-                                        href={route('admin.user-delete', { user: user.id })}
+                                        href={`users/delete/${user.id}`}
                                         method="delete"
                                         as="button"
                                     >
                                         Delete
                                     </Dropdown.Link>
-                                    
+
                                     {(user.isBanned && (
                                         <Dropdown.Link
                                             onBefore={() =>
                                                 window.confirm(`Do you want to unban user: ${user.username}?`)
                                             }
-                                            href={route('admin.user-unban', { user: user.id })}
+                                            href={`users/remove/ban/${user.id}`}
                                             method="delete"
                                             as="button"
                                         >
@@ -110,7 +107,7 @@ export default function ManageUsers(props: Props) {
                                         <button
                                             onClick={() => {
                                                 confirmUser(user);
-                                                confirmForm(setShowBanUserForm)
+                                                confirmForm(setShowBanUserForm);
                                             }}
                                             className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
                                         >

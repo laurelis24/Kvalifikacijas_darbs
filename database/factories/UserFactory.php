@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Role;
 use App\Models\User;
-use App\Roles;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -39,15 +38,15 @@ class UserFactory extends Factory
         ];
     }
 
-
-    public function withRoles(){
+    public function withRoles()
+    {
         return $this->afterCreating(function (User $user) {
             $role = Role::find(3);
-            
-            if ($role){
+
+            if ($role) {
                 $user->roles()->attach(3);
             } else {
-                Log::info("Not found user role");
+                Log::info('Not found user role');
             }
         });
     }

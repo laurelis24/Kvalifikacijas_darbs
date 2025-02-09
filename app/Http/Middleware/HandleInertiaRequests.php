@@ -33,9 +33,9 @@ class HandleInertiaRequests extends Middleware
     {
         $user = $request->user();
 
-         if ($user) {
-             $user->roles = $user->roles()->pluck('name');
-         }
+        if ($user) {
+            $user->roles = $user->roles()->pluck('name');
+        }
 
         return [
             ...parent::share($request),

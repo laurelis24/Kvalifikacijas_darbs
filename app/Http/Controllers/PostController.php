@@ -2,41 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
-use App\Models\PostCategory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Inertia\Inertia;
 
 class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-
-        $categories = PostCategory::all();
-
-        foreach ($categories as $category) {
-            // Log::info($category->getTranslation('title', 'lv'));
-            $category->title = $category->getTranslation('title');
-            $category->description = $category->getTranslation('description');
-
-        }
-
-        return Inertia::render('Posts', [
-            // 'posts' => __('posts'),
-            'categories' => $categories,
-        ]);
-        // $posts = Post::paginate();
-        // return Inertia::render('Posts', [
-        //     'posts' => $posts,
-        //     'welcome' => __('welcome'),
-        //     'login' => __('login'),
-        //     'register' => __('register'),
-        // ]);
-    }
+    public function index() {}
 
     /**
      * Show the form for creating a new resource.

@@ -6,7 +6,7 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
 import { User } from '@/types';
 import { useForm } from '@inertiajs/react';
-import { FormEventHandler, useState } from 'react';
+import { FormEventHandler } from 'react';
 
 interface Props {
     show: boolean;
@@ -35,7 +35,7 @@ export default function BanUserForm(props: Props) {
     const banUser: FormEventHandler = (e) => {
         e.preventDefault();
 
-        ban(route('admin.user-ban', { user: props.user.id }), {
+        ban(`users/ban/${props.user.id}`, {
             preserveScroll: true,
             onSuccess: () => closeModal(),
             onFinish: () => reset(),
@@ -77,7 +77,7 @@ export default function BanUserForm(props: Props) {
                         isFocused
                         placeholder="Duration"
                     />
-                     <InputError message={errors.duration} className="mt-2" />
+                    <InputError message={errors.duration} className="mt-2" />
 
                     <InputLabel htmlFor="reason" value="Reason" className="sr-only" />
                     <p>Insert reason: </p>

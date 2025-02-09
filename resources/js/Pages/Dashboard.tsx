@@ -1,9 +1,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, usePage } from '@inertiajs/react';
 
-export default function Dashboard() {
+export default function Dashboard(props: any) {
     const user = usePage().props.auth.user;
 
+    console.log(props);
     // const [statistics, setStatistics] = useState<{totalPosts:number, totalComments:number}>();
     // const [loading, setLoading] = useState(true);
     // const [error, setError] = useState<ErrorProps>();
