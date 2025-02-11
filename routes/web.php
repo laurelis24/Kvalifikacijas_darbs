@@ -35,6 +35,12 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/maps', function () {
+
+    return Inertia::render('Map', [
+        'map' => true,
+    ]);
+});
 Route::get('posts', [PostController::class, 'index'])
     ->middleware('auth', 'verified')->name('posts');
 

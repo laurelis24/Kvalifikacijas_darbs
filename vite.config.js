@@ -11,4 +11,12 @@ export default defineConfig({
         }),
         react(),
     ],
+    server: {
+        cors: {
+            origin: 'http://192.168.45.128:8000',  // Allow Laravel's IP
+            methods: ['GET', 'POST', 'PUT', 'DELETE'],
+            allowedHeaders: ['Content-Type', 'Authorization'],
+          },
+       
+    }
 });

@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Lauris',
             'username' => 'laurelis',
             'email' => 'test@inbox.lv',
-            'password' => Hash::make('ugunskurs'), // Set a password
+            'password' => Hash::make('12345678'), // Set a password
         ]);
 
         $admin->roles()->attach(1);
