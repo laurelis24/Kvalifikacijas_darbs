@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\PostCategoryController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -61,26 +62,26 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
+    // / User posts
+    Route::get('/posts/create', [PostController::class, 'create'])
+        ->name('posts.create');
+
     Route::middleware([RoleMiddleware::class.':admin'])->prefix('admin')->group(function () {
         Route::get('/', function () {
             return Inertia::render('Admin/AdminPanel');
         })->name('admin.panel');
 
-        // USERS
+        // Admin user management
         Route::get('/users', [UserController::class, 'index']);
         Route::delete('/users/delete/{user}', [UserController::class, 'destroy']);
         Route::post('/users/ban/{user}', [UserController::class, 'banUser']);
         Route::delete('/users/remove/ban/{user}', [UserController::class, 'unbanUser']);
         Route::put('/users/manage/roles/{user}', [UserController::class, 'giveRolePermission']);
 
-        // POST CATEGORIES
+        // Admin post categories management
         Route::get('/categories', [PostCategoryController::class, 'index']);
         Route::post('/categories/create', [PostCategoryController::class, 'store']);
         Route::post('/categories/update/{postCategory}', [PostCategoryController::class, 'update']);
         Route::delete('/categories/delete/{postCategory}', [PostCategoryController::class, 'destroy']);
-        // / Route::delete('/users/delete/{user}', [UserController::class, 'destroy'])->name('admin.user-delete');
-        // Route::post('/users/{user}', [UserController::class, 'banUser'])->name('admin.user-ban');
-        // Route::delete('/users/remove/ban/{user}', [UserController::class, 'unbanUser'])->name('admin.user-unban');
-        // Route::put('/users/manage/roles/{user}', [UserController::class, 'giveRolePermission'])->name('admin.user-roles');
     });
 });

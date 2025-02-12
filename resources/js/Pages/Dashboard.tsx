@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, usePage } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 
 export default function Dashboard(props: any) {
     const user = usePage().props.auth.user;
@@ -36,6 +36,15 @@ export default function Dashboard(props: any) {
         <AuthenticatedLayout header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Dashboard</h2>}>
             <Head title="Dashboard" />
 
+            {props.translations.global.cancel}
+
+            <Link href={'../lang/lv'}>
+            LV
+            </Link>
+            <Link href={'../lang/en'}>
+            EN
+            </Link>
+
             {/* <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
@@ -43,6 +52,8 @@ export default function Dashboard(props: any) {
                     </div>
                 </div>
             </div> */}
+
+          
         </AuthenticatedLayout>
     );
 }

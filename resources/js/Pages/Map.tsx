@@ -1,44 +1,26 @@
-import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
+import { LatLng } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useState } from 'react';
-import { latLng, LatLng } from 'leaflet';
+import { PropsWithChildren, useState } from 'react';
+import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
 
 
-export default function Map() {
-   
 
-    function LocationMarker() {
-        const [position, setPosition] = useState<LatLng | null>(null);
-        const map = useMapEvents({
-          click(e){
-            //console.log(e.latlng.lat, e.latlng.lng);
-            setPosition(new LatLng(e.latlng.lat, e.latlng.lng));
-           
-          }
-         
-        })
-      
-        return position === null ? null : (
-          <Marker position={position}>
-            <Popup>You are here</Popup>
-          </Marker>
-        )
-      }
-
+export default function Map({children}: PropsWithChildren) {
     return (
-        <div className='flex justify-center'>
-        <MapContainer style={{width: '400px', height:'300px'}} center={[56.946285, 24.105078]} zoom={10} scrollWheelZoom={true}>
-  <TileLayer 
-    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-    >
+        <div className="flex justify-center">
+            <MapContainer
+                style={{ width: '400px', height: '300px' }}
+                center={[56.946285, 24.105078]}
+                zoom={10}
+                scrollWheelZoom={true}
+            >
+                <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                ></TileLayer>
 
-        
-    </TileLayer>
-  
-
-    <LocationMarker />
-</MapContainer>
-</div>
+                 {children};
+            </MapContainer>
+        </div>
     );
 }

@@ -2,6 +2,16 @@
 
 return [
     'back' => 'Atpakaļ',
+    'global' => [
+        'save' => 'Saglabāt',
+        'cancel' => 'Atcelt',
+        'delete' => 'Dzēst',
+        'accept' => 'Apstiprināt',
+    ],
+    'posts.create' => [
+        'create_post' => 'Izveidot rakstu',
+        'title' => 'Virsraksts',
+    ],
 
     '404' => 'Lapa nav atrasta.',
     '403' => 'Jums nav atļaujas piekļūt šim resursam.',

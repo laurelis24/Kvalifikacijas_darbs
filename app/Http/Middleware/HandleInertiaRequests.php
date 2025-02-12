@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Log;
 use Tighten\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
@@ -46,6 +47,23 @@ class HandleInertiaRequests extends Middleware
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
+            'translations' => $this->getTranslations($request),
         ];
+    }
+
+    private function getTranslations(Request $request): array
+    {
+        $routeName = $request->route()->getName();
+
+        $translations = [
+            'global' => __('messages.global'),
+        ];
+
+        if ($routeName === 'posts.create') {
+            $translations['create_post_page'] = __("messages.{$routeName}");
+        }
+
+
+        return $translations;
     }
 }

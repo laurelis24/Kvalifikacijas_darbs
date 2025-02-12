@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Models\PostCategory;
@@ -41,6 +42,7 @@ Route::get('/maps', function () {
         'map' => true,
     ]);
 });
+
 Route::get('posts', [PostController::class, 'index'])
     ->middleware('auth', 'verified')->name('posts');
 
@@ -82,14 +84,7 @@ Route::post('test', function (Request $request) {
     return redirect(route('posts'));
 })->name('test');
 
-Route::get('lang/{locale}', function ($locale) {
-    if (in_array($locale, ['en', 'lv'])) {
-        Session::put('locale', $locale);
-        App::setLocale($locale);
-    }
-
-    return redirect()->back();
-})->name('change.language');
+Route::get('lang/{locale}', [LanguageController::class, 'switchLanguage']);
 
 Route::get('/dashboard', function () {
 
