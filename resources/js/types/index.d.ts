@@ -1,6 +1,6 @@
 import { Config } from 'ziggy-js';
 
-export interface User{
+export interface User {
     id: number;
     name: string;
     username: string;
@@ -11,21 +11,22 @@ export interface User{
 }
 
 export interface CategoryProps {
-    id: number;
+    data: {
+        id: number;
+        title: string;
+        description: string;
+    };
+}
+
+export interface Translation<T> {
+    create_post_page?: T;
+}
+
+interface CreatePostPage {
+    create_post: string;
     title: string;
-    description: string;
+    category: string;
 }
-
-export interface Translation <T>{
-    create_post_page?:T
-}
-
-interface CreatePostPage{
-    create_post:string;
-    title:string;
-}
-
-
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {

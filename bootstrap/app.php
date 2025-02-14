@@ -18,14 +18,14 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web(append: [
-            LanguageMiddleware::class, 
+            LanguageMiddleware::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);
 
         //  $middleware->use([
-        //     LanguageMiddleware::class, 
-        // ]); 
+        //     LanguageMiddleware::class,
+        // ]);
 
     })
     ->withExceptions(function (Exceptions $exceptions) {

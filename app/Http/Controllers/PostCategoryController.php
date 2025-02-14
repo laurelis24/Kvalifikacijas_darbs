@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DtoMapper;
 use App\Models\PostCategory;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -14,10 +15,10 @@ class PostCategoryController extends Controller
      */
     public function index()
     {
-        // $categories = PostCategory::all();
+        $categories = DtoMapper::toDTOCollection(PostCategory::all(), ['created_at', 'updated_at']);
 
         return Inertia::render('Admin/ManageCategories', [
-            'categories' => PostCategory::all(),
+            'categories' => $categories,
         ]);
     }
 

@@ -8,9 +8,7 @@ use App\Models\Translation;
 use App\Roles;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 // Route::middleware('lang')

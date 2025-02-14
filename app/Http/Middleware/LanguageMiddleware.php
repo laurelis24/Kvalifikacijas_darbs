@@ -10,19 +10,18 @@ use Log;
 class LanguageMiddleware
 {
     public function handle($request, Closure $next)
-{
-    $locale = Session::get('locale');
-    
+    {
+        $locale = Session::get('locale');
 
-    Log::info($locale);
-    if (!in_array($locale, ['en', 'lv'])) {
-        Session::put('locale', $locale);
+        Log::info($locale);
+        if (! in_array($locale, ['en', 'lv'])) {
+            Session::put('locale', $locale);
+        }
+
+        // Log::info($locale);
+
+        App::setLocale(Session::get('locale'));
+
+        return $next($request);
     }
-
-    //Log::info($locale);
-
-    App::setLocale(Session::get("locale"));
-
-    return $next($request);
-}
 }

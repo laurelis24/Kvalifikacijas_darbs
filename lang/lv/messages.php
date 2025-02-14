@@ -11,6 +11,7 @@ return [
     'posts.create' => [
         'create_post' => 'Izveidot rakstu',
         'title' => 'Virsraksts',
+        'category' => 'Kategorija',
     ],
 
     '404' => 'Lapa nav atrasta.',

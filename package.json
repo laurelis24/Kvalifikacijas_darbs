@@ -39,6 +39,8 @@
     },
     "dependencies": {
         "leaflet": "^1.9.4",
-        "react-leaflet": "^5.0.0-rc.2"
+        "react-leaflet": "^5.0.0-rc.2",
+        "slate": "^0.112.0",
+        "slate-react": "^0.112.1"
     }
 }

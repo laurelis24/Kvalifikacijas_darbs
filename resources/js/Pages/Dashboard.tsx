@@ -38,12 +38,8 @@ export default function Dashboard(props: any) {
 
             {props.translations.global.cancel}
 
-            <Link href={'../lang/lv'}>
-            LV
-            </Link>
-            <Link href={'../lang/en'}>
-            EN
-            </Link>
+            <Link href={'../lang/lv'}>LV</Link>
+            <Link href={'../lang/en'}>EN</Link>
 
             {/* <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -52,8 +48,6 @@ export default function Dashboard(props: any) {
                     </div>
                 </div>
             </div> */}
-
-          
         </AuthenticatedLayout>
     );
 }

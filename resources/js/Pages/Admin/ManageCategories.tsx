@@ -1,24 +1,24 @@
 import Dropdown from '@/Components/Dropdown';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Category, User } from '@/types';
+import { CategoryProps, User } from '@/types';
 import { SetStateAction, useState } from 'react';
 import AdminNavigation from './Partials/AdminNavigation';
 import CreateCategoryForm from './Partials/CreateCategoryForm';
 
 interface Props {
-    categories: Category[];
+    categories: CategoryProps[];
     auth: User;
 }
 
 export default function ManageCategories(props: Props) {
     const [createCategoryForm, setCreateCategoryForm] = useState(false);
-    const [category, setCategory] = useState<Category>();
+    const [category, setCategory] = useState<CategoryProps>();
 
     const confirmForm = (action: React.Dispatch<SetStateAction<boolean>>) => {
         action(true);
     };
 
-    const confirmCategory = (category: Category) => {
+    const confirmCategory = (category: CategoryProps) => {
         setCategory(category);
     };
 
@@ -35,11 +35,13 @@ export default function ManageCategories(props: Props) {
                     <button onClick={() => confirmForm(setCreateCategoryForm)}>+ Category</button>
                     <ul role="list" className="divide-y divide-gray-100">
                         {props.categories.map((category) => (
-                            <li key={category.id} className="flex justify-between gap-x-6 py-5">
+                            <li key={category.data.id} className="flex justify-between gap-x-6 py-5">
                                 <div className="flex min-w-0 gap-x-4">
                                     <div className="min-w-0 flex-auto">
-                                        <p className="text-sm/6 font-semibold text-gray-900">{category.title}</p>
-                                        <p className="mt-1 truncate text-xs/5 text-gray-500">{category.description}</p>
+                                        <p className="text-sm/6 font-semibold text-gray-900">{category.data.title}</p>
+                                        <p className="mt-1 truncate text-xs/5 text-gray-500">
+                                            {category.data.description}
+                                        </p>
                                     </div>
                                 </div>
                                 <Dropdown>
@@ -80,10 +82,10 @@ export default function ManageCategories(props: Props) {
                                         <Dropdown.Link
                                             onBefore={() =>
                                                 window.confirm(
-                                                    `Do you want to delete post category: ${category.title}?`,
+                                                    `Do you want to delete post category: ${category.data.title}?`,
                                                 )
                                             }
-                                            href={`categories/delete/${category.id}`}
+                                            href={`categories/delete/${category.data.id}`}
                                             method="delete"
                                             as="button"
                                         >

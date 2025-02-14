@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\DtoMapper;
+use App\Models\PostCategory;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -17,7 +19,12 @@ class PostController extends Controller
      */
     public function create()
     {
-        return Inertia::render('CreatePost');
+        $categories = DtoMapper::toDTOCollection(PostCategory::all(), ['created_at', 'updated_at']);
+
+        return Inertia::render('CreatePost', [
+            'categories' => $categories,
+
+        ]);
     }
 
     /**

@@ -13,7 +13,6 @@ return [
         'create_post' => 'Create Post',
     ],
 
-
     '404' => 'Page not found.',
     '403' => "You don't have permission to access this resource.",
     '402' => 'Payment required.',
