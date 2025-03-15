@@ -1,15 +1,19 @@
 import Dropdown from '@/Components/Dropdown';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { User } from '@/types';
+import { Head } from '@inertiajs/react';
 import { SetStateAction, useState } from 'react';
 import AdminNavigation from './Partials/AdminNavigation';
 import BanUserForm from './Partials/BanUserForm';
 import EditUserForm from './Partials/UserRolesForm';
 
 interface Props {
-    users: User[];
+    users?: {
+        data: User[];
+    };
 }
 export default function ManageUsers(props: Props) {
+    console.log(props);
     const [showBanUserForm, setShowBanUserForm] = useState(false);
     const [showEditUserForm, setShowEditUserForm] = useState(false);
     const [user, setUser] = useState<User>();
@@ -32,10 +36,11 @@ export default function ManageUsers(props: Props) {
     };
     return (
         <AuthenticatedLayout>
+            <Head title="Users" />
             <div className="flex">
                 <AdminNavigation />
                 <ul role="list" className="divide-y divide-gray-100">
-                    {props.users.map((user) => (
+                    {props.users?.data.map((user) => (
                         <li key={user.email} className="flex justify-between gap-x-6 py-5">
                             <div className="flex min-w-0 gap-x-4">
                                 {/* <img

@@ -1,6 +1,9 @@
-import { Link } from '@inertiajs/react';
+import NavLink from '@/Components/NavLink';
+import { usePage } from '@inertiajs/react';
 
 export default function AdminNavigation() {
+    const { url } = usePage();
+
     return (
         <div className="shadow-blue-gray-900/5 relative mr-16 flex h-[calc(100vh-2rem)] w-full max-w-[20rem] flex-col rounded-xl bg-white bg-clip-border p-4 text-gray-700 shadow-xl">
             <div className="mb-2 p-4">
@@ -9,10 +12,27 @@ export default function AdminNavigation() {
                 </h5>
             </div>
             <nav className="flex min-w-[240px] flex-col gap-1 p-2 font-sans text-base font-normal text-gray-700">
-                <Link
-                    href={'/admin/users'}
-                    className="flex w-full items-center rounded-lg p-3 text-start leading-tight outline-none transition-all hover:bg-blue-50 hover:bg-opacity-80 hover:text-blue-900 focus:bg-blue-50 focus:bg-opacity-80 focus:text-blue-900 active:bg-gray-50 active:bg-opacity-80 active:text-blue-900"
-                >
+                <NavLink main={false} href={'/admin'} active={url === '/admin'}>
+                    <div className="mr-4 flex place-items-center">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="size-6"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"
+                            />
+                        </svg>
+                    </div>
+                    Statistics
+                </NavLink>
+
+                <NavLink main={false} href={'/admin/users'} active={url === '/admin/users'}>
                     <div className="mr-4 grid place-items-center">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -30,11 +50,8 @@ export default function AdminNavigation() {
                         </svg>
                     </div>
                     Manage users
-                </Link>
-                <Link
-                    href={'/admin/categories'}
-                    className="flex w-full items-center rounded-lg p-3 text-start leading-tight outline-none transition-all hover:bg-blue-50 hover:bg-opacity-80 hover:text-blue-900 focus:bg-blue-50 focus:bg-opacity-80 focus:text-blue-900 active:bg-gray-50 active:bg-opacity-80 active:text-blue-900"
-                >
+                </NavLink>
+                <NavLink main={false} href={'/admin/categories'} active={url === '/admin/categories'}>
                     <div className="mr-4 grid place-items-center">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -52,7 +69,7 @@ export default function AdminNavigation() {
                         </svg>
                     </div>
                     Manage Post categories
-                </Link>
+                </NavLink>
             </nav>
         </div>
     );

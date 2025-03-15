@@ -15,10 +15,10 @@ class PostCategoryController extends Controller
      */
     public function index()
     {
-        $categories = DtoMapper::toDTOCollection(PostCategory::all(), ['created_at', 'updated_at']);
+        // $categories = DtoMapper::toDTOCollection(PostCategory::all(), ['created_at', 'updated_at']);
 
         return Inertia::render('Admin/ManageCategories', [
-            'categories' => $categories,
+            'categories' => PostCategory::select('id', 'title', 'description')->get(),
         ]);
     }
 

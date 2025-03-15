@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\User;
 use App\Roles;
+use DB;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Redirect;
@@ -18,9 +19,10 @@ class UserController extends Controller
     {
 
         // TODO: add pagination
+
         $users = User::whereNot('id', $request->user()->id)
-            ->get()
-            ->map(function ($user) {
+            ->paginate(10)
+            ->through(function ($user) {
                 $user->roles = $user->roles()->pluck('name');
                 $user->isBanned = $user->isBanned();
 
@@ -29,6 +31,7 @@ class UserController extends Controller
 
         return Inertia::render('Admin/ManageUsers', [
             'users' => $users,
+
         ]);
     }
 
@@ -172,5 +175,18 @@ class UserController extends Controller
         // }
 
         // return response()->json(['message' => 'User is not banned.']);
+    }
+
+    public function statistics()
+    {
+
+        $onlineUsers = DB::table('sessions')
+            ->whereNotNull('user_id')
+            ->where('last_activity', '>=', now()->subMinutes(5)->timestamp)
+            ->pluck('user_id');
+
+        return Inertia::render('Admin/AdminPanel', [
+            'usersOnline' => $onlineUsers->count(),
+        ]);
     }
 }

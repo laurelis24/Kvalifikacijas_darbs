@@ -3,8 +3,11 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-         <title inertia>{{ config('app.name', 'Laravel') }}</title> 
+        <link rel="icon" type="image/svg+xml" href=" https://static.thenounproject.com/png/3358181-200.png" />
+        <meta name="author" content="Lauris Kairo">
+        <meta name="description" content="An interactive app for users to authenticate and post observed events, accidents, or storm damage in Latvia.">
+        <title inertia>{{ config('app.name', 'Kval darbs') }}</title> 
+        
        
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

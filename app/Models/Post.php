@@ -25,4 +25,9 @@ class Post extends Model
     {
         return $this->hasMany(PostComment::class);
     }
+
+    public function media()
+    {
+        return $this->hasMany(PostMedia::class, 'post_id');
+    }
 }

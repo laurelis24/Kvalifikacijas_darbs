@@ -1,6 +1,7 @@
 import Dropdown from '@/Components/Dropdown';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { CategoryProps, User } from '@/types';
+import { Head } from '@inertiajs/react';
 import { SetStateAction, useState } from 'react';
 import AdminNavigation from './Partials/AdminNavigation';
 import CreateCategoryForm from './Partials/CreateCategoryForm';
@@ -29,19 +30,18 @@ export default function ManageCategories(props: Props) {
 
     return (
         <AuthenticatedLayout>
+            <Head title="Categories" />
             <div className="flex">
                 <AdminNavigation />
                 <div>
                     <button onClick={() => confirmForm(setCreateCategoryForm)}>+ Category</button>
                     <ul role="list" className="divide-y divide-gray-100">
                         {props.categories.map((category) => (
-                            <li key={category.data.id} className="flex justify-between gap-x-6 py-5">
+                            <li key={category.id} className="flex justify-between gap-x-6 py-5">
                                 <div className="flex min-w-0 gap-x-4">
                                     <div className="min-w-0 flex-auto">
-                                        <p className="text-sm/6 font-semibold text-gray-900">{category.data.title}</p>
-                                        <p className="mt-1 truncate text-xs/5 text-gray-500">
-                                            {category.data.description}
-                                        </p>
+                                        <p className="text-sm/6 font-semibold text-gray-900">{category.title}</p>
+                                        <p className="mt-1 truncate text-xs/5 text-gray-500">{category.description}</p>
                                     </div>
                                 </div>
                                 <Dropdown>
@@ -82,10 +82,10 @@ export default function ManageCategories(props: Props) {
                                         <Dropdown.Link
                                             onBefore={() =>
                                                 window.confirm(
-                                                    `Do you want to delete post category: ${category.data.title}?`,
+                                                    `Do you want to delete post category: ${category.title}?`,
                                                 )
                                             }
-                                            href={`categories/delete/${category.data.id}`}
+                                            href={`categories/delete/${category.id}`}
                                             method="delete"
                                             as="button"
                                         >

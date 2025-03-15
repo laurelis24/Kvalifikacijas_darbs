@@ -14,7 +14,6 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
@@ -65,11 +64,13 @@ Route::middleware('auth')->group(function () {
     // / User posts
     Route::get('/posts/create', [PostController::class, 'create'])
         ->name('posts.create');
+    Route::post('/posts/create', [PostController::class, 'store'])
+        ->name('posts.create');
 
     Route::middleware([RoleMiddleware::class.':admin'])->prefix('admin')->group(function () {
-        Route::get('/', function () {
-            return Inertia::render('Admin/AdminPanel');
-        })->name('admin.panel');
+        Route::get('/', [UserController::class, 'statistics']);
+
+        // ->name('admin.panel');
 
         // Admin user management
         Route::get('/users', [UserController::class, 'index']);

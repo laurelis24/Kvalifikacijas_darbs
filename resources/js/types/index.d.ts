@@ -11,11 +11,9 @@ export interface User {
 }
 
 export interface CategoryProps {
-    data: {
-        id: number;
-        title: string;
-        description: string;
-    };
+    id: number;
+    title: string;
+    description: string;
 }
 
 export interface Translation<T> {

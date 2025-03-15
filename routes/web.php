@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+use function Pest\Laravel\json;
+
 // Route::middleware('lang')
 
 // Route::middleware(['locale'])->group(function(){
@@ -44,45 +46,46 @@ Route::get('/maps', function () {
 Route::get('posts', [PostController::class, 'index'])
     ->middleware('auth', 'verified')->name('posts');
 
+/*
 Route::post('test', function (Request $request) {
-    // Log::info($request);
+$category = PostCategory::create();
 
-    $category = PostCategory::create();
+Translation::create([
+    'translatable_type' => PostCategory::class,
+    'translatable_id' => $category->id,
+    'language_code' => 'en',
+    'field' => 'title',
+    'translation' => $request->titleEng,
+]);
+Translation::create([
+    'translatable_type' => PostCategory::class,
+    'translatable_id' => $category->id,
+    'language_code' => 'lv',
+    'field' => 'title',
+    'translation' => $request->titleLv,
+]);
 
-    Translation::create([
-        'translatable_type' => PostCategory::class,
-        'translatable_id' => $category->id,
-        'language_code' => 'en',
-        'field' => 'title',
-        'translation' => $request->titleEng,
-    ]);
-    Translation::create([
-        'translatable_type' => PostCategory::class,
-        'translatable_id' => $category->id,
-        'language_code' => 'lv',
-        'field' => 'title',
-        'translation' => $request->titleLv,
-    ]);
+Translation::create([
+    'translatable_type' => PostCategory::class,
+    'translatable_id' => $category->id,
+    'language_code' => 'en',
+    'field' => 'description',
+    'translation' => $request->descriptionEng,
+]);
+Translation::create([
+    'translatable_type' => PostCategory::class,
+    'translatable_id' => $category->id,
+    'language_code' => 'lv',
+    'field' => 'description',
+    'translation' => $request->descriptionLv,
+]);
 
-    Translation::create([
-        'translatable_type' => PostCategory::class,
-        'translatable_id' => $category->id,
-        'language_code' => 'en',
-        'field' => 'description',
-        'translation' => $request->descriptionEng,
-    ]);
-    Translation::create([
-        'translatable_type' => PostCategory::class,
-        'translatable_id' => $category->id,
-        'language_code' => 'lv',
-        'field' => 'description',
-        'translation' => $request->descriptionLv,
-    ]);
-
-    return redirect(route('posts'));
+return redirect(route('posts'));
 })->name('test');
+*/
 
 Route::get('lang/{locale}', [LanguageController::class, 'switchLanguage']);
+
 
 Route::get('/dashboard', function () {
 
@@ -111,10 +114,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+Route::get('/posts/show/{post}', [PostController::class, 'show'])->name('posts.show');
+
 // routes/web.php
 
 // Other routes go here
 
+/*
 function getTranslation($key, $languageCode = null)
 {
     $languageCode = $languageCode ?: app()->getLocale(); // Get current locale, or fallback to 'en'
@@ -123,5 +130,5 @@ function getTranslation($key, $languageCode = null)
         ->where('language_code', $languageCode)
         ->value('translation');
 }
-
+*/
 require __DIR__.'/auth.php';
