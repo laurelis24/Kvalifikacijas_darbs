@@ -1,81 +1,130 @@
-import { Input } from "@headlessui/react";
-import { usePage } from "@inertiajs/react";
-import { createEditor} from "slate";
-import { Editable, Slate } from "slate-react";
+import InputError from '@/Components/InputError';
+import PrimaryButton from '@/Components/PrimaryButton';
+import TextInput from '@/Components/TextInput';
+import { useForm, usePage } from '@inertiajs/react';
+import { FormEventHandler } from 'react';
+import { createEditor } from 'slate';
+import { Editable, Slate } from 'slate-react';
 
-
-interface Props{
+interface Props {
     post: {
-      title:string;
-      description:string;
-    }
-
-    images: Image[];
-    comments: string[];
+        id: number;
+        title: string;
+        description: string;
+        media: {
+            id: number;
+            file_path: string;
+            media_type: string;
+        }[];
+        comments: {
+            id: number;
+            comment: string;
+            created_at: string;
+            username: string;
+        }[];
+    };
 }
-interface Image{
-  id:number;
-  file_path:string;
-  media_type:string;
-}
 
+export default function PostShow({ post }: Props) {
+    console.log(post);
+    const editor = createEditor();
+    const user = usePage().props.auth.user;
+    const {
+        data,
+        setData,
+        post: create,
+        processing,
+        reset,
+        errors,
+    } = useForm({
+        comment: '',
+    });
 
-export default function PostShow({post, images, comments}: Props) {
-  const editor = createEditor()
-  const user = usePage().props.auth.user;
-  console.log(user);
-   
-  return (
-    <div>
-      <div>{post.title}</div>
-      <Slate editor={editor} initialValue={JSON.parse(post.description)}>
-          <Editable renderLeaf={props => <Leaf {...props} />} readOnly/> 
-      </Slate>
+    const submit: FormEventHandler = (e) => {
+        e.preventDefault();
+        create(route('posts.comment.store', post.id), {
+            preserveScroll:true,
+            onFinish: () => reset(),
+        });
+    };
 
-      <div>
-         {images && images.map((image, idx) => {
-              return <img key={image.id} src={`../../storage/${image.file_path}`} alt={`Image-${idx}`} />
-         })}
-      </div>
+    return (
+        <div>
+            <div>{post.title}</div>
+            <Slate editor={editor} initialValue={JSON.parse(post.description)}>
+                <Editable renderLeaf={(props) => <Leaf {...props} />} readOnly />
+            </Slate>
 
+            <div>
+                {post.media.map((image, idx) => {
+                    return <img key={image.id} src={`../../storage/${image.file_path}`} alt={`Image-${idx}`} />;
+                })}
+            </div>
 
-      <div>
-        {(user?.roles?.some(role => role === "admin" || role === "user" || role === "moderator")) && 
-        <input type="text">
-        </input>}
-      </div>
-    </div>
-  )
+            {user?.roles?.some((role) => role === 'admin' || role === 'user' || role === 'moderator') && (
+                <div>
+                    <form onSubmit={submit}>
+                        <TextInput value={data.comment} onChange={(e) => setData('comment', e.target.value)} />
+                        <InputError message={errors.comment} className="mt-2" />
+
+                        <PrimaryButton disabled={processing}>Accept</PrimaryButton>
+                    </form>
+                </div>
+            )}
+
+            <div>
+                <h2>Komentāri</h2>
+                {post.comments.map((comment) => (
+                    <Comment
+                        key={comment.id}
+                        username={comment.username}
+                        comment={comment.comment}
+                        date={comment.created_at}
+                    />
+                ))}
+            </div>
+        </div>
+    );
 }
 
 /// TODO: Need to change location
 interface LeafProps {
-  attributes: { [key: string]: any };
-  children: React.ReactNode;
-  leaf: {
-      bold?: boolean;
-      italic?: boolean;
-      underline?: boolean;
-      code?: boolean;
-  };
+    attributes: { [key: string]: any };
+    children: React.ReactNode;
+    leaf: {
+        bold?: boolean;
+        italic?: boolean;
+        underline?: boolean;
+        code?: boolean;
+    };
 }
 
 const Leaf = ({ attributes, children, leaf }: LeafProps) => {
-  if (leaf.bold) {
-      children = <strong>{children}</strong>;
-  }
+    if (leaf.bold) {
+        children = <strong>{children}</strong>;
+    }
 
-  if (leaf.code) {
-      children = <code>{children}</code>;
-  }
+    if (leaf.code) {
+        children = <code>{children}</code>;
+    }
 
-  if (leaf.italic) {
-      children = <em>{children}</em>;
-  }
+    if (leaf.italic) {
+        children = <em>{children}</em>;
+    }
 
-  if (leaf.underline) {
-      children = <u>{children}</u>;
-  }
+    if (leaf.underline) {
+        children = <u>{children}</u>;
+    }
 
-  return <span {...attributes}>{children}</span>;
+    return <span {...attributes}>{children}</span>;
+};
+
+const Comment = ({ username, comment, date }: { username: string; comment: string; date: string }) => {
+    return (
+        <div>
+            <h1>{username}</h1>
+            <h1>{comment}</h1>
+            <h1>{date}</h1>
+        </div>
+    );
 };

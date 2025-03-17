@@ -74,7 +74,7 @@ class PostCategoryController extends Controller
     public function update(Request $request, PostCategory $postCategory)
     {
 
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255|min:3',
             'description' => 'required|string|max:2000|min:30',
         ]);
@@ -82,8 +82,8 @@ class PostCategoryController extends Controller
         try {
             $category = PostCategory::findOrFail($postCategory->id);
 
-            $category->title = $request->input('title');
-            $category->description = $request->input('description');
+            $category->title = $validated['title'];
+            $category->description = $validated['description'];
 
             $category->save();
 

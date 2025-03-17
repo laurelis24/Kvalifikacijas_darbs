@@ -8,7 +8,6 @@ use App\Models\Post;
 use App\Models\PostCategory;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Log;
 use Redirect;
 
 class PostController extends Controller
@@ -49,8 +48,8 @@ class PostController extends Controller
                 $path = $image->store('images', 'public');
 
                 $post->media()->create(
-        ['media_type' => 'image',
-                    'file_path' => $path]
+                    ['media_type' => 'image',
+                        'file_path' => $path]
                 );
             }
         }
@@ -63,13 +62,28 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        $post->load("media");
-        $images = $post->media()->get(["id", "file_path", "media_type"]);
-        //$images = $post->media->map(fn ($media) => asset('storage/' . $media->file_path));
-        Log::info("Images", [$images]);
-        return Inertia::render("PostShow", [
-            "post" => $post,
-            "images" => $images
+        $post->load(['media', 'comments']);
+
+        $formattedPost = [
+            'id' => $post->id,
+            'title' => $post->title,
+            'description' => $post->description,
+            'created_at' => $post->created_at,
+            'media' => $post->media->map(fn ($media) => [
+                'id' => $media->id,
+                'file_path' => $media->file_path,
+                'media_type' => $media->media_type,
+            ]),
+            'comments' => $post->comments->map(fn ($comment) => [
+                'id' => $comment->id,
+                'comment' => $comment->comment,
+                'created_at' => $comment->created_at,
+                'username' => $comment->user->username,
+            ]),
+        ];
+
+        return Inertia::render('PostShow', [
+            'post' => $formattedPost,
         ]);
     }
 

@@ -3,8 +3,8 @@ import { useCallback } from 'react';
 import { BaseEditor, Descendant, Editor } from 'slate';
 import { HistoryEditor } from 'slate-history';
 import { Editable, ReactEditor, RenderLeafProps, Slate, useSlate } from 'slate-react';
-import { Button, Icon, Toolbar } from './TextEditorIndex';
 import { Hotkeys, SvgType, TextFormat } from './TextEditorEnums';
+import { Button, Icon, Toolbar } from './TextEditorIndex';
 
 //import {Button, Icon, Toolbar}
 

@@ -15,6 +15,8 @@ class PostComment extends Model
         'comment',
     ];
 
+    protected $table = 'posts_comments';
+
     public function post()
     {
         return $this->belongsTo(Post::class);

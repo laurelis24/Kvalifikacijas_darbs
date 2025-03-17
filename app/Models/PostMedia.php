@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PostMedia extends Model
 {
     use HasFactory;
+
     protected $table = 'posts_media';
 
     protected $fillable = [

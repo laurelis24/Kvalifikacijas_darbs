@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\PostCategoryController;
+use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\RoleMiddleware;
@@ -67,10 +68,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/posts/create', [PostController::class, 'store'])
         ->name('posts.create');
 
+    // User post comments
+    Route::post('/posts/{post}/comments/store', [PostCommentController::class, 'store'])
+        // ->middleware("throttle:comment")
+        ->name('posts.comment.store');
+
     Route::middleware([RoleMiddleware::class.':admin'])->prefix('admin')->group(function () {
         Route::get('/', [UserController::class, 'statistics']);
-
-        // ->name('admin.panel');
 
         // Admin user management
         Route::get('/users', [UserController::class, 'index']);
