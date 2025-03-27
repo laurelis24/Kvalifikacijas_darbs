@@ -1,10 +1,12 @@
 import FileInput from '@/Components/FileInput';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
+import LocationMarker from '@/Components/LocationMarker';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SelectInput from '@/Components/SelectInput';
 import TextEditorInput from '@/Components/TextEditor/TextEditorInput';
 import TextInput from '@/Components/TextInput';
+import Map from '@/Pages/Map';
 import { CategoryProps, CreatePostPage, Translation } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { LatLng } from 'leaflet';
@@ -57,6 +59,9 @@ export default function CreatePostForm({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post(route('posts.create'), {
+            onError: () => {
+                console.log(errors);
+            },
             onSuccess: () => {
                 resetForm();
             },
@@ -128,7 +133,7 @@ export default function CreatePostForm({
                     </div>
                     <div>
                         <InputLabel htmlFor="images" value="Upload image" />
-                        <FileInput className="hidden" multiple onChange={handleImageInput} />
+                        <FileInput type="file" className="hidden" multiple onChange={handleImageInput} />
 
                         {imagePreviews.length > 0 && (
                             <ul className="flex justify-center gap-10">
@@ -141,6 +146,7 @@ export default function CreatePostForm({
                                 })}
                             </ul>
                         )}
+
                         {/* <InputError message={errors.description} className="mt-2" /> */}
                     </div>
                     {/* <label htmlFor="">Apraksts</label>
@@ -148,11 +154,11 @@ export default function CreatePostForm({
 
                     <div className="h-60 w-full bg-cyan-700"></div>
                     <div>
-                        {/* <InputError message={errors.coordinates} className="mt-2" /> */}
+                        <InputError message={errors.coordinates} className="mt-2" />
 
-                        {/*      <Map>
-            <LocationMarker position={position} setData={setData} setPosition={handleSetPosition}/> 
-            </Map>  */}
+                        <Map>
+                            <LocationMarker position={position} setData={setData} setPosition={handleSetPosition} />
+                        </Map>
                     </div>
 
                     <div className="flex items-center gap-4">

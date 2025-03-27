@@ -11,12 +11,15 @@ export default defineConfig({
         }),
         react(),
     ],
-    // server: {
-    //     cors: {
-    //         origin: 'http://192.168.45.128:8000' ,  // Allow Laravel's IP
-    //         methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    //         allowedHeaders: ['Content-Type', 'Authorization'],
-    //       },
-
-    // }
+    server: {
+        host: '0.0.0.0',
+        cors: true,
+        strictPort: true,
+        watch: {
+            usePolling: true, // Helps with file changes on some networks
+        },
+        hmr: {
+            host: '0.0.0.0', // Replace with your computer's local IP
+        },
+    },
 });

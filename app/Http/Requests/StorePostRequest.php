@@ -30,9 +30,22 @@ class StorePostRequest extends FormRequest
             'coordinates.longitude' => 'nullable|numeric|between:-180,180|required_with:coordinates.latitude',
             'coordinates.latitude' => 'nullable|numeric|between:-90,90|required_with:coordinates.longitude',
 
-            'images' => 'nullable|array|min:0|max:3',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images' => 'nullable|array|max:3',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // max:2048 is 2MB
         ];
 
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'title.required' => 'A title is required',
+            'body.required' => 'A message is required',
+        ];
     }
 }

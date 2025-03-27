@@ -26,7 +26,6 @@ interface Props {
 }
 
 export default function PostShow({ post }: Props) {
-    console.log(post);
     const editor = createEditor();
     const user = usePage().props.auth.user;
     const {
@@ -43,7 +42,7 @@ export default function PostShow({ post }: Props) {
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         create(route('posts.comment.store', post.id), {
-            preserveScroll:true,
+            preserveScroll: true,
             onFinish: () => reset(),
         });
     };

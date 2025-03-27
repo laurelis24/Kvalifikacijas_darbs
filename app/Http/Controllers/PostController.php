@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\DtoMapper;
 use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use App\Models\PostCategory;
@@ -36,6 +35,10 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $validated = $request->validated();
+        // if ($request->fails()) {
+        //     dd($request->errors());
+        // }
+
         $post = Post::create([
             'title' => $validated['title'],
             'category_id' => $validated['category'],
