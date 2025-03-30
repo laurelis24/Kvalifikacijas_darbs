@@ -12,7 +12,8 @@ return new class extends Migration
         Schema::create('posts_categories', function (Blueprint $table) {
             $table->id();
             $table->string('title', 255)->unique();
-            $table->string('description', 2000);
+            $table->string('description', 1000);
+            $table->string('color', 7)->unique();
             $table->timestamps();
         });
 
@@ -53,9 +54,9 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('posts');
-        Schema::dropIfExists('posts_categories');
         Schema::dropIfExists('posts_media');
         Schema::dropIfExists('posts_comments');
+        Schema::dropIfExists('posts');
+        Schema::dropIfExists('posts_categories');
     }
 };

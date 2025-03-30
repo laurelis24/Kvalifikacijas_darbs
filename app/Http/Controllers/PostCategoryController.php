@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\DtoMapper;
 use App\Models\PostCategory;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Log;
 use Redirect;
 
 class PostCategoryController extends Controller
@@ -15,10 +15,8 @@ class PostCategoryController extends Controller
      */
     public function index()
     {
-        // $categories = DtoMapper::toDTOCollection(PostCategory::all(), ['created_at', 'updated_at']);
-
         return Inertia::render('Admin/ManageCategories', [
-            'categories' => PostCategory::select('id', 'title', 'description')->get(),
+            'categories' => PostCategory::select('id', 'title', 'description', 'color')->get(),
         ]);
     }
 
@@ -35,19 +33,23 @@ class PostCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+
+        $validated = $request->validate([
             'title' => 'required|string|max:255|min:3',
-            'description' => 'required|string|max:2000|min:30',
+            'description' => 'required|string|max:1000|min:20',
+            'color' => 'required|string|regex:/^#[0-9a-fA-F]{6}$/',
         ]);
 
         try {
             PostCategory::create([
-                'title' => $request->input('title'),
-                'description' => $request->input('description'),
+                'title' => $validated['title'],
+                'description' => $validated['description'],
+                'color' => $validated['color'],
             ]);
 
             return Redirect::back();
         } catch (\Throwable $th) {
+            Log::info('Message', [$th->getMessage()]);
             abort(500);
         }
     }

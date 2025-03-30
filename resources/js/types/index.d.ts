@@ -14,6 +14,7 @@ export interface CategoryProps {
     id: number;
     title: string;
     description: string;
+    color: string;
 }
 
 export interface Translation<T> {

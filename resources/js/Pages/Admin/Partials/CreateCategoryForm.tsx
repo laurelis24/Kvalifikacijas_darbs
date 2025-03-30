@@ -4,7 +4,6 @@ import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
-import { Category } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
@@ -12,13 +11,19 @@ interface Props {
     show: boolean;
     onClose: CallableFunction;
     method: 'post' | 'put';
-    category?: Category;
+    category?: {
+        id: number;
+        title: string;
+        description: string;
+        color: string;
+    };
 }
 
-export default function CreateCategoryForm(props: Props) {
+export default function CreateOrEditCategoryForm(props: Props) {
     const { data, setData, processing, post, reset, errors, clearErrors } = useForm({
         title: props.method === 'put' ? props.category?.title : '',
         description: props.method === 'put' ? props.category?.description : '',
+        color: props.method === 'put' ? props.category?.color : '#FFFFFF',
     });
 
     const createCategory: FormEventHandler = (e) => {
@@ -78,6 +83,20 @@ export default function CreateCategoryForm(props: Props) {
                     />
 
                     <InputError message={errors.description} className="mt-2" />
+
+                    <InputLabel htmlFor="color" value="Color" className="sr-only" />
+                    <label htmlFor="color">Color:</label>
+                    <input
+                        type="color"
+                        id="color"
+                        name="color"
+                        required
+                        value={data.color}
+                        onChange={(e) => setData('color', e.target.value)}
+                        className="mt-1 block size-32"
+                    />
+
+                    <InputError message={errors.color} className="mt-2" />
                 </div>
 
                 <div className="mt-6 flex justify-end">

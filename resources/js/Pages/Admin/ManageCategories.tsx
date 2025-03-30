@@ -1,6 +1,6 @@
 import Dropdown from '@/Components/Dropdown';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { CategoryProps, User } from '@/types';
+import { User } from '@/types';
 import { Head } from '@inertiajs/react';
 import { SetStateAction, useState } from 'react';
 import AdminNavigation from './Partials/AdminNavigation';
@@ -9,6 +9,12 @@ import CreateCategoryForm from './Partials/CreateCategoryForm';
 interface Props {
     categories: CategoryProps[];
     auth: User;
+}
+interface CategoryProps {
+    id: number;
+    title: string;
+    description: string;
+    color: string;
 }
 
 export default function ManageCategories(props: Props) {

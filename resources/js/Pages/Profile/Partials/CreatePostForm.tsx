@@ -11,7 +11,7 @@ import { CategoryProps, CreatePostPage, Translation } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { LatLng } from 'leaflet';
 import { useEffect, useMemo, useState } from 'react';
-import { createEditor, Editor, Transforms } from 'slate';
+import { createEditor, Descendant, Editor, Transforms } from 'slate';
 import { withHistory } from 'slate-history';
 import { withReact } from 'slate-react';
 
@@ -19,18 +19,19 @@ export default function CreatePostForm({
     create_post_page,
     categories,
 }: Translation<CreatePostPage> & { categories: CategoryProps[] }) {
+    //console.log(categories);
     const MAX_FILES = 3;
     const translate = create_post_page;
 
-    const editor = useMemo(() => withHistory(withReact(createEditor())), []); // editor
+    const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
-    const [position, setPosition] = useState<LatLng | null>(null);
+    const [position, setPosition] = useState<LatLng>(new LatLng(56.946285, 24.105078));
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
     const { data, setData, errors, post, reset, processing, progress } = useForm({
         title: '',
-        category: '1',
-        description: '',
-        coordinates: { longitude: 50.131, latitude: 20.121 },
+        category: categories?.[0].id || 1,
+        description: [] as Descendant[],
+        coordinates: { latitude: position.lat, longitude: position.lng },
         images: [] as File[],
     });
 
@@ -41,10 +42,6 @@ export default function CreatePostForm({
             urls.forEach((url) => URL.revokeObjectURL(url));
         };
     }, [data.images]);
-
-    const handleSetPosition = (position: LatLng) => {
-        setPosition(position);
-    };
 
     const resetForm = () => {
         Transforms.delete(editor, {
@@ -58,6 +55,10 @@ export default function CreatePostForm({
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        if (Editor.string(editor, []).length < 50) {
+            alert('The description must be at least 50 characters long.');
+            return;
+        }
         post(route('posts.create'), {
             onError: () => {
                 console.log(errors);
@@ -81,6 +82,16 @@ export default function CreatePostForm({
         }
 
         setData('images', selectedFiles);
+    };
+
+    const handleSetDescription = (description: Descendant[]) => {
+        setData('description', description);
+    };
+
+    const changeLocationMarkerColor = () => {
+        const category = categories.find((category) => category.id === data.category);
+
+        return category?.color || '#FFFFFF';
     };
 
     return (
@@ -119,8 +130,9 @@ export default function CreatePostForm({
                         <SelectInput
                             required
                             id="category"
+                            value={data.category}
                             onChange={(e) => {
-                                setData('category', e.target.value);
+                                setData('category', +e.target.value);
                             }}
                             categories={categories}
                         />
@@ -128,7 +140,7 @@ export default function CreatePostForm({
                         <InputError message={errors.category} className="mt-2" />
                     </div>
                     <div>
-                        <TextEditorInput setData={setData} editor={editor} />
+                        <TextEditorInput setDescription={handleSetDescription} editor={editor} />
                         <InputError message={errors.description} className="mt-2" />
                     </div>
                     <div>
@@ -146,18 +158,18 @@ export default function CreatePostForm({
                                 })}
                             </ul>
                         )}
-
-                        {/* <InputError message={errors.description} className="mt-2" /> */}
                     </div>
-                    {/* <label htmlFor="">Apraksts</label>
-                     <textarea className='w-full' name="" id=""></textarea>  */}
 
-                    <div className="h-60 w-full bg-cyan-700"></div>
                     <div>
                         <InputError message={errors.coordinates} className="mt-2" />
 
-                        <Map>
-                            <LocationMarker position={position} setData={setData} setPosition={handleSetPosition} />
+                        <Map className="h-96">
+                            <LocationMarker
+                                color={changeLocationMarkerColor()}
+                                position={position}
+                                setPosition={setPosition}
+                                setData={setData}
+                            />
                         </Map>
                     </div>
 

@@ -11,8 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-use function Pest\Laravel\json;
-
 // Route::middleware('lang')
 
 // Route::middleware(['locale'])->group(function(){
@@ -26,63 +24,43 @@ use function Pest\Laravel\json;
 //     });
 // });
 
-Route::get('/', function () {
+Route::get('/', [PostController::class, 'index']);
 
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+/* Route::post('test', function (Request $request) {
+    $category = PostCategory::create();
+
+    Translation::create([
+        'translatable_type' => PostCategory::class,
+        'translatable_id' => $category->id,
+        'language_code' => 'en',
+        'field' => 'title',
+        'translation' => $request->titleEng,
     ]);
-});
-
-Route::get('/maps', function () {
-
-    return Inertia::render('Map', [
-        'map' => true,
+    Translation::create([
+        'translatable_type' => PostCategory::class,
+        'translatable_id' => $category->id,
+        'language_code' => 'lv',
+        'field' => 'title',
+        'translation' => $request->titleLv,
     ]);
-});
 
-Route::get('posts', [PostController::class, 'index'])
-    ->middleware('auth', 'verified')->name('posts');
+    Translation::create([
+        'translatable_type' => PostCategory::class,
+        'translatable_id' => $category->id,
+        'language_code' => 'en',
+        'field' => 'description',
+        'translation' => $request->descriptionEng,
+    ]);
+    Translation::create([
+        'translatable_type' => PostCategory::class,
+        'translatable_id' => $category->id,
+        'language_code' => 'lv',
+        'field' => 'description',
+        'translation' => $request->descriptionLv,
+    ]);
 
-/*
-Route::post('test', function (Request $request) {
-$category = PostCategory::create();
-
-Translation::create([
-    'translatable_type' => PostCategory::class,
-    'translatable_id' => $category->id,
-    'language_code' => 'en',
-    'field' => 'title',
-    'translation' => $request->titleEng,
-]);
-Translation::create([
-    'translatable_type' => PostCategory::class,
-    'translatable_id' => $category->id,
-    'language_code' => 'lv',
-    'field' => 'title',
-    'translation' => $request->titleLv,
-]);
-
-Translation::create([
-    'translatable_type' => PostCategory::class,
-    'translatable_id' => $category->id,
-    'language_code' => 'en',
-    'field' => 'description',
-    'translation' => $request->descriptionEng,
-]);
-Translation::create([
-    'translatable_type' => PostCategory::class,
-    'translatable_id' => $category->id,
-    'language_code' => 'lv',
-    'field' => 'description',
-    'translation' => $request->descriptionLv,
-]);
-
-return redirect(route('posts'));
-})->name('test');
-*/
+    return back();
+})->name('test'); */
 
 Route::get('lang/{locale}', [LanguageController::class, 'switchLanguage']);
 

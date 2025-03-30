@@ -6,6 +6,7 @@ use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use App\Models\PostCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Redirect;
 
@@ -14,17 +15,34 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() {}
+    public function index()
+    {
+
+        $categories = PostCategory::select('id', 'title', 'description', 'color')->get();
+
+        // $posts = Post::with(['media' => function ($query) {
+        //     $query->select('id', 'file_path', 'media_type', 'post_id');
+        // }])->select('id', 'title', 'created_at', 'coordinates', 'category_id')->get();
+        $posts = Post::with(['randomMedia:id,file_path,media_type,post_id'])
+            ->select('id', 'title', 'created_at', 'coordinates', 'category_id')
+            ->get();
+
+        return Inertia::render('WelcomeTest', [
+            'posts' => $posts,
+            'categories' => $categories,
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
+        ]);
+    }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        // $categories = DtoMapper::toDTOCollection(PostCategory::all(), ['created_at', 'updated_at']);
 
         return Inertia::render('CreatePost', [
-            'categories' => PostCategory::select('id', 'title', 'description')->get(),
+            'categories' => PostCategory::select('id', 'title', 'description', 'color')->get(),
 
         ]);
     }
@@ -43,7 +61,7 @@ class PostController extends Controller
             'title' => $validated['title'],
             'category_id' => $validated['category'],
             'description' => $validated['description'],
-            'coordinates' => json_encode($validated['coordinates']),
+            'coordinates' => $validated['coordinates'],
         ]);
 
         if ($request->hasFile('images')) {

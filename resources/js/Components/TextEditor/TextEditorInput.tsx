@@ -41,22 +41,16 @@ const initialValue: Descendant[] = [
 ];
 
 interface Props {
-    setData: (field: string, value: string) => void; // Function to update form state
+    setDescription: (description: Descendant[]) => void; // Function to update form state
     editor: BaseEditor & ReactEditor & HistoryEditor;
 }
 
-export default function TextEditorInput({ setData, editor }: Props) {
-    //const editor = useMemo(() => withHistory(withReact(createEditor())), []);
-    //const [editorValue, setEditorValue] = useState<Descendant[]>(initialValue);
-
+export default function TextEditorInput({ setDescription, editor }: Props) {
     const renderLeaf = useCallback((props: RenderLeafProps) => <Leaf {...props} />, []);
 
-    const handleEditorChange = useCallback(
-        (value: Descendant[]) => {
-            setData('description', JSON.stringify(value)); /// TODO
-        },
-        [setData],
-    );
+    const handleEditorChange = useCallback((value: Descendant[]) => {
+        setDescription(value);
+    }, []);
 
     // https://docs.slatejs.org/walkthroughs/02-adding-event-handlers
     return (
@@ -135,19 +129,3 @@ const Leaf = ({ attributes, children, leaf }: LeafProps) => {
 
     return <span {...attributes}>{children}</span>;
 };
-
-/* const initialValue: Descendant[] = [
-    {
-        type: 'paragraph',
-        children: [
-            { text: 'This is editable ' },
-            { text: 'rich', bold: true },
-            { text: ' text, ' },
-            { text: 'much', italic: true },
-            { text: ' better than a ' },
-            { text: '<textarea>', code: true },
-            { text: '!' },
-        ],
-    },
-];
- */

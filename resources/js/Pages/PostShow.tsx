@@ -3,14 +3,14 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
-import { createEditor } from 'slate';
+import { createEditor, Descendant } from 'slate';
 import { Editable, Slate } from 'slate-react';
 
 interface Props {
     post: {
         id: number;
         title: string;
-        description: string;
+        description: Descendant[];
         media: {
             id: number;
             file_path: string;
@@ -26,6 +26,7 @@ interface Props {
 }
 
 export default function PostShow({ post }: Props) {
+    console.log(post);
     const editor = createEditor();
     const user = usePage().props.auth.user;
     const {
@@ -50,7 +51,7 @@ export default function PostShow({ post }: Props) {
     return (
         <div>
             <div>{post.title}</div>
-            <Slate editor={editor} initialValue={JSON.parse(post.description)}>
+            <Slate editor={editor} initialValue={post.description}>
                 <Editable renderLeaf={(props) => <Leaf {...props} />} readOnly />
             </Slate>
 

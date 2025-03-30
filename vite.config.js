@@ -19,7 +19,7 @@ export default defineConfig({
             usePolling: true, // Helps with file changes on some networks
         },
         hmr: {
-            host: '0.0.0.0', // Replace with your computer's local IP
+            host: '192.168.8.68', // Replace with your computer's local IP
         },
     },
 });

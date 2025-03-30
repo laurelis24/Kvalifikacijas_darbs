@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Post;
+use App\Models\PostCategory;
 use App\Models\Role;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\User;
 use App\Roles;
 use Hash;
@@ -33,5 +34,8 @@ class DatabaseSeeder extends Seeder
         $admin->roles()->attach(1);
         $admin->roles()->attach(3);
 
+        User::factory(10)->create();
+        PostCategory::factory(5)->create();
+        Post::factory(5)->create();
     }
 }

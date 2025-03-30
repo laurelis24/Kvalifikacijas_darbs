@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Post;
+use App\Models\PostCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -15,12 +16,13 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->sentence,       // Random title
-            'description' => $this->faker->text(400), // Random description
-            'coordinates' => json_encode([
-                'latitude' => $this->faker->latitude,
-                'longitude' => $this->faker->longitude,
-            ]),
+            'title' => fake()->sentence,
+            'description' => [],
+            'category_id' => PostCategory::inRandomOrder()->first()->id,
+            'coordinates' => [
+                'latitude' => fake()->latitude(56, 57),  // 56.946285,24.105078
+                'longitude' => fake()->longitude(23.5, 24.5),
+            ],
         ];
     }
 }

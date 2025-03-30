@@ -16,6 +16,11 @@ class Post extends Model
         'coordinates',
     ];
 
+    protected $casts = [
+        'description' => 'array',
+        'coordinates' => 'array',
+    ];
+
     public function category()
     {
         return $this->belongsTo(PostCategory::class);
@@ -29,5 +34,10 @@ class Post extends Model
     public function media()
     {
         return $this->hasMany(PostMedia::class, 'post_id');
+    }
+
+    public function randomMedia()
+    {
+        return $this->hasOne(PostMedia::class, 'post_id')->inRandomOrder();
     }
 }

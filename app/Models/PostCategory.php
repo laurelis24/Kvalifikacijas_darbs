@@ -18,6 +18,7 @@ class PostCategory extends Model
     protected $fillable = [
         'title',
         'description',
+        'color',
     ];
 
     public function posts(): HasMany
