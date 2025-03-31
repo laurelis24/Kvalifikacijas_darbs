@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use App\Models\PostCategory;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Log;
 use Redirect;
+use Storage;
 
 class PostController extends Controller
 {
@@ -53,9 +54,6 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $validated = $request->validated();
-        // if ($request->fails()) {
-        //     dd($request->errors());
-        // }
 
         $post = Post::create([
             'title' => $validated['title'],
@@ -111,17 +109,64 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Post $post)
     {
-        //
+
+        $post->load(['media']);
+        $formattedPost = [
+            'id' => $post->id,
+            'title' => $post->title,
+            'description' => $post->description,
+            'coordinates' => $post->coordinates,
+            'category_id' => $post->category_id,
+            'media' => $post->media->map(fn ($media) => [
+                'id' => $media->id,
+                'file_path' => $media->file_path,
+                'media_type' => $media->media_type,
+            ]),
+        ];
+
+        // Log::info("Post", [$post]);
+        return Inertia::render('EditPost', [
+            'categories' => PostCategory::select('id', 'title', 'color')->get(),
+            'postData' => $formattedPost,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StorePostRequest $request, Post $post)
     {
-        //
+
+        $validated = $request->validated();
+
+        $post->update([
+            'title' => $validated['title'],
+            'category_id' => $validated['category'],
+            'description' => $validated['description'],
+            'coordinates' => $validated['coordinates'],
+        ]);
+
+        if ($request->hasFile('images')) {
+            foreach ($post->media as $media) {
+                Storage::disk('public')->delete($media->file_path); // Delete from storage
+                $media->delete(); // Delete from database
+            }
+
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('images', 'public');
+
+                $post->media()->create([
+                    'media_type' => 'image',
+                    'file_path' => $path,
+                ]);
+            }
+
+        }
+
+        return back();
+
     }
 
     /**

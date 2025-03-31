@@ -12,7 +12,6 @@ import { Button, Icon, Toolbar } from './TextEditorIndex';
 // https://github.com/ianstormtaylor/slate/blob/main/site/examples/ts/components/index.tsx
 
 type CustomElement = { type: string; align?: string; children: CustomText[] };
-
 type CustomText = { text: string; bold?: boolean; italic?: boolean; underline?: boolean; code?: boolean };
 interface LeafProps {
     attributes: { [key: string]: any };
@@ -41,20 +40,29 @@ const initialValue: Descendant[] = [
 ];
 
 interface Props {
-    setDescription: (description: Descendant[]) => void; // Function to update form state
+    setDescription: (description: string) => void; // Function to update form state
     editor: BaseEditor & ReactEditor & HistoryEditor;
+    postDescription?: string;
+    method: 'create' | 'update';
 }
 
-export default function TextEditorInput({ setDescription, editor }: Props) {
+export default function TextEditorInput({ setDescription, editor, postDescription, method }: Props) {
     const renderLeaf = useCallback((props: RenderLeafProps) => <Leaf {...props} />, []);
 
     const handleEditorChange = useCallback((value: Descendant[]) => {
-        setDescription(value);
+        console.log(value);
+        setDescription(JSON.stringify(value));
     }, []);
 
     // https://docs.slatejs.org/walkthroughs/02-adding-event-handlers
     return (
-        <Slate editor={editor} initialValue={initialValue} onValueChange={handleEditorChange}>
+        <Slate
+            editor={editor}
+            initialValue={
+                method === 'create' ? initialValue : postDescription ? JSON.parse(postDescription) : initialValue
+            }
+            onValueChange={handleEditorChange}
+        >
             <Toolbar>
                 <MarkButton format={TextFormat.bold} icon={SvgType.bold} />
                 <MarkButton format={TextFormat.italic} icon={SvgType.italic} />

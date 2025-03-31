@@ -8,29 +8,48 @@ import TextEditorInput from '@/Components/TextEditor/TextEditorInput';
 import TextInput from '@/Components/TextInput';
 import Map from '@/Pages/Map';
 import { CategoryProps, CreatePostPage, Translation } from '@/types';
-import { useForm } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import { LatLng } from 'leaflet';
 import { useEffect, useMemo, useState } from 'react';
-import { createEditor, Editor, Transforms } from 'slate';
+import { createEditor, Editor } from 'slate';
 import { withHistory } from 'slate-history';
 import { withReact } from 'slate-react';
 
-export default function CreatePostForm({
+interface PostData {
+    id: number;
+    title: string;
+    description: string;
+    category_id: number;
+    coordinates: {
+        latitude: number;
+        longitude: number;
+    };
+    media: {
+        id: number;
+        file_path: string;
+        media_type: string;
+    }[];
+}
+
+export default function EditPostForm({
     create_post_page,
     categories,
-}: Translation<CreatePostPage> & { categories: CategoryProps[] }) {
-    //console.log(categories);
+    postData,
+}: Translation<CreatePostPage> & { categories: CategoryProps[]; postData: PostData }) {
     const MAX_FILES = 3;
     const translate = create_post_page;
 
     const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
-    const [position, setPosition] = useState<LatLng>(new LatLng(56.946285, 24.105078));
+    const [position, setPosition] = useState<LatLng>(
+        new LatLng(postData.coordinates.latitude, postData.coordinates.longitude),
+    );
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+    //const [postImages, setPostImages] = useState(postData.media);
     const { data, setData, errors, post, reset, processing, progress } = useForm({
-        title: '',
-        category: categories?.[0].id || 1,
-        description: '',
+        title: postData.title,
+        category: postData.category_id,
+        description: postData.description,
         coordinates: { latitude: position.lat, longitude: position.lng },
         images: [] as File[],
     });
@@ -43,15 +62,15 @@ export default function CreatePostForm({
         };
     }, [data.images]);
 
-    const resetForm = () => {
-        Transforms.delete(editor, {
-            at: {
-                anchor: Editor.start(editor, []),
-                focus: Editor.end(editor, []),
-            },
-        });
-        reset();
-    };
+    // const resetForm = () => {
+    //     Transforms.delete(editor, {
+    //         at: {
+    //             anchor: Editor.start(editor, []),
+    //             focus: Editor.end(editor, []),
+    //         },
+    //     });
+    //     reset();
+    // };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -59,13 +78,13 @@ export default function CreatePostForm({
             alert('The description must be at least 50 characters long.');
             return;
         }
-        post(route('posts.create'), {
+
+        post(route('posts.update', { post: postData.id }), {
             onError: () => {
                 console.log(errors);
             },
             onSuccess: () => {
-                console.log(data.description);
-                resetForm();
+                router.visit(route('posts.show', { post: postData.id }));
             },
         });
     };
@@ -91,7 +110,6 @@ export default function CreatePostForm({
 
     const changeLocationMarkerColor = () => {
         const category = categories.find((category) => category.id === data.category);
-
         return category?.color || '#FFFFFF';
     };
 
@@ -141,19 +159,40 @@ export default function CreatePostForm({
                         <InputError message={errors.category} className="mt-2" />
                     </div>
                     <div>
-                        <TextEditorInput method="create" setDescription={handleSetDescription} editor={editor} />
+                        <TextEditorInput
+                            postDescription={postData.description}
+                            method="update"
+                            setDescription={handleSetDescription}
+                            editor={editor}
+                        />
                         <InputError message={errors.description} className="mt-2" />
                     </div>
                     <div>
-                        <InputLabel htmlFor="images" value="Upload image" />
+                        <InputLabel htmlFor="images" value="Change/Upload images" />
+
                         <FileInput type="file" className="hidden" multiple onChange={handleImageInput} />
 
-                        {imagePreviews.length > 0 && (
+                        {imagePreviews.length > 0 ? (
                             <ul className="flex justify-center gap-10">
                                 {imagePreviews.map((image, idx) => {
                                     return (
                                         <li key={idx}>
                                             <img src={image} alt={`image${idx + 1}`} className="h-24 w-24" />
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        ) : (
+                            <ul className="flex justify-center gap-10">
+                                {postData.media.map((media, idx) => {
+                                    return (
+                                        <li key={media.id}>
+                                            {/* Image link */}
+                                            <img
+                                                src={`../../storage/${media.file_path}`}
+                                                alt={`image${idx + 1}`}
+                                                className="h-24 w-24"
+                                            />
                                         </li>
                                     );
                                 })}

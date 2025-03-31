@@ -17,11 +17,11 @@ class PostFactory extends Factory
     {
         return [
             'title' => fake()->sentence,
-            'description' => [],
+            'description' => '[]',
             'category_id' => PostCategory::inRandomOrder()->first()->id,
             'coordinates' => [
-                'latitude' => fake()->latitude(56, 57),  // 56.946285,24.105078
-                'longitude' => fake()->longitude(23.5, 24.5),
+                'latitude' => fake()->latitude(55.5, 58),
+                'longitude' => fake()->longitude(21, 28),
             ],
         ];
     }

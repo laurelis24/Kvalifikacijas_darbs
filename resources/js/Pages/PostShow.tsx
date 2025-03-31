@@ -1,16 +1,16 @@
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { useForm, usePage } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
-import { createEditor, Descendant } from 'slate';
+import { createEditor } from 'slate';
 import { Editable, Slate } from 'slate-react';
 
 interface Props {
     post: {
         id: number;
         title: string;
-        description: Descendant[];
+        description: string;
         media: {
             id: number;
             file_path: string;
@@ -26,7 +26,6 @@ interface Props {
 }
 
 export default function PostShow({ post }: Props) {
-    console.log(post);
     const editor = createEditor();
     const user = usePage().props.auth.user;
     const {
@@ -51,7 +50,7 @@ export default function PostShow({ post }: Props) {
     return (
         <div>
             <div>{post.title}</div>
-            <Slate editor={editor} initialValue={post.description}>
+            <Slate editor={editor} initialValue={JSON.parse(post.description)}>
                 <Editable renderLeaf={(props) => <Leaf {...props} />} readOnly />
             </Slate>
 
@@ -83,6 +82,9 @@ export default function PostShow({ post }: Props) {
                     />
                 ))}
             </div>
+
+            <Link href="/">Main page</Link>
+            <Link href={`/posts/edit/${post.id}`}>Edit again</Link>
         </div>
     );
 }

@@ -17,7 +17,6 @@ class Post extends Model
     ];
 
     protected $casts = [
-        'description' => 'array',
         'coordinates' => 'array',
     ];
 

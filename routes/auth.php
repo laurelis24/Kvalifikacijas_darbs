@@ -67,6 +67,10 @@ Route::middleware('auth')->group(function () {
         ->name('posts.create');
     Route::post('/posts/create', [PostController::class, 'store'])
         ->name('posts.create');
+    Route::get('/posts/edit/{post}', [PostController::class, 'edit'])
+        ->name('posts.edit');
+    Route::post('/posts/edit/{post}', [PostController::class, 'update'])
+        ->name('posts.update');
 
     // User post comments
     Route::post('/posts/{post}/comments/store', [PostCommentController::class, 'store'])

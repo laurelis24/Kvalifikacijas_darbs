@@ -62,7 +62,7 @@ Route::get('/', [PostController::class, 'index']);
     return back();
 })->name('test'); */
 
-Route::get('lang/{locale}', [LanguageController::class, 'switchLanguage']);
+// Route::get('lang/{locale}', [LanguageController::class, 'switchLanguage']);
 
 Route::get('/dashboard', function () {
 

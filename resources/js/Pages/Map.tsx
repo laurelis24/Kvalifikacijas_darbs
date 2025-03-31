@@ -14,13 +14,13 @@ export default function Map({ children, className }: PropsWithChildren<Props>) {
     ]);
 
     return (
-        <div>
+        <div className="shadow-lg shadow-gray-500">
             <MapContainer
                 minZoom={7}
                 maxBounds={latviaBounds}
                 className={className}
                 center={[56.946285, 24.105078]}
-                zoom={8}
+                zoom={7}
                 scrollWheelZoom={true}
             >
                 <TileLayer

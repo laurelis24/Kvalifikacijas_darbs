@@ -24,9 +24,9 @@ class StorePostRequest extends FormRequest
         return [
             'title' => 'required|string|max:255|min:5',
             'category' => 'required|exists:posts_categories,id',
-            'description' => 'required|array',
+            'description' => 'required|string|max:2000',
 
-            'coordinates' => 'array|nullable',
+            'coordinates' => 'array|nullable|max:2',
             'coordinates.longitude' => 'nullable|numeric|between:-180,180|required_with:coordinates.latitude',
             'coordinates.latitude' => 'nullable|numeric|between:-90,90|required_with:coordinates.longitude',
 
