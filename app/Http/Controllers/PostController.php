@@ -5,42 +5,60 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use App\Models\PostCategory;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Log;
 use Redirect;
 use Storage;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
+        $validated = $request->validate([
+            'sort' => 'in:newest,oldest,most_commented',
+            'per_page' => 'integer|min:5|max:100',
+        ]);
+        $sort = $validated['sort'] ?? 'newest';
+        $perPage = $validated['per_page'] ?? 20;
 
         $categories = PostCategory::select('id', 'title', 'description', 'color')->get();
+        $query = Post::with(['randomMedia:id,file_path,media_type,post_id'])
+            ->select('id', 'title', 'created_at', 'coordinates', 'category_id');
 
-        // $posts = Post::with(['media' => function ($query) {
-        //     $query->select('id', 'file_path', 'media_type', 'post_id');
-        // }])->select('id', 'title', 'created_at', 'coordinates', 'category_id')->get();
-        $posts = Post::with(['randomMedia:id,file_path,media_type,post_id'])
-            ->select('id', 'title', 'created_at', 'coordinates', 'category_id')
-            ->get();
+        switch ($sort) {
+            case 'oldest':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'most_commented':
+                $query->withCount('comments')->orderBy('comments_count', 'desc');
+                break;
+            default:
+                $query->orderBy('created_at', 'desc');
+                break;
+        }
+
+        Log::debug($query->orderBy('created_at', 'asc')->get());
 
         return Inertia::render('WelcomeTest', [
-            'posts' => $posts,
+            'posts' => $query->limit($perPage)->get(),
             'categories' => $categories,
+            'filter' => [
+                'sort' => $sort,
+                'per_page' => $perPage,
+            ],
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(Request $request)
     {
+
+        if ($request->user()->isBanned()) {
+            abort(403, __('messages.banned_user'));
+        }
 
         return Inertia::render('CreatePost', [
             'categories' => PostCategory::select('id', 'title', 'description', 'color')->get(),
@@ -48,14 +66,12 @@ class PostController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StorePostRequest $request)
     {
-        $validated = $request->validated();
 
+        $validated = $request->validated();
         $post = Post::create([
+            'user_id' => auth()->id(),
             'title' => $validated['title'],
             'category_id' => $validated['category'],
             'description' => $validated['description'],
@@ -76,9 +92,6 @@ class PostController extends Controller
         return Redirect::back();
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Post $post)
     {
         $post->load(['media', 'comments']);
@@ -106,11 +119,11 @@ class PostController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Post $post)
+    public function edit(Request $request, Post $post)
     {
+        if ($request->user()->isBanned() || $request->user()->cannot('createUpdateDelete', $post)) {
+            abort(403);
+        }
 
         $post->load(['media']);
         $formattedPost = [
@@ -126,21 +139,20 @@ class PostController extends Controller
             ]),
         ];
 
-        // Log::info("Post", [$post]);
         return Inertia::render('EditPost', [
             'categories' => PostCategory::select('id', 'title', 'color')->get(),
             'postData' => $formattedPost,
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(StorePostRequest $request, Post $post)
     {
 
-        $validated = $request->validated();
+        if ($request->user()->isBanned() || $request->user()->cannot('createUpdateDelete', $post)) {
+            abort(403);
+        }
 
+        $validated = $request->validated();
         $post->update([
             'title' => $validated['title'],
             'category_id' => $validated['category'],
@@ -150,8 +162,8 @@ class PostController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($post->media as $media) {
-                Storage::disk('public')->delete($media->file_path); // Delete from storage
-                $media->delete(); // Delete from database
+                Storage::disk('public')->delete($media->file_path);
+                $media->delete();
             }
 
             foreach ($request->file('images') as $image) {
@@ -169,11 +181,14 @@ class PostController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function delete(Request $request, Post $post)
     {
-        //
+        if ($request->user()->isBanned() || $request->user()->cannot('createUpdateDelete', $post)) {
+            abort(403);
+        }
+
+        $post->delete();
+
+        return Redirect::route('main');
     }
 }

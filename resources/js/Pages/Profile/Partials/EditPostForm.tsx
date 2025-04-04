@@ -7,7 +7,7 @@ import SelectInput from '@/Components/SelectInput';
 import TextEditorInput from '@/Components/TextEditor/TextEditorInput';
 import TextInput from '@/Components/TextInput';
 import Map from '@/Pages/Map';
-import { CategoryProps, CreatePostPage, Translation } from '@/types';
+import { CategoryProps } from '@/types';
 import { router, useForm } from '@inertiajs/react';
 import { LatLng } from 'leaflet';
 import { useEffect, useMemo, useState } from 'react';
@@ -31,15 +31,12 @@ interface PostData {
     }[];
 }
 
-export default function EditPostForm({
-    create_post_page,
-    categories,
-    postData,
-}: Translation<CreatePostPage> & { categories: CategoryProps[]; postData: PostData }) {
+export default function EditPostForm({ categories, postData }: { categories: CategoryProps[]; postData: PostData }) {
     const MAX_FILES = 3;
-    const translate = create_post_page;
 
     const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+
+    console.log(postData.coordinates);
 
     const [position, setPosition] = useState<LatLng>(
         new LatLng(postData.coordinates.latitude, postData.coordinates.longitude),
@@ -117,7 +114,7 @@ export default function EditPostForm({
         <section className="flex flex-col items-center gap-2 border-2 border-red-400">
             <div className="w-1/2 min-w-80">
                 <header>
-                    <h2 className="text-lg font-medium text-gray-900">{translate?.create_post}</h2>
+                    <h2 className="text-lg font-medium text-gray-900">{'asdsadasas'}</h2>
 
                     <p className="mt-1 text-sm text-gray-600">Apraksts...</p>
                     {progress && (
@@ -129,7 +126,7 @@ export default function EditPostForm({
 
                 <form onSubmit={handleSubmit} className="mt-6 space-y-6">
                     <div>
-                        <InputLabel htmlFor="title" value={translate?.title} />
+                        <InputLabel htmlFor="title" value={'Edit post'} />
 
                         <TextInput
                             id="title"
@@ -144,7 +141,7 @@ export default function EditPostForm({
                         <InputError message={errors.title} className="mt-2" />
                     </div>
                     <div>
-                        <InputLabel htmlFor="category" value={translate?.category} />
+                        <InputLabel htmlFor="category" value={'Kategorija'} />
 
                         <SelectInput
                             required
@@ -209,6 +206,7 @@ export default function EditPostForm({
                                 position={position}
                                 setPosition={setPosition}
                                 setData={setData}
+                                method="update"
                             />
                         </Map>
                     </div>

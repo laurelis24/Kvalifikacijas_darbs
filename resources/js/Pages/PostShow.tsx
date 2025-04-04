@@ -84,7 +84,10 @@ export default function PostShow({ post }: Props) {
             </div>
 
             <Link href="/">Main page</Link>
-            <Link href={`/posts/edit/${post.id}`}>Edit again</Link>
+            <Link href={route('posts.edit', { post: post.id })}>Edit again</Link>
+            <Link method="delete" href={route('posts.delete', { post: post.id })}>
+                Delete Post
+            </Link>
         </div>
     );
 }

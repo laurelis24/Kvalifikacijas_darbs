@@ -17,15 +17,10 @@ interface PostData {
 export default function EditPost({
     categories,
     postData,
-    translations,
 }: PageProps & { categories: CategoryProps[]; postData: PostData }) {
     return (
         <AuthenticatedLayout>
-            <EditPostForm
-                postData={postData}
-                categories={categories}
-                create_post_page={translations.create_post_page}
-            />
+            <EditPostForm postData={postData} categories={categories} />
         </AuthenticatedLayout>
     );
 }

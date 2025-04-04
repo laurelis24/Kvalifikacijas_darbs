@@ -18,6 +18,7 @@ interface Props {
     setPosition?: CallableFunction;
     setData?: CallableFunction;
     readOnly?: boolean;
+    method?: 'create' | 'update';
     color: string;
 }
 
@@ -34,11 +35,11 @@ export default function LocationMarker(props: Props) {
                   },
 
                   locationfound(e) {
-                      if (props.setData && props.setPosition) {
+                      if (props.setData && props.setPosition && props.method !== 'update') {
                           props.setPosition(new LatLng(e.latlng.lat, e.latlng.lng));
                           props.setData('coordinates', { latitude: e.latlng.lat, longitude: e.latlng.lng });
+                          map.flyTo(e.latlng, map.getZoom());
                       }
-                      map.flyTo(e.latlng, map.getZoom());
                   },
               },
     );

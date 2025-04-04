@@ -18,10 +18,10 @@ export default function Map({ children, className }: PropsWithChildren<Props>) {
             <MapContainer
                 minZoom={7}
                 maxBounds={latviaBounds}
-                className={className}
+                className={'z-0 ' + className}
                 center={[56.946285, 24.105078]}
                 zoom={7}
-                scrollWheelZoom={true}
+                scrollWheelZoom={false}
             >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

@@ -33,35 +33,21 @@ class HandleInertiaRequests extends Middleware
     {
         $user = $request->user();
 
-        if ($user) {
-            $user->roles = $user->roles()->pluck('name');
-        }
-
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $user,
+                'user' => $user ? [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'username' => $user->username,
+                    'roles' => $user->roles = $user->roles()->pluck('name'),
+                    'is_banned' => $user->isBanned(),
+                ] : null,
             ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
-            'translations' => $this->getTranslations($request),
         ];
-    }
-
-    private function getTranslations(Request $request): array
-    {
-        $routeName = $request->route()->getName();
-
-        $translations = [
-            'global' => __('messages.global'),
-        ];
-
-        if ($routeName === 'posts.create') {
-            $translations['create_post_page'] = __("messages.{$routeName}");
-        }
-
-        return $translations;
     }
 }

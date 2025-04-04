@@ -38,12 +38,11 @@ return new class extends Migration
         });
 
         Schema::create('banned_users', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamp('banned_until')->nullable();
             $table->string('reason')->nullable();
             $table->timestamps();
-
-            $table->primary('user_id');
         });
     }
 

@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Roles;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Redirect;
 
@@ -82,7 +83,6 @@ class UserController extends Controller
     {
 
         try {
-            // Attempt to delete the user
             if ($request->user()->id != $user->id) {
                 $user->delete();
             }
@@ -100,27 +100,28 @@ class UserController extends Controller
             'reason' => 'required|string|min:1|max:300',
         ]);
 
-        $foundUser = User::findOrFail($user->id);
-
         try {
-            $user->bannedUsers()->attach($foundUser->id, [
-                'banned_until' => now()->addMinutes((int) $request->input('duration', 120)),
-                'reason' => $request->input('reason', 'No reason provided.'),
-            ]);
+            if ($user->isBanned()) {
+                $user->bannedUsers()->updateExistingPivot($user->id, [
+                    'banned_until' => now()->addMinutes((int) $request->input('duration', 120)),
+                    'reason' => $request->input('reason', 'No reason provided.'),
+                ]);
+            } else {
+                $user->bannedUsers()->attach($user->id, [
+                    'banned_until' => now()->addMinutes((int) $request->input('duration', 120)),
+                    'reason' => $request->input('reason', 'No reason provided.'),
+                ]);
+            }
         } catch (\Throwable $th) {
+            Log::debug($th->getMessage());
             abort(500);
         }
-
-        // return response()->json(['message' => 'User banned successfully.']);
 
         return Redirect::back();
     }
 
-    // Unban a user
     public function unbanUser(User $user)
     {
-        $user = User::findOrFail($user->id);
-
         $user->bannedUsers()->detach($user->id);
 
         return Redirect::back();
@@ -134,8 +135,6 @@ class UserController extends Controller
                 'adminChecked' => 'required|boolean',
                 'moderatorChecked' => 'required|boolean',
             ]);
-
-            $user = User::findOrFail($user->id);
 
             $adminRole = Role::where('name', Roles::ADMIN)->first();
             $moderatorRole = Role::where('name', Roles::MODERATOR)->first();

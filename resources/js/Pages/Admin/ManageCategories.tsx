@@ -57,7 +57,7 @@ export default function ManageCategories(props: Props) {
                                                 type="button"
                                                 className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
                                             >
-                                                settings
+                                                Settings
                                                 <svg
                                                     className="-me-0.5 ms-2 h-4 w-4"
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +75,6 @@ export default function ManageCategories(props: Props) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        {/* <Dropdown.Link href={route('profile.edit')}>Ban</Dropdown.Link> */}
                                         <button
                                             onClick={() => {
                                                 confirmCategory(category);
@@ -97,29 +96,6 @@ export default function ManageCategories(props: Props) {
                                         >
                                             Delete
                                         </Dropdown.Link>
-
-                                        {/* {(user.isBanned && (
-                                        <Dropdown.Link
-                                            onBefore={() =>
-                                                window.confirm(`Do you want to unban user: ${user.username}?`)
-                                            }
-                                            href={route('admin.user-unban', { user: user.id })}
-                                            method="delete"
-                                            as="button"
-                                        >
-                                            Unban
-                                        </Dropdown.Link>
-                                    )) || (
-                                        <button
-                                            onClick={() => {
-                                                confirmUser(user);
-                                                confirmForm(setShowBanUserForm)
-                                            }}
-                                            className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
-                                        >
-                                            Ban
-                                        </button>
-                                    )} */}
                                     </Dropdown.Content>
                                 </Dropdown>
                             </li>

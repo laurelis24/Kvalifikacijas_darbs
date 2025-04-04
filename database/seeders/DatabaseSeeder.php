@@ -31,11 +31,27 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('12345678'), // Set a password
         ]);
 
+        $moderator = User::create([
+            'name' => 'Lauris',
+            'username' => 'moderator',
+            'email' => 'mod@inbox.lv',
+            'password' => Hash::make('12345678'), // Set a password
+        ]);
+        $user = User::create([
+            'name' => 'Lauris',
+            'username' => 'user',
+            'email' => 'user@inbox.lv',
+            'password' => Hash::make('12345678'), // Set a password
+        ]);
+
         $admin->roles()->attach(1);
         $admin->roles()->attach(3);
 
+        $moderator->roles()->attach(2);
+        $user->roles()->attach(3);
+
         User::factory(10)->create();
         PostCategory::factory(5)->create();
-        Post::factory(50)->create();
+        Post::factory(30)->create();
     }
 }

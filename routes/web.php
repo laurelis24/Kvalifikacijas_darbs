@@ -1,17 +1,9 @@
 <?php
 
-use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
-use App\Models\PostCategory;
-use App\Models\Translation;
-use App\Roles;
-use Illuminate\Foundation\Application;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
-// Route::middleware('lang')
 
 // Route::middleware(['locale'])->group(function(){
 //     Route::get('/', function () {
@@ -24,45 +16,7 @@ use Inertia\Inertia;
 //     });
 // });
 
-Route::get('/', [PostController::class, 'index']);
-
-/* Route::post('test', function (Request $request) {
-    $category = PostCategory::create();
-
-    Translation::create([
-        'translatable_type' => PostCategory::class,
-        'translatable_id' => $category->id,
-        'language_code' => 'en',
-        'field' => 'title',
-        'translation' => $request->titleEng,
-    ]);
-    Translation::create([
-        'translatable_type' => PostCategory::class,
-        'translatable_id' => $category->id,
-        'language_code' => 'lv',
-        'field' => 'title',
-        'translation' => $request->titleLv,
-    ]);
-
-    Translation::create([
-        'translatable_type' => PostCategory::class,
-        'translatable_id' => $category->id,
-        'language_code' => 'en',
-        'field' => 'description',
-        'translation' => $request->descriptionEng,
-    ]);
-    Translation::create([
-        'translatable_type' => PostCategory::class,
-        'translatable_id' => $category->id,
-        'language_code' => 'lv',
-        'field' => 'description',
-        'translation' => $request->descriptionLv,
-    ]);
-
-    return back();
-})->name('test'); */
-
-// Route::get('lang/{locale}', [LanguageController::class, 'switchLanguage']);
+Route::get('/', [PostController::class, 'index'])->name('main');
 
 Route::get('/dashboard', function () {
 
@@ -93,18 +47,4 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/posts/show/{post}', [PostController::class, 'show'])->name('posts.show');
 
-// routes/web.php
-
-// Other routes go here
-
-/*
-function getTranslation($key, $languageCode = null)
-{
-    $languageCode = $languageCode ?: app()->getLocale(); // Get current locale, or fallback to 'en'
-
-    return Translation::where('key', $key)
-        ->where('language_code', $languageCode)
-        ->value('translation');
-}
-*/
 require __DIR__.'/auth.php';

@@ -79,6 +79,7 @@ class PostCategoryController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255|min:3',
             'description' => 'required|string|max:2000|min:30',
+            'color' => 'required|string|regex:/^#[0-9a-fA-F]{6}$/',
         ]);
 
         try {
@@ -86,6 +87,7 @@ class PostCategoryController extends Controller
 
             $category->title = $validated['title'];
             $category->description = $validated['description'];
+            $category->color = $validated['color'];
 
             $category->save();
 
