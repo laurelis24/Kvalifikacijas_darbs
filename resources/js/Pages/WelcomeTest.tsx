@@ -22,6 +22,11 @@ interface Props extends PageProps {
             latitude: number;
             longitude: number;
         };
+        weather?: {
+            temp_c: number;
+            icon: string;
+        };
+        comments_count: number;
         category_id: number;
         created_at: string;
     }[];
@@ -41,6 +46,9 @@ interface Props extends PageProps {
 
 export default function WelcomeTest({ auth, posts, categories, filter, canLogin, canRegister }: Props) {
     const user = auth.user;
+
+    console.log(posts);
+
     const locationMarkerColor = (categoryId: number) => {
         const foundColor = categories.find((category) => category.id === categoryId);
         return foundColor?.color || '#ffffff';
@@ -81,6 +89,7 @@ export default function WelcomeTest({ auth, posts, categories, filter, canLogin,
                                             key={sort.type}
                                             className="flex items-center gap-2"
                                             href={route('main', { sort: sort.type, per_page: filter.per_page })}
+                                            cacheFor={'1m'}
                                         >
                                             {sort.text}
                                         </Dropdown.Link>
@@ -109,6 +118,7 @@ export default function WelcomeTest({ auth, posts, categories, filter, canLogin,
                                             key={count}
                                             className="flex items-center gap-2"
                                             href={route('main', { sort: filter.sort, per_page: count })}
+                                            cacheFor={'1m'}
                                         >
                                             {count}
                                         </Dropdown.Link>

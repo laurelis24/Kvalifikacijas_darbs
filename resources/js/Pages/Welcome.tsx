@@ -34,7 +34,7 @@ export default function Welcome({ auth }: PageProps) {
             <main className="mt-6"></main>
 
             <footer className="py-16 text-center text-sm text-black dark:text-white/70">
-                Lauris Kairo - Kvalifikāciajs darbs
+                Lauris Kairo - Kvalifikācijas darbs
             </footer>
         </>
     );

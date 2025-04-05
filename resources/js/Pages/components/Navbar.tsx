@@ -137,7 +137,7 @@ export default function Navbar({ user }: { user: User }) {
                     </div>
                 ) : (
                     <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink href={route('login')}>Izlogoties</ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('login')}>Ielogoties</ResponsiveNavLink>
                         <ResponsiveNavLink href={route('register')}>Reģistrēties</ResponsiveNavLink>
                     </div>
                 )}

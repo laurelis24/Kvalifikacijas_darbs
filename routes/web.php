@@ -17,6 +17,7 @@ use Inertia\Inertia;
 // });
 
 Route::get('/', [PostController::class, 'index'])->name('main');
+Route::get('/weather/{post}', [PostController::class, 'weather'])->name('weather');
 
 Route::get('/dashboard', function () {
 

@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use App\Models\PostCategory;
+use App\Services\WeatherService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Redirect;
@@ -27,22 +27,12 @@ class PostController extends Controller
         $query = Post::with(['randomMedia:id,file_path,media_type,post_id'])
             ->select('id', 'title', 'created_at', 'coordinates', 'category_id');
 
-        switch ($sort) {
-            case 'oldest':
-                $query->orderBy('created_at', 'asc');
-                break;
-            case 'most_commented':
-                $query->withCount('comments')->orderBy('comments_count', 'desc');
-                break;
-            default:
-                $query->orderBy('created_at', 'desc');
-                break;
-        }
+        $query = $this->applySorting($query, $sort);
 
-        Log::debug($query->orderBy('created_at', 'asc')->get());
+        $posts = $query->limit($perPage)->withCount('comments')->get();
 
         return Inertia::render('WelcomeTest', [
-            'posts' => $query->limit($perPage)->get(),
+            'posts' => $posts,
             'categories' => $categories,
             'filter' => [
                 'sort' => $sort,
@@ -51,6 +41,20 @@ class PostController extends Controller
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
         ]);
+    }
+
+    private function applySorting($query, $sort)
+    {
+        return match ($sort) {
+            'oldest' => $query->orderBy('created_at', 'asc'),
+            'most_commented' => $query->withCount('comments')->orderBy('comments_count', 'desc'),
+            default => $query->orderBy('created_at', 'desc'),
+        };
+    }
+
+    public function weather(Post $post, WeatherService $weatherService)
+    {
+        return response()->json($weatherService->getWeatherByCoords($post->id, $post->coordinates));
     }
 
     public function create(Request $request)
