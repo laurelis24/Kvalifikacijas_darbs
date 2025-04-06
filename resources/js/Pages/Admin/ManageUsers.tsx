@@ -97,7 +97,7 @@ export default function ManageUsers(props: Props) {
                                         Delete
                                     </Dropdown.Link>
 
-                                    {(user.isBanned && (
+                                    {(user.is_banned && (
                                         <Dropdown.Link
                                             onBefore={() =>
                                                 window.confirm(`Do you want to unban user: ${user.username}?`)

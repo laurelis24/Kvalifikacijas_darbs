@@ -118,7 +118,7 @@ const toggleMark = (editor: Editor, format: TextFormat) => {
     }
 };
 
-const Leaf = ({ attributes, children, leaf }: LeafProps) => {
+export const Leaf = ({ attributes, children, leaf }: LeafProps) => {
     if (leaf.bold) {
         children = <strong>{children}</strong>;
     }
@@ -137,3 +137,4 @@ const Leaf = ({ attributes, children, leaf }: LeafProps) => {
 
     return <span {...attributes}>{children}</span>;
 };
+

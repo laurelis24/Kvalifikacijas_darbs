@@ -1,9 +1,11 @@
+import Footer from '@/Components/Footer';
 import Navbar from '@/Pages/components/Navbar';
 import { usePage } from '@inertiajs/react';
 import { PropsWithChildren, ReactNode } from 'react';
 
-export default function Authenticated({ header, children }: PropsWithChildren<{ header?: ReactNode }>) {
+export default function Everyone({ header, children }: PropsWithChildren<{ header?: ReactNode }>) {
     const user = usePage().props.auth.user;
+
     return (
         <div className="min-h-screen bg-gray-100">
             <Navbar user={user} />
@@ -15,6 +17,8 @@ export default function Authenticated({ header, children }: PropsWithChildren<{ 
             )}
 
             <main>{children}</main>
+
+            <Footer />
         </div>
     );
 }

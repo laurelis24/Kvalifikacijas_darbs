@@ -24,7 +24,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 
     return (
         <GuestLayout>
-            <Head title="Log in" />
+            <Head title="Ielogošānās" />
 
             {status && <div className="mb-4 text-sm font-medium text-green-600">{status}</div>}
 

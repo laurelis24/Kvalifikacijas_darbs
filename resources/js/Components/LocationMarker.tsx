@@ -82,7 +82,7 @@ export default function LocationMarker(props: Props) {
         <Marker icon={generateCustomIcon()} position={props.position}>
             <Popup keepInView>
                 {props.post?.id ? (
-                    <div className="w-full max-w-xs overflow-hidden rounded-md bg-white p-4 shadow-lg md:max-w-sm">
+                    <div className="min-w-60 max-w-xs overflow-hidden rounded-md bg-white p-4 shadow-lg md:max-w-sm">
                         <Link href={route('posts.show', { post: props.post?.id })}>
                             <div className="h-full w-full p-2">
                                 <h1 className="transition-color w-full text-center text-sm text-gray-600 duration-150 hover:text-gray-900">
@@ -144,7 +144,7 @@ function WeatherComponent({ postId, comments_count }: { postId: number; comments
                 {loading ? (
                     <svg
                         aria-hidden="true"
-                        className="h-8 w-8 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"
+                        className="size-4 animate-spin fill-blue-600 text-gray-800"
                         viewBox="0 0 100 101"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"

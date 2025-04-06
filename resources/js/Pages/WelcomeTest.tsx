@@ -1,12 +1,14 @@
 import Dropdown from '@/Components/Dropdown';
-import Footer from '@/Components/Footer';
 import LocationMarker from '@/Components/LocationMarker';
 import { PageProps } from '@/types';
 import { ChevronDownIcon, PlusIcon } from '@heroicons/react/16/solid';
 import { Head, Link } from '@inertiajs/react';
 import { LatLng } from 'leaflet';
-import Navbar from './components/Navbar';
+import MarkerClusterGroup from 'react-leaflet-markercluster';
 import Map from './Map';
+//import 'leaflet/dist/leaflet.css'
+import Everyone from '@/Layouts/EveryoneLayout';
+import 'react-leaflet-markercluster/styles';
 
 interface Props extends PageProps {
     posts: {
@@ -47,7 +49,7 @@ interface Props extends PageProps {
 export default function WelcomeTest({ auth, posts, categories, filter, canLogin, canRegister }: Props) {
     const user = auth.user;
 
-    console.log(posts);
+    //console.log(posts);
 
     const locationMarkerColor = (categoryId: number) => {
         const foundColor = categories.find((category) => category.id === categoryId);
@@ -62,13 +64,11 @@ export default function WelcomeTest({ auth, posts, categories, filter, canLogin,
     const postCount = [5, 20, 30, 50, 100];
 
     return (
-        <>
-            <Head title="Sākums" />
-            <Navbar user={auth.user} />
-
+        <Everyone>
+            <Head title="Notikumi" />
             <main className="mt-6 w-full pl-10 pr-10">
                 <div className="mx-auto flex justify-between sm:px-6 lg:px-8">
-                    <div className="flex gap-2">
+                    <div className="flex">
                         <Dropdown>
                             <Dropdown.Trigger>
                                 <span className="inline-flex rounded-md">
@@ -136,7 +136,7 @@ export default function WelcomeTest({ auth, posts, categories, filter, canLogin,
                                     className={`mb-2 inline-flex items-center rounded-md border border-transparent bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:outline-none active:bg-gray-900`}
                                 >
                                     <PlusIcon className="inline-block size-6" />
-                                    Izveidot notikumu
+                                    Jauns notikums
                                 </Link>
                             )}
                         </li>
@@ -144,17 +144,19 @@ export default function WelcomeTest({ auth, posts, categories, filter, canLogin,
                 </div>
                 <div className="mx-auto px-4 sm:px-6 lg:px-8">
                     <Map className="h-[600px] w-full">
-                        {posts.map((post) => {
-                            return (
-                                <LocationMarker
-                                    key={post.id}
-                                    post={post}
-                                    color={locationMarkerColor(post.category_id)}
-                                    position={new LatLng(post.coordinates.latitude, post.coordinates.longitude)}
-                                    readOnly={true}
-                                />
-                            );
-                        })}
+                        <MarkerClusterGroup>
+                            {posts.map((post) => {
+                                return (
+                                    <LocationMarker
+                                        key={post.id}
+                                        post={post}
+                                        color={locationMarkerColor(post.category_id)}
+                                        position={new LatLng(post.coordinates.latitude, post.coordinates.longitude)}
+                                        readOnly={true}
+                                    />
+                                );
+                            })}
+                        </MarkerClusterGroup>
                     </Map>
                 </div>
 
@@ -195,8 +197,6 @@ export default function WelcomeTest({ auth, posts, categories, filter, canLogin,
                     </ul>
                 </div>
             </main>
-
-            <Footer />
-        </>
+        </Everyone>
     );
 }

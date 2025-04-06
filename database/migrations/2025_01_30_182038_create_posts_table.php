@@ -47,7 +47,7 @@ return new class extends Migration
             $table->foreignId('user_id')
                 ->constrained('users')
                 ->onDelete('cascade');
-            $table->string('comment', 500);
+            $table->string('comment', 700);
             $table->timestamps();
         });
 

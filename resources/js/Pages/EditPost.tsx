@@ -1,3 +1,4 @@
+import Footer from '@/Components/Footer';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { CategoryProps, PageProps } from '../types/index';
 import EditPostForm from './Profile/Partials/EditPostForm';
@@ -21,6 +22,7 @@ export default function EditPost({
     return (
         <AuthenticatedLayout>
             <EditPostForm postData={postData} categories={categories} />
+            <Footer />
         </AuthenticatedLayout>
     );
 }

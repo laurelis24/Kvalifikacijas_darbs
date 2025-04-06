@@ -7,7 +7,7 @@ export default function Footer() {
                     sevis novērotu notikumu, negadījumu vai vētras postījumus Latvijas teritorijā.
                 </p>
                 <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500 dark:text-gray-400">
-                    Lauris Kairo
+                    Lauris Kairo, 2025
                 </p>
 
                 <ul className="mt-12 flex justify-center gap-6 md:gap-8">

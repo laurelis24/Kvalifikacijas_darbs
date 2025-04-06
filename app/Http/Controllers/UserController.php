@@ -25,7 +25,7 @@ class UserController extends Controller
             ->paginate(10)
             ->through(function ($user) {
                 $user->roles = $user->roles()->pluck('name');
-                $user->isBanned = $user->isBanned();
+                $user->is_banned = $user->isBanned();
 
                 return $user;
             });
