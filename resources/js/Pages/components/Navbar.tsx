@@ -1,6 +1,5 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
-import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { User } from '@/types';
 import {
@@ -27,7 +26,9 @@ export default function Navbar({ user }: { user: User }) {
 
                         <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                             {user ? (
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}></NavLink>
+                                /*  <NavLink href={route('dashboard')} active={route().current('dashboard')}></NavLink> */
+
+                                <p>s</p>
                             ) : (
                                 <>
                                     <Link
@@ -131,9 +132,9 @@ export default function Navbar({ user }: { user: User }) {
             <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                 {user ? (
                     <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                        {/* <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
                             Dashboard
-                        </ResponsiveNavLink>
+                        </ResponsiveNavLink> */}
                     </div>
                 ) : (
                     <div className="space-y-1 pb-3 pt-2">

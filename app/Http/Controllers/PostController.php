@@ -115,10 +115,11 @@ class PostController extends Controller
                 'comment' => $comment->comment,
                 'created_at' => $comment->created_at,
                 'username' => $comment->user->username,
+                'owner' => auth()->id() === $comment->user_id,
             ]),
         ];
 
-        return Inertia::render('PostShow', [
+        return Inertia::render('Post', [
             'post' => $formattedPost,
         ]);
     }
@@ -185,7 +186,7 @@ class PostController extends Controller
 
     }
 
-    public function delete(Request $request, Post $post)
+    public function destroy(Request $request, Post $post)
     {
         if ($request->user()->isBanned() || $request->user()->cannot('createUpdateDelete', $post)) {
             abort(403);

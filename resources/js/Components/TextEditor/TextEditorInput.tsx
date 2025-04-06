@@ -137,4 +137,3 @@ export const Leaf = ({ attributes, children, leaf }: LeafProps) => {
 
     return <span {...attributes}>{children}</span>;
 };
-

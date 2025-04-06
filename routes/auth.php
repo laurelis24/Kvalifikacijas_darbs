@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\PostCategoryController;
 use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -62,6 +63,12 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
+    //  Route::middleware('auth')->group(function () {
+    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // });
+
     // / User posts
     Route::get('/posts/create', [PostController::class, 'create'])
         ->name('posts.create');
@@ -71,13 +78,16 @@ Route::middleware('auth')->group(function () {
         ->name('posts.edit');
     Route::post('/posts/edit/{post}', [PostController::class, 'update'])
         ->name('posts.update');
-    Route::delete('/posts/delete/{post}', [PostController::class, 'delete'])
+    Route::delete('/posts/delete/{post}', [PostController::class, 'destroy'])
         ->name('posts.delete');
 
     // User post comments
     Route::post('/posts/{post}/comments/store', [PostCommentController::class, 'store'])
         // ->middleware("throttle:comment")
         ->name('posts.comment.store');
+    Route::delete('/posts/comments/{comment}', [PostCommentController::class, 'destroy'])
+        // ->middleware("throttle:comment")
+        ->name('posts.comment.delete');
 
     Route::middleware([RoleMiddleware::class.':admin'])->prefix('admin')->group(function () {
         Route::get('/', [UserController::class, 'statistics']);
