@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\PostCategory;
 use App\Services\WeatherService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Redirect;
@@ -98,7 +99,27 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
-        $post->load(['media', 'comments']);
+
+        $latestCommentedPosts = Post::withCount('comments')
+            ->with('media', 'category')
+            ->whereHas('comments')
+            ->where('id', '!=', $post->id)
+            ->orderByDesc(
+                DB::table('posts_comments')
+                    ->select('created_at')
+                    ->whereColumn('post_id', 'posts.id')
+                    ->latest()
+                    ->take(1)
+            )
+            ->limit(10)
+            ->get()
+            ->map(fn ($post) => [
+                'id' => $post->id,
+                'title' => $post->title,
+                'created_at' => $post->created_at,
+                'comment_count' => $post->comments_count,
+                'color' => $post->category->color,
+            ]);
 
         $formattedPost = [
             'id' => $post->id,
@@ -110,17 +131,57 @@ class PostController extends Controller
                 'file_path' => $media->file_path,
                 'media_type' => $media->media_type,
             ]),
-            'comments' => $post->comments->map(fn ($comment) => [
+            'category' => [
+                'title' => $post->category->title,
+                'color' => $post->category->color,
+            ],
+            'comment_count' => $post->comments()->count(),
+        ];
+
+        return Inertia::render('Post', [
+            'post' => $formattedPost,
+            'latest_posts' => $latestCommentedPosts,
+        ]);
+    }
+
+    public function comments(Post $post, $page)
+    {
+        $commentsPerPage = 10;
+        $comments = $post->comments()
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->paginate($commentsPerPage, ['*'], 'page', $page);
+
+        return response()->json([
+            'comments' => $comments->map(fn ($comment) => [
                 'id' => $comment->id,
                 'comment' => $comment->comment,
                 'created_at' => $comment->created_at,
                 'username' => $comment->user->username,
                 'owner' => auth()->id() === $comment->user_id,
             ]),
-        ];
+            'comments_meta' => [
+                'current_page' => $comments->currentPage(),
+                'last_page' => $comments->lastPage(),
+            ],
+        ]);
+    }
 
-        return Inertia::render('Post', [
-            'post' => $formattedPost,
+    public function latestComment(Post $post)
+    {
+
+        // Paginate the comments and eager load the user relationship for the comments only
+        $comment = $post->comments()
+            ->with('user') // Ensure user relation is loaded
+            ->latest('created_at') // Order by created_at to get the most recent comment
+            ->first(); // Get only the latest comment
+
+        return response()->json([
+            'id' => $comment->id,
+            'comment' => $comment->comment,
+            'created_at' => $comment->created_at,
+            'username' => $comment->user->username,
+            'owner' => auth()->id() === $comment->user_id, // Check if the current user is the owner
         ]);
     }
 

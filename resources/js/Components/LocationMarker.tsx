@@ -166,8 +166,8 @@ function WeatherComponent({ postId, comments_count }: { postId: number; comments
                 )}
 
                 <div className="flex gap-1 text-gray-500">
-                    <ChatBubbleBottomCenterTextIcon className="size-4" />
                     <span>{comments_count}</span>
+                    <ChatBubbleBottomCenterTextIcon className="size-4" />
                 </div>
             </div>
         </>

@@ -20,7 +20,7 @@ export default function Map({ children, className }: PropsWithChildren<Props>) {
                 className={`${className} z-0`}
                 center={[56.946285, 24.105078]}
                 zoom={7}
-                maxZoom={15}
+                maxZoom={17}
                 scrollWheelZoom={false}
             >
                 <TileLayer

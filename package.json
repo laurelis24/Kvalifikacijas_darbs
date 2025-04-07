@@ -41,7 +41,6 @@
     "dependencies": {
         "@heroicons/react": "^2.2.0",
         "@types/leaflet.locatecontrol": "^0.82.0",
-        "framer-motion": "^12.6.3",
         "is-hotkey": "^0.2.0",
         "leaflet": "^1.9.4",
         "leaflet.fullscreen": "^4.0.0",
