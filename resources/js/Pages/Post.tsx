@@ -193,7 +193,7 @@ function CommentSection({ post_id, comments_count }: { post_id: number; comments
                             ></textarea>
                         </div>
                         <InputError message={errors.comment} className="mt-2" />
-                        <PrimaryButton disabled={processing} className="flex gap-5">
+                        <PrimaryButton disabled={processing || user?.is_banned} className="flex gap-5">
                             <ChatBubbleBottomCenterTextIcon className="size-6" />
                             Pievienot
                         </PrimaryButton>

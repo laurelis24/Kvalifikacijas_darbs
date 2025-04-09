@@ -1,9 +1,13 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
+import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { User } from '@/types';
 import {
+    ArrowLeftEndOnRectangleIcon,
     ArrowRightEndOnRectangleIcon,
+    ChevronDownIcon,
+    ClipboardDocumentCheckIcon,
     Cog8ToothIcon,
     UserCircleIcon,
     WrenchScrewdriverIcon,
@@ -14,9 +18,9 @@ import { useState } from 'react';
 export default function Navbar({ user }: { user: User }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     return (
-        <nav className="sticky top-0 z-50 border-b border-gray-100 bg-white">
+        <nav className="sticky top-0 z-50 border-b border-gray-100 bg-white shadow-sm shadow-gray-300">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="flex h-16 justify-between">
+                <div className="flex h-24 justify-between">
                     <div className="flex">
                         <div className="flex shrink-0 items-center">
                             <Link href="/">
@@ -25,31 +29,25 @@ export default function Navbar({ user }: { user: User }) {
                         </div>
 
                         <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                            {user ? (
-                                /*  <NavLink href={route('dashboard')} active={route().current('dashboard')}></NavLink> */
-
-                                <p>s</p>
-                            ) : (
-                                <>
-                                    <Link
-                                        href={route('login')}
-                                        className="text-md inline-flex items-center border-b-2 px-1 pt-1 font-medium leading-5 transition duration-150 ease-in-out focus:outline-none"
-                                    >
-                                        Ielogoties
-                                    </Link>
-                                    <Link
-                                        href={route('register')}
-                                        className="text-md inline-flex items-center border-b-2 px-1 pt-1 font-medium leading-5 transition duration-150 ease-in-out focus:outline-none"
-                                    >
-                                        Reģistrēties
-                                    </Link>
-                                </>
-                            )}
+                            <>
+                                <NavLink href={route('main')} active={route().current('main')}>
+                                    Sākums
+                                </NavLink>
+                                <NavLink href={route('history')} active={route().current('history')}>
+                                    Notikumu vēsture
+                                </NavLink>
+                                <NavLink href={route('about')} active={route().current('about')}>
+                                    Par projektu
+                                </NavLink>
+                                <NavLink href={route('rules')} active={route().current('rules')}>
+                                    Noteikumi
+                                </NavLink>
+                            </>
                         </div>
                     </div>
 
-                    {user && (
-                        <div className="hidden sm:ms-6 sm:flex sm:items-center">
+                    <div className="hidden sm:ms-6 sm:flex sm:items-center">
+                        {user && (
                             <div className="relative ms-3">
                                 <Dropdown>
                                     <Dropdown.Trigger>
@@ -61,18 +59,7 @@ export default function Navbar({ user }: { user: User }) {
                                                 <UserCircleIcon className="mr-2 size-6" />
                                                 {user.username}
 
-                                                <svg
-                                                    className="-me-0.5 ms-2 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clipRule="evenodd"
-                                                    />
-                                                </svg>
+                                                <ChevronDownIcon className="-me-0.5 ms-2 size-6" />
                                             </button>
                                         </span>
                                     </Dropdown.Trigger>
@@ -100,8 +87,28 @@ export default function Navbar({ user }: { user: User }) {
                                     </Dropdown.Content>
                                 </Dropdown>
                             </div>
-                        </div>
-                    )}
+                        )}
+                        {!user && (
+                            <div className="relative ms-3">
+                                <>
+                                    <Link
+                                        href={route('login')}
+                                        className="inline-flex items-center px-1 pt-1 leading-5 text-gray-900 transition duration-150 ease-in-out focus:outline-none"
+                                    >
+                                        <ArrowLeftEndOnRectangleIcon className="size-6" />
+                                        Ielogoties
+                                    </Link>
+                                    <Link
+                                        href={route('register')}
+                                        className="inline-flex items-center px-1 pt-1 leading-5 text-gray-900 transition duration-150 ease-in-out focus:outline-none"
+                                    >
+                                        <ClipboardDocumentCheckIcon className="size-6" />
+                                        Reģistrēties
+                                    </Link>
+                                </>
+                            </div>
+                        )}
+                    </div>
 
                     <div className="-me-2 flex items-center sm:hidden">
                         <button
@@ -130,16 +137,30 @@ export default function Navbar({ user }: { user: User }) {
             </div>
 
             <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
-                {user ? (
+                <div className="space-y-1 pb-3 pt-2">
+                    <ResponsiveNavLink href={route('main')} active={route().current('main')}>
+                        Sākums
+                    </ResponsiveNavLink>
+                    <ResponsiveNavLink href={route('history')} active={route().current('history')}>
+                        Notikumu vēsture
+                    </ResponsiveNavLink>
+                    <ResponsiveNavLink href={route('about')} active={route().current('about')}>
+                        Par projektu
+                    </ResponsiveNavLink>
+                    <ResponsiveNavLink href={route('rules')} active={route().current('rules')}>
+                        Noteikumi
+                    </ResponsiveNavLink>
+                </div>
+                {!user && (
                     <div className="space-y-1 pb-3 pt-2">
-                        {/* <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
-                            Dashboard
-                        </ResponsiveNavLink> */}
-                    </div>
-                ) : (
-                    <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink href={route('login')}>Ielogoties</ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('register')}>Reģistrēties</ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('login')} className="flex items-center gap-2">
+                            <ArrowLeftEndOnRectangleIcon className="size-6" />
+                            Ielogoties
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('register')} className="flex items-center gap-2">
+                            <ClipboardDocumentCheckIcon className="size-6" />
+                            Reģistrēties
+                        </ResponsiveNavLink>
                     </div>
                 )}
 
@@ -150,10 +171,27 @@ export default function Navbar({ user }: { user: User }) {
                             <div className="text-sm font-medium text-gray-500">{user.email}</div>
                         </div>
 
-                        <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>Profils</ResponsiveNavLink>
-                            <ResponsiveNavLink method="post" href={route('logout')} as="button">
-                                Izlogoties
+                        <div className="mt-3 flex flex-col space-y-1">
+                            <ResponsiveNavLink href={route('profile.edit')} className="flex items-center gap-2">
+                                <Cog8ToothIcon className="size-4" />
+                                Iestatījumi
+                            </ResponsiveNavLink>
+
+                            {user.roles.includes('admin') && (
+                                <ResponsiveNavLink href={'/admin'} className="flex items-center gap-2">
+                                    <WrenchScrewdriverIcon className="size-4" />
+                                    Admin
+                                </ResponsiveNavLink>
+                            )}
+
+                            <ResponsiveNavLink
+                                method="post"
+                                href={route('logout')}
+                                as="button"
+                                className="flex items-center gap-2"
+                            >
+                                <ArrowRightEndOnRectangleIcon className="size-4" />
+                                Iziet
                             </ResponsiveNavLink>
                         </div>
                     </div>

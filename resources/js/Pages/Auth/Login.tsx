@@ -29,12 +29,12 @@ export default function Login({ status, canResetPassword }: { status?: string; c
             {status && <div className="mb-4 text-sm font-medium text-green-600">{status}</div>}
 
             <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="username" value="Username" />
+                <div className="mt-4">
+                    <InputLabel htmlFor="username" value="Lietotājvārds" />
 
                     <TextInput
                         id="username"
-                        type="username"
+                        type="text"
                         name="username"
                         value={data.username}
                         className="mt-1 block w-full"
@@ -47,7 +47,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel htmlFor="password" value="Parole" />
 
                     <TextInput
                         id="password"
@@ -69,7 +69,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                             checked={data.remember}
                             onChange={(e) => setData('remember', (e.target.checked || false) as false)}
                         />
-                        <span className="ms-2 text-sm text-gray-600">Remember me</span>
+                        <span className="ms-2 text-sm text-gray-600">Atcerēties mani</span>
                     </label>
                 </div>
 
@@ -79,12 +79,12 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                             href={route('password.request')}
                             className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
-                            Forgot your password?
+                            Vai aizmirsi paroli?
                         </Link>
                     )}
 
                     <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
+                        Apstiprināt
                     </PrimaryButton>
                 </div>
             </form>
