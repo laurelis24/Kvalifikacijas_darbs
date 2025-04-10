@@ -2,12 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Log;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -36,19 +34,6 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make(Str::random(12)),
             'remember_token' => Str::random(10),
         ];
-    }
-
-    public function withRoles()
-    {
-        return $this->afterCreating(function (User $user) {
-            $role = Role::find(3);
-
-            if ($role) {
-                $user->roles()->attach(3);
-            } else {
-                Log::info('Not found user role');
-            }
-        });
     }
 
     /**

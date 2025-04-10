@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // TODO: this needs to be changed
+
         $roles = Roles::all();
 
         foreach ($roles as $role) {

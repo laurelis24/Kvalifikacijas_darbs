@@ -14,17 +14,17 @@ class InertiaHttpGateway extends HttpGateway
     public function dispatch(array $page): ?Response
     {
 
-        //       if ($page['url'] === '/') {
-        //         return null;
-        //      }
+        if ($page['url'] === '/') {
+            return null;
+        }
 
-        //    if (Str::is('/posts/edit/*', $page['url'])) {
-        //        return null;
-        //    }
+        if (Str::is('/posts/edit/*', $page['url'])) {
+            return null;
+        }
 
-        //    if ($page['url'] === '/posts/create') {
-        //        return null;
-        //    }
+        if ($page['url'] === '/posts/create') {
+            return null;
+        }
 
         return parent::dispatch($page);
     }

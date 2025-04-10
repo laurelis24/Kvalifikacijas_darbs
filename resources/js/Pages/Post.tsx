@@ -1,4 +1,5 @@
 import Dropdown from '@/Components/Dropdown';
+import ImageGalery from '@/Components/ImageGalery';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { Leaf } from '@/Components/TextEditor/TextEditorInput';
@@ -53,6 +54,7 @@ interface Comment {
 
 export default function PostView(props: Props) {
     const editor = createEditor();
+
     return (
         <Everyone>
             <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-4">
@@ -69,7 +71,7 @@ export default function PostView(props: Props) {
                             </div>
                         </div>
 
-                        <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+                        {/* <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
                             {props.post.media.map((image, idx) => {
                                 return (
                                     <img
@@ -80,8 +82,10 @@ export default function PostView(props: Props) {
                                     />
                                 );
                             })}
-                        </div>
+                        </div> */}
+                        {/* <ImageGalery media={props.post.media} /> */}
 
+                        <ImageGalery media={props.post.media} />
                         <LocationMarker
                             title={props.post.category.title}
                             color={props.post.category.color}

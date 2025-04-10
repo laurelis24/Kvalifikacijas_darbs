@@ -29,7 +29,6 @@ export default function Edit({
     ban: { reason: string; banned_until: string } | null;
 }>) {
     const user = usePage().props.auth.user;
-    console.log(ban);
 
     return (
         <AuthenticatedLayout

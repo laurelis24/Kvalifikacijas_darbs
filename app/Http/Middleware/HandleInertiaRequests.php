@@ -40,7 +40,7 @@ class HandleInertiaRequests extends Middleware
                     'id' => $user->id,
                     'name' => $user->name,
                     'username' => $user->username,
-                    'roles' => $user->roles = $user->roles()->pluck('name'),
+                    'roles' => $user->roles()->pluck('name'),
                     'is_banned' => $user->isBanned(),
                 ] : null,
             ],
