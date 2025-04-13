@@ -25,7 +25,7 @@ return new class extends Migration
                 ->onDelete('restrict');
             $table->string('title');
             $table->string('description', 3000)->nullable();
-            $table->json('coordinates')->nullable();
+            $table->json('coordinates');
             $table->timestamps();
         });
 

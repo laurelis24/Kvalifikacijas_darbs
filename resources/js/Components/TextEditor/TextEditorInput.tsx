@@ -50,7 +50,6 @@ export default function TextEditorInput({ setDescription, editor, postDescriptio
     const renderLeaf = useCallback((props: RenderLeafProps) => <Leaf {...props} />, []);
 
     const handleEditorChange = useCallback((value: Descendant[]) => {
-        console.log(value);
         setDescription(JSON.stringify(value));
     }, []);
 

@@ -32,7 +32,7 @@ class PostController extends Controller
 
         $posts = $query->limit($perPage)->withCount('comments')->get();
 
-        return Inertia::render('WelcomeTest', [
+        return Inertia::render('Welcome', [
             'posts' => $posts,
             'categories' => $categories,
             'filter' => [
@@ -65,7 +65,7 @@ class PostController extends Controller
             abort(403, __('messages.banned_user'));
         }
 
-        return Inertia::render('CreatePost', [
+        return Inertia::render('CreateUpdatePost', [
             'categories' => PostCategory::select('id', 'title', 'description', 'color')->get(),
 
         ]);
@@ -73,6 +73,10 @@ class PostController extends Controller
 
     public function store(StorePostRequest $request)
     {
+
+        if ($request->user()->isBanned()) {
+            abort(403, __('messages.banned_user'));
+        }
 
         $validated = $request->validated();
         $post = Post::create([
@@ -93,8 +97,8 @@ class PostController extends Controller
                 );
             }
         }
-
-        return Redirect::back();
+       
+        return redirect()->route('posts.show', $post);
     }
 
     public function show(Post $post)
@@ -205,9 +209,9 @@ class PostController extends Controller
             ]),
         ];
 
-        return Inertia::render('EditPost', [
+        return Inertia::render('CreateUpdatePost', [
             'categories' => PostCategory::select('id', 'title', 'color')->get(),
-            'postData' => $formattedPost,
+            'post' => $formattedPost,
         ]);
     }
 

@@ -1,33 +1,50 @@
 import FileInput from '@/Components/FileInput';
+import Footer from '@/Components/Footer';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import LocationMarker from '@/Components/LocationMarker';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SelectInput from '@/Components/SelectInput';
 import TextEditorInput from '@/Components/TextEditor/TextEditorInput';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import TextInput from '@/Components/TextInput';
 import Map from '@/Pages/Map';
 import { CategoryProps } from '@/types';
-import { useForm, usePage } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import { LatLng } from 'leaflet';
 import { useEffect, useMemo, useState } from 'react';
 import { createEditor, Editor, Transforms } from 'slate';
 import { withHistory } from 'slate-history';
 import { withReact } from 'slate-react';
 
-export default function CreatePostForm({ categories }: { categories: CategoryProps[] }) {
-    const user = usePage().props.auth.user;
-    const MAX_FILES = 3;
 
+interface Post {
+    id: number;
+    title: string;
+    description: string;
+    category_id: number;
+    coordinates: {
+        latitude: number;
+        longitude: number;
+    };
+    media: {
+        id: number;
+        file_path: string;
+        media_type: string;
+    }[];
+}
+
+export default function CreateUpdatePost({ categories, post }: { categories: CategoryProps[], post?:  Post}) {
+    const MAX_FILES = 3;
     const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
-    const [position, setPosition] = useState<LatLng>(new LatLng(56.946285, 24.105078));
+    const [position, setPosition] = useState<LatLng>(post ? new LatLng(post.coordinates.latitude, post.coordinates.longitude) : new LatLng(56.946285, 24.105078));
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
-    const { data, setData, errors, post, reset, processing, progress } = useForm({
-        title: '',
-        category: categories?.[0].id || 1,
-        description: '',
-        coordinates: { latitude: position.lat, longitude: position.lng },
+    const { data, setData, errors, post:postOrUpdate, reset, processing, progress } = useForm({
+        title: post ? post.title : "",
+        category: post ? post.category_id : (categories?.[0].id || 1),
+        description: post ? post.description : "",
+        coordinates: post ? post.coordinates : { latitude: position.lat, longitude: position.lng },
         images: [] as File[],
     });
 
@@ -55,20 +72,26 @@ export default function CreatePostForm({ categories }: { categories: CategoryPro
             alert('The description must be at least 50 characters long.');
             return;
         }
-        post(route('posts.create'), {
-            onError: () => {
-                console.log(errors);
-            },
+
+        if (!post){
+           postOrUpdate(route('posts.create'), {
             onSuccess: () => {
-                console.log(data.description);
                 resetForm();
             },
+        }); 
+        } else {
+            
+        postOrUpdate(route('posts.update', { post: post.id }), {
+            onSuccess: () => {
+                router.visit(route('posts.show', { post: post.id }));
+            },
         });
+        }
+        
     };
 
     const handleImageInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) return;
-
         const selectedFiles = Array.from(e.target.files);
 
         if (selectedFiles.length > MAX_FILES) {
@@ -77,7 +100,6 @@ export default function CreatePostForm({ categories }: { categories: CategoryPro
             setImagePreviews([]);
             return;
         }
-
         setData('images', selectedFiles);
     };
 
@@ -87,11 +109,13 @@ export default function CreatePostForm({ categories }: { categories: CategoryPro
 
     const changeLocationMarkerColor = () => {
         const category = categories.find((category) => category.id === data.category);
-
         return category?.color || '#FFFFFF';
     };
 
     return (
+         <AuthenticatedLayout>
+                   
+                  
         <section className="flex flex-col items-center gap-2 border-2 border-red-400">
             <div className="w-1/2 min-w-80">
                 <header>
@@ -137,19 +161,34 @@ export default function CreatePostForm({ categories }: { categories: CategoryPro
                         <InputError message={errors.category} className="mt-2" />
                     </div>
                     <div>
-                        <TextEditorInput method="create" setDescription={handleSetDescription} editor={editor} />
+                        <TextEditorInput method={post ? "update" : "create"} postDescription={data.description} setDescription={handleSetDescription} editor={editor} />
                         <InputError message={errors.description} className="mt-2" />
                     </div>
                     <div>
                         <InputLabel htmlFor="images" value="Upload image" />
                         <FileInput type="file" className="hidden" multiple onChange={handleImageInput} />
 
-                        {imagePreviews.length > 0 && (
+                        {imagePreviews.length > 0 ? (
                             <ul className="flex justify-center gap-10">
                                 {imagePreviews.map((image, idx) => {
                                     return (
                                         <li key={idx}>
                                             <img src={image} alt={`image${idx + 1}`} className="h-24 w-24" />
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        ) : (
+                            <ul className="flex justify-center gap-10">
+                                {post?.media.map((media, idx) => {
+                                    return (
+                                        <li key={media.id}>
+                                            {/* Image link */}
+                                            <img
+                                                src={`../../storage/${media.file_path}`}
+                                                alt={`image${idx + 1}`}
+                                                className="h-24 w-24"
+                                            />
                                         </li>
                                     );
                                 })}
@@ -166,7 +205,7 @@ export default function CreatePostForm({ categories }: { categories: CategoryPro
                                 position={position}
                                 setPosition={setPosition}
                                 setData={setData}
-                                method="create"
+                                method={post ? "update" : "create"}
                             />
                         </Map>
                     </div>
@@ -177,5 +216,7 @@ export default function CreatePostForm({ categories }: { categories: CategoryPro
                 </form>
             </div>
         </section>
+        <Footer />
+        </AuthenticatedLayout>
     );
 }

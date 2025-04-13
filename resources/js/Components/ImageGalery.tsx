@@ -16,7 +16,7 @@ export default function ImageGalery({ media }: { media: { id: number; file_path:
                         items={galleryItems}
                         showThumbnails={false}
                         showPlayButton={false}
-                        showBullets={true}
+                        showBullets={galleryItems.length > 1}
                     />
                 )}
             </div>

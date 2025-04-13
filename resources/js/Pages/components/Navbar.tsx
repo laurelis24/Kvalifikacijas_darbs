@@ -37,7 +37,7 @@ export default function Navbar({ user }: { user: User }) {
                                     Notikumu vēsture
                                 </NavLink>
                                 <NavLink href={route('about')} active={route().current('about')}>
-                                    Par projektu
+                                    Par lietotni
                                 </NavLink>
                                 <NavLink href={route('rules')} active={route().current('rules')}>
                                     Noteikumi
