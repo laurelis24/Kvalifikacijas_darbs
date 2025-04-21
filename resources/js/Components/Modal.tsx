@@ -6,10 +6,12 @@ export default function Modal({
     show = false,
     maxWidth = '2xl',
     closeable = true,
+    imageGalery = false,
     onClose = () => {},
 }: PropsWithChildren<{
     show: boolean;
-    maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+    maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '4xl' | '6xl';
+    imageGalery?: boolean;
     closeable?: boolean;
     onClose: CallableFunction;
 }>) {
@@ -25,7 +27,13 @@ export default function Modal({
         lg: 'sm:max-w-lg',
         xl: 'sm:max-w-xl',
         '2xl': 'sm:max-w-2xl',
+        '4xl': 'sm:max-w-4xl',
+        '6xl': 'sm:max-w-4xl',
     }[maxWidth];
+
+    const style = imageGalery
+        ? `mb-6 transform rounded-lg flex justify-center transition-all sm:mx-auto sm:w-full`
+        : `mb-6 transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:mx-auto  sm:w-full`;
 
     return (
         <Transition show={show} leave="duration-200">
@@ -43,7 +51,7 @@ export default function Modal({
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                 >
-                    <div className="absolute inset-0 bg-gray-500/75" />
+                    <div className={`absolute inset-0 ${imageGalery ? 'bg-gray-900/90' : 'bg-gray-500/75'}`}></div>
                 </TransitionChild>
 
                 <TransitionChild
@@ -54,11 +62,7 @@ export default function Modal({
                     leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                     leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 >
-                    <DialogPanel
-                        className={`mb-6 transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:mx-auto sm:w-full ${maxWidthClass}`}
-                    >
-                        {children}
-                    </DialogPanel>
+                    <DialogPanel className={`${style} ${maxWidthClass}`}>{children}</DialogPanel>
                 </TransitionChild>
             </Dialog>
         </Transition>

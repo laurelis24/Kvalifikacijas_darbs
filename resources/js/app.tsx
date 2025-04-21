@@ -15,7 +15,6 @@ createInertiaApp({
             hydrateRoot(el, <App {...props} />);
             return;
         }
-
         createRoot(el).render(<App {...props} />);
     },
     progress: {

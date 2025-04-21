@@ -1,23 +1,33 @@
 import Dropdown from '@/Components/Dropdown';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { User } from '@/types';
-import { useState } from 'react';
+import { Head } from '@inertiajs/react';
+import { SetStateAction, useState } from 'react';
+import AdminNavigation from './Partials/AdminNavigation';
 import BanUserForm from './Partials/BanUserForm';
+import EditUserForm from './Partials/UserRolesForm';
 
 interface Props {
-    users: User[];
+    users?: {
+        data: User[];
+    };
 }
 export default function ManageUsers(props: Props) {
+    console.log(props);
     const [showBanUserForm, setShowBanUserForm] = useState(false);
+    const [showEditUserForm, setShowEditUserForm] = useState(false);
     const [user, setUser] = useState<User>();
 
-    console.log(props.users);
-    const confirmBanUserForm = () => {
-        setShowBanUserForm(true);
+    const confirmForm = (action: React.Dispatch<SetStateAction<boolean>>) => {
+        action(true);
     };
 
     const closeBanUserForm = () => {
         setShowBanUserForm(false);
+        setUser(undefined);
+    };
+    const closeEditUserForm = () => {
+        setShowEditUserForm(false);
         setUser(undefined);
     };
 
@@ -26,10 +36,11 @@ export default function ManageUsers(props: Props) {
     };
     return (
         <AuthenticatedLayout>
-            <input type="text" />
+            <Head title="Users" />
             <div className="flex">
+                <AdminNavigation />
                 <ul role="list" className="divide-y divide-gray-100">
-                    {props.users.map((user) => (
+                    {props.users?.data.map((user) => (
                         <li key={user.email} className="flex justify-between gap-x-6 py-5">
                             <div className="flex min-w-0 gap-x-4">
                                 {/* <img
@@ -67,49 +78,41 @@ export default function ManageUsers(props: Props) {
                                 </Dropdown.Trigger>
 
                                 <Dropdown.Content>
-                                    <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
                                     {/* <Dropdown.Link href={route('profile.edit')}>Ban</Dropdown.Link> */}
+                                    <button
+                                        onClick={() => {
+                                            confirmUser(user);
+                                            confirmForm(setShowEditUserForm);
+                                        }}
+                                        className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
+                                    >
+                                        Manage roles
+                                    </button>
                                     <Dropdown.Link
                                         onBefore={() => window.confirm(`Do you want to delete user: ${user.username}?`)}
-                                        href={route('admin.user-delete', { user: user.id })}
+                                        href={`users/delete/${user.id}`}
                                         method="delete"
                                         as="button"
                                     >
                                         Delete
                                     </Dropdown.Link>
-                                    <Dropdown.Link
-                                        onBefore={() => window.confirm(`Do you want to delete user: ${user.username}?`)}
-                                        href={route('admin.user-delete', { user: user.id })}
-                                        method="delete"
-                                        as="button"
-                                    >
-                                        Delete
-                                    </Dropdown.Link>
-                                    {(user.isBanned && (
+
+                                    {(user.is_banned && (
                                         <Dropdown.Link
                                             onBefore={() =>
                                                 window.confirm(`Do you want to unban user: ${user.username}?`)
                                             }
-                                            href={route('admin.user-unban', { user: user.id })}
+                                            href={`users/remove/ban/${user.id}`}
                                             method="delete"
                                             as="button"
                                         >
                                             Unban
                                         </Dropdown.Link>
                                     )) || (
-                                        //  <PrimaryButton
-                                        //     onClick={() => {
-                                        //         confirmUser(user);
-                                        //         confirmBanUserForm();
-                                        //     }}
-                                        // >
-                                        //     Ban
-                                        // </PrimaryButton>
-
                                         <button
                                             onClick={() => {
                                                 confirmUser(user);
-                                                confirmBanUserForm();
+                                                confirmForm(setShowBanUserForm);
                                             }}
                                             className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
                                         >
@@ -124,6 +127,7 @@ export default function ManageUsers(props: Props) {
             </div>
 
             {user && <BanUserForm show={showBanUserForm} onClose={closeBanUserForm} user={user}></BanUserForm>}
+            {user && <EditUserForm show={showEditUserForm} onClose={closeEditUserForm} user={user}></EditUserForm>}
         </AuthenticatedLayout>
     );
 }

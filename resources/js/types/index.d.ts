@@ -5,9 +5,16 @@ export interface User {
     name: string;
     username: string;
     roles: string[];
-    email: string;
-    isBanned: boolean;
+    email?: string;
+    is_banned: boolean;
     email_verified_at?: string;
+}
+
+export interface CategoryProps {
+    id: number;
+    title: string;
+    description: string;
+    color: string;
 }
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {

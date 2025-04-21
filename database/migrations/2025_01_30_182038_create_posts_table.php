@@ -11,17 +11,21 @@ return new class extends Migration
 
         Schema::create('posts_categories', function (Blueprint $table) {
             $table->id();
+            $table->string('title', 255)->unique();
+            $table->string('description', 1000);
+            $table->string('color', 7)->unique();
             $table->timestamps();
         });
 
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->nullable()
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('category_id')
                 ->constrained('posts_categories')
                 ->onDelete('restrict');
             $table->string('title');
-            $table->string('description', 2000);
-            $table->json('coordinates')->nullable();
+            $table->string('description', 3000)->nullable();
+            $table->json('coordinates');
             $table->timestamps();
         });
 
@@ -35,7 +39,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('post_comments', function (Blueprint $table) {
+        Schema::create('posts_comments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('post_id')
                 ->constrained('posts')
@@ -43,7 +47,7 @@ return new class extends Migration
             $table->foreignId('user_id')
                 ->constrained('users')
                 ->onDelete('cascade');
-            $table->string('comment', 500);
+            $table->string('comment', 700);
             $table->timestamps();
         });
 
@@ -51,8 +55,9 @@ return new class extends Migration
 
     public function down(): void
     {
+        Schema::dropIfExists('posts_media');
+        Schema::dropIfExists('posts_comments');
         Schema::dropIfExists('posts');
         Schema::dropIfExists('posts_categories');
-        Schema::dropIfExists('posts_media');
     }
 };

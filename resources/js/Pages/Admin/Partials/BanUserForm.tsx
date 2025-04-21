@@ -35,7 +35,7 @@ export default function BanUserForm(props: Props) {
     const banUser: FormEventHandler = (e) => {
         e.preventDefault();
 
-        ban(route('admin.user-ban', { user: props.user.id }), {
+        ban(`users/ban/${props.user.id}`, {
             preserveScroll: true,
             onSuccess: () => closeModal(),
             onFinish: () => reset(),
@@ -77,6 +77,10 @@ export default function BanUserForm(props: Props) {
                         isFocused
                         placeholder="Duration"
                     />
+                    <InputError message={errors.duration} className="mt-2" />
+
+                    <InputLabel htmlFor="reason" value="Reason" className="sr-only" />
+                    <p>Insert reason: </p>
                     <TextInput
                         id="reason"
                         type="text"
@@ -85,11 +89,10 @@ export default function BanUserForm(props: Props) {
                         value={data.reason}
                         onChange={(e) => setData('reason', e.target.value)}
                         className="mt-1 block w-3/4"
-                        isFocused
                         placeholder="Reason"
                     />
 
-                    <InputError message={errors.duration} className="mt-2" />
+                    <InputError message={errors.reason} className="mt-2" />
                 </div>
 
                 <div className="mt-6 flex justify-end">

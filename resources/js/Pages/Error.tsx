@@ -3,7 +3,6 @@ import { Head, Link } from '@inertiajs/react';
 export interface ErrorProps {
     message: string;
     code: number;
-    back: string;
 }
 
 export default function Error(props: ErrorProps) {
@@ -13,7 +12,7 @@ export default function Error(props: ErrorProps) {
             <h1 className="uppercase tracking-widest text-gray-500">
                 {props.code} | {props.message}
             </h1>
-            <Link href="/">{props.back}</Link>
+            <Link href="/">Doties uz sākumu</Link>
         </div>
     );
 }

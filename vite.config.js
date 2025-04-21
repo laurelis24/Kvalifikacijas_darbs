@@ -11,4 +11,15 @@ export default defineConfig({
         }),
         react(),
     ],
+    server: {
+        host: '0.0.0.0',
+        cors: true,
+        strictPort: true,
+        watch: {
+            usePolling: true,
+        },
+        hmr: {
+            host: '192.168.8.68',
+        },
+    },
 });

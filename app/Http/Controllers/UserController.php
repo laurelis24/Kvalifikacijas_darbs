@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
+use App\Roles;
+use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Redirect;
 
@@ -16,14 +20,19 @@ class UserController extends Controller
     {
 
         // TODO: add pagination
-        $users = User::whereNot('id', $request->user()->id)->get();
 
-        foreach ($users as $user) {
-            $user->isBanned = $user->isBanned();
-        }
+        $users = User::whereNot('id', $request->user()->id)
+            ->paginate(10)
+            ->through(function ($user) {
+                $user->roles = $user->roles()->pluck('name');
+                $user->is_banned = $user->isBanned();
+
+                return $user;
+            });
 
         return Inertia::render('Admin/ManageUsers', [
             'users' => $users,
+
         ]);
     }
 
@@ -74,7 +83,6 @@ class UserController extends Controller
     {
 
         try {
-            // Attempt to delete the user
             if ($request->user()->id != $user->id) {
                 $user->delete();
             }
@@ -92,30 +100,63 @@ class UserController extends Controller
             'reason' => 'required|string|min:1|max:300',
         ]);
 
-        $foundUser = User::findOrFail($user->id);
-
         try {
-            $user->bannedUsers()->attach($foundUser->id, [
-                'banned_until' => now()->addMinutes((int) $request->input('duration', 120)),
-                'reason' => $request->input('reason', 'No reason provided.'),
-            ]);
+            if ($user->isBanned()) {
+                $user->bannedUsers()->updateExistingPivot($user->id, [
+                    'banned_until' => now()->addMinutes((int) $request->input('duration', 120)),
+                    'reason' => $request->input('reason', 'No reason provided.'),
+                ]);
+            } else {
+                $user->bannedUsers()->attach($user->id, [
+                    'banned_until' => now()->addMinutes((int) $request->input('duration', 120)),
+                    'reason' => $request->input('reason', 'No reason provided.'),
+                ]);
+            }
         } catch (\Throwable $th) {
+            Log::debug($th->getMessage());
             abort(500);
         }
-
-        // return response()->json(['message' => 'User banned successfully.']);
 
         return Redirect::back();
     }
 
-    // Unban a user
     public function unbanUser(User $user)
     {
-        $user = User::findOrFail($user->id);
-
         $user->bannedUsers()->detach($user->id);
 
         return Redirect::back();
+    }
+
+    public function giveRolePermission(Request $request, User $user)
+    {
+
+        try {
+            $request->validate([
+                'adminChecked' => 'required|boolean',
+                'moderatorChecked' => 'required|boolean',
+            ]);
+
+            $adminRole = Role::where('name', Roles::ADMIN)->first();
+            $moderatorRole = Role::where('name', Roles::MODERATOR)->first();
+
+            if ($request->input('adminChecked') && ! $user->hasRole(Roles::ADMIN)) {
+                $user->roles()->attach($adminRole->id);
+            } elseif (! $request->input('adminChecked') && $user->hasRole(Roles::ADMIN)) {
+                $user->roles()->detach($adminRole->id);
+            }
+
+            if ($request->input('moderatorChecked') && ! $user->hasRole(Roles::MODERATOR)) {
+                $user->roles()->attach($moderatorRole->id);
+            } elseif (! $request->input('moderatorChecked') && $user->hasRole(Roles::MODERATOR)) {
+                $user->roles()->detach($moderatorRole->id);
+            }
+
+            return Redirect::back();
+
+        } catch (\Throwable $th) {
+            abort(500);
+        }
+
     }
 
     // Check if a user is banned
@@ -133,5 +174,18 @@ class UserController extends Controller
         // }
 
         // return response()->json(['message' => 'User is not banned.']);
+    }
+
+    public function statistics()
+    {
+
+        $onlineUsers = DB::table('sessions')
+            ->whereNotNull('user_id')
+            ->where('last_activity', '>=', now()->subMinutes(5)->timestamp)
+            ->pluck('user_id');
+
+        return Inertia::render('Admin/AdminPanel', [
+            'usersOnline' => $onlineUsers->count(),
+        ]);
     }
 }

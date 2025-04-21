@@ -9,6 +9,8 @@ class PostMedia extends Model
 {
     use HasFactory;
 
+    protected $table = 'posts_media';
+
     protected $fillable = [
         'post_id',
         'media_type',

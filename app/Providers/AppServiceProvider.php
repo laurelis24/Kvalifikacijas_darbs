@@ -2,14 +2,23 @@
 
 namespace App\Providers;
 
+// use Illuminate\Cache\RateLimiting\Limit;
+// use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\RateLimiter;
+use App\InertiaHttpGateway;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Inertia\Ssr\HttpGateway;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
+    public $bindings = [
+        HttpGateway::class => InertiaHttpGateway::class,
+    ];
+
     public function register(): void
     {
         //
@@ -22,5 +31,12 @@ class AppServiceProvider extends ServiceProvider
     {
 
         Vite::prefetch(concurrency: 3);
+
+        // RateLimiter::for('comment', function (Request $request) {
+        //     // return Limit::perMinute(1)->
+        //     return Limit::perMinute(1)
+        //         ->by($request->user()?->id ?: $request->ip());
+        // });
+
     }
 }

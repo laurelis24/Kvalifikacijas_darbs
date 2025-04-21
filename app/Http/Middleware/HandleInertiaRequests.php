@@ -33,14 +33,16 @@ class HandleInertiaRequests extends Middleware
     {
         $user = $request->user();
 
-        if ($user) {
-            $user->roles = $user->roles()->pluck('name');
-        }
-
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $user,
+                'user' => $user ? [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'username' => $user->username,
+                    'roles' => $user->roles()->pluck('name'),
+                    'is_banned' => $user->isBanned(),
+                ] : null,
             ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),

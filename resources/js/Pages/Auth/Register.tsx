@@ -29,23 +29,7 @@ export default function Register() {
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
-
-                    <TextInput
-                        id="name"
-                        name="name"
-                        value={data.name}
-                        className="mt-1 block w-full"
-                        autoComplete="name"
-                        isFocused={true}
-                        onChange={(e) => setData('name', e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.name} className="mt-2" />
-                </div>
-                <div>
-                    <InputLabel htmlFor="username" value="Username" />
+                    <InputLabel htmlFor="username" value="Lietotājvārds" />
 
                     <TextInput
                         id="username"
@@ -60,9 +44,25 @@ export default function Register() {
 
                     <InputError message={errors.username} className="mt-2" />
                 </div>
+                <div className="mt-4">
+                    <InputLabel htmlFor="name" value="Vārds" />
+
+                    <TextInput
+                        id="name"
+                        name="name"
+                        value={data.name}
+                        className="mt-1 block w-full"
+                        autoComplete="name"
+                        isFocused={true}
+                        onChange={(e) => setData('name', e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.name} className="mt-2" />
+                </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="email" value="E-pasts" />
 
                     <TextInput
                         id="email"
@@ -79,7 +79,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel htmlFor="password" value="Parole" />
 
                     <TextInput
                         id="password"
@@ -96,7 +96,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
+                    <InputLabel htmlFor="password_confirmation" value="Parole atkārtoti" />
 
                     <TextInput
                         id="password_confirmation"
@@ -117,11 +117,11 @@ export default function Register() {
                         href={route('login')}
                         className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                        Already registered?
+                        Vai Jums jau ir profils?
                     </Link>
 
                     <PrimaryButton className="ms-4" disabled={processing}>
-                        Register
+                        Reģistrēties
                     </PrimaryButton>
                 </div>
             </form>

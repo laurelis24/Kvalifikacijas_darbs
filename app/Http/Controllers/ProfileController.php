@@ -14,20 +14,32 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
     public function edit(Request $request): Response
     {
+        $user = $request->user();
+        $ban = $user->bannedUsers()
+            ->where('user_id', $user->id)
+            ->where('banned_until', '>', now())
+            ->first();
+
         return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'mustVerifyEmail' => $user instanceof MustVerifyEmail,
             'status' => session('status'),
+            'posts' => $user->posts->map(function ($post) {
+                return [
+                    'id' => $post->id,
+                    'title' => $post->title,
+                    'created_at' => $post->created_at,
+                    'category' => [
+                        'title' => $post->category->title,
+                        'color' => $post->category->color,
+                    ],
+                ];
+            }),
+            'ban' => $ban ? ['reason' => $ban->pivot->reason, 'banned_until' => $ban->pivot->banned_until] : null,
         ]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
 
@@ -44,9 +56,6 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit');
     }
 
-    /**
-     * Delete the user's account.
-     */
     public function destroy(Request $request): RedirectResponse
     {
         $request->validate([
