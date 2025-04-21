@@ -49,8 +49,6 @@ interface Props extends PageProps {
 export default function Welcome({ auth, posts, categories, filter, canLogin, canRegister }: Props) {
     const user = auth.user;
 
-    console.log(posts);
-
     const locationMarkerColor = (categoryId: number) => {
         const foundColor = categories.find((category) => category.id === categoryId);
         return foundColor?.color || '#ffffff';
