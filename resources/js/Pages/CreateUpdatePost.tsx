@@ -10,6 +10,7 @@ import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Map from '@/Pages/Map';
 import { CategoryProps } from '@/types';
+import { ArrowUpTrayIcon } from '@heroicons/react/16/solid';
 import { router, useForm } from '@inertiajs/react';
 import { LatLng } from 'leaflet';
 import { useEffect, useMemo, useState } from 'react';
@@ -102,7 +103,7 @@ export default function CreateUpdatePost({ categories, post }: { categories: Cat
         const selectedFiles = Array.from(e.target.files);
 
         if (selectedFiles.length > MAX_FILES) {
-            alert(`You can only upload up to ${MAX_FILES} files.`);
+            alert(`Jūs varat augšupielādēt ne vairāk kā ${MAX_FILES} attēlus."`);
             e.target.value = ''; // Reset file input
             setImagePreviews([]);
             return;
@@ -121,12 +122,21 @@ export default function CreateUpdatePost({ categories, post }: { categories: Cat
 
     return (
         <AuthenticatedLayout>
-            <section className="flex flex-col items-center gap-2 border-2 border-red-400">
-                <div className="w-1/2 min-w-80">
+            <section className="flex flex-col items-center gap-2">
+                <div className="mt-10 w-1/2 min-w-80">
                     <header>
-                        <h2 className="text-lg font-medium text-gray-900">ahahahsash</h2>
+                        <h2 className="text-2xl font-medium text-gray-900">
+                            {post ? 'Labot notikumu' : 'Jauns notikums'}
+                        </h2>
 
-                        <p className="mt-1 text-sm text-gray-600">Apraksts...</p>
+                        {!post && (
+                            <p className="mt-1 text-sm text-gray-600">
+                                Ievadiet notikuma nosaukumu, izvēlieties kategoriju, aprakstu, augšupielādējiet līdz 3
+                                attēliem un atzīmējiet atrašanās vietu kartē. Lai augšupielādētu vairāk par 1 attēlu,
+                                izvēloties attēli jāatzīmē vairāki attēli vienlaicīgi. Atļautie atttēlu formāti: png,
+                                jpg, jpeg.
+                            </p>
+                        )}
                         {progress && (
                             <progress value={progress.percentage} max={100}>
                                 {progress.percentage}
@@ -136,7 +146,7 @@ export default function CreateUpdatePost({ categories, post }: { categories: Cat
 
                     <form onSubmit={handleSubmit} className="mt-6 space-y-6">
                         <div>
-                            <InputLabel htmlFor="title" value={'Create post'} />
+                            <InputLabel htmlFor="title" value={'Nosaukums'} />
 
                             <TextInput
                                 id="title"
@@ -175,7 +185,6 @@ export default function CreateUpdatePost({ categories, post }: { categories: Cat
                             <InputError message={errors.description} className="mt-2" />
                         </div>
                         <div>
-                            <InputLabel htmlFor="images" value="Upload image" />
                             <FileInput type="file" className="hidden" multiple onChange={handleImageInput} />
 
                             {imagePreviews.length > 0 ? (
@@ -204,6 +213,15 @@ export default function CreateUpdatePost({ categories, post }: { categories: Cat
                                     })}
                                 </ul>
                             )}
+                            <div className="flex items-center justify-center p-10">
+                                <label
+                                    htmlFor="images"
+                                    className="inline-flex cursor-pointer items-center rounded bg-gray-300 px-4 py-2 font-bold text-gray-800 transition-colors duration-200 hover:bg-gray-400"
+                                >
+                                    <ArrowUpTrayIcon className="mr-2 size-6" />
+                                    <span>Augšupielādēt attēlus (1-3)</span>
+                                </label>
+                            </div>
                         </div>
 
                         <div>
@@ -220,8 +238,8 @@ export default function CreateUpdatePost({ categories, post }: { categories: Cat
                             </Map>
                         </div>
 
-                        <div className="flex items-center gap-4">
-                            <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                        <div className="flex justify-end">
+                            <PrimaryButton disabled={processing}>Saglabāt</PrimaryButton>
                         </div>
                     </form>
                 </div>

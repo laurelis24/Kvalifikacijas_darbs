@@ -9,12 +9,14 @@ interface BaseProps {
     //[key: string]: unknown;
 }
 
-export function Menu({ className, ref, ...props }: PropsWithChildren<BaseProps> & { ref: Ref<HTMLDivElement> }) {
-    return <div {...props} data-test-id="menu" ref={ref} className={`flex gap-2 border-2 ${className || ''}`} />;
+export function Menu({ className, ref, ...props }: PropsWithChildren<BaseProps> & { ref?: Ref<HTMLDivElement> }) {
+    return (
+        <div {...props} data-test-id="menu" ref={ref} className={`flex gap-2 rounded-lg border ${className || ''}`} />
+    );
 }
 
-export function Toolbar({ className, ref, ...props }: PropsWithChildren<BaseProps> & { ref: Ref<HTMLDivElement> }) {
-    return <Menu {...props} ref={ref} className={`border-2 border-red-500 ${className || ''}`} />;
+export function Toolbar({ className, ref, ...props }: PropsWithChildren<BaseProps> & { ref?: Ref<HTMLDivElement> }) {
+    return <Menu {...props} ref={ref} className={`p-2 ${className || ''}`} />;
 }
 
 export function Icon({
@@ -22,7 +24,7 @@ export function Icon({
     svgType,
     ref,
     ...props
-}: PropsWithChildren<BaseProps> & { ref: Ref<SVGSVGElement> }) {
+}: PropsWithChildren<BaseProps> & { ref?: Ref<SVGSVGElement> }) {
     return (
         <svg
             {...props}
@@ -44,12 +46,12 @@ export function Button({
     reversed,
     ref,
     ...props
-}: PropsWithChildren<BaseProps> & { ref: Ref<HTMLSpanElement> }) {
+}: PropsWithChildren<BaseProps> & { ref?: Ref<HTMLSpanElement> }) {
     return (
         <span
             {...props}
             ref={ref}
-            className={`border-1 border-black ${className || ''} ${active ? 'bg-slate-400' : ''} ${reversed ? 'reversed' : ''}`}
+            className={`cursor-pointer rounded-full border p-4 duration-200 hover:border-slate-800 ${className || ''} ${active ? 'bg-slate-800 text-white' : ''} ${reversed ? 'reversed' : ''}`}
         />
     );
 }
