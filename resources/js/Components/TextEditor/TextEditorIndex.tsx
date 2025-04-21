@@ -1,4 +1,4 @@
-import { PropsWithChildren, forwardRef } from 'react';
+import { PropsWithChildren, Ref } from 'react';
 
 interface BaseProps {
     className?: string;
@@ -9,18 +9,21 @@ interface BaseProps {
     //[key: string]: unknown;
 }
 
-export const Menu = forwardRef<HTMLDivElement, PropsWithChildren<BaseProps>>(({ className, ...props }, ref) => (
-    <div {...props} data-test-id="menu" ref={ref} className={`flex gap-2 border-2 ${className || ''}`} />
-));
+export function Menu({ className, ref, ...props }: PropsWithChildren<BaseProps> & { ref: Ref<HTMLDivElement> }) {
+    return <div {...props} data-test-id="menu" ref={ref} className={`flex gap-2 border-2 ${className || ''}`} />;
+}
 
-export const Toolbar = forwardRef<HTMLDivElement, PropsWithChildren<BaseProps>>(
-    ({ className, ...props }: PropsWithChildren<BaseProps>, ref) => (
-        <Menu {...props} ref={ref} className={`border-2 border-red-500 ${className || ''}`} />
-    ),
-);
+export function Toolbar({ className, ref, ...props }: PropsWithChildren<BaseProps> & { ref: Ref<HTMLDivElement> }) {
+    return <Menu {...props} ref={ref} className={`border-2 border-red-500 ${className || ''}`} />;
+}
 
-export const Icon = forwardRef<SVGSVGElement, PropsWithChildren<BaseProps>>(
-    ({ className, svgType, ...props }: PropsWithChildren<BaseProps>, ref) => (
+export function Icon({
+    className,
+    svgType,
+    ref,
+    ...props
+}: PropsWithChildren<BaseProps> & { ref: Ref<SVGSVGElement> }) {
+    return (
         <svg
             {...props}
             ref={ref}
@@ -33,17 +36,20 @@ export const Icon = forwardRef<SVGSVGElement, PropsWithChildren<BaseProps>>(
         >
             <path strokeLinejoin="round" d={svgType} />
         </svg>
-    ),
-);
-
-export const Button = forwardRef<HTMLSpanElement, PropsWithChildren<BaseProps>>(
-    ({ className, active, reversed, ...props }, ref) => {
-        return (
-            <span
-                {...props}
-                ref={ref}
-                className={`border-1 border-black ${className || ''} ${active ? 'bg-slate-400' : ''} ${reversed ? 'reversed' : ''}`}
-            />
-        );
-    },
-);
+    );
+}
+export function Button({
+    className,
+    active,
+    reversed,
+    ref,
+    ...props
+}: PropsWithChildren<BaseProps> & { ref: Ref<HTMLSpanElement> }) {
+    return (
+        <span
+            {...props}
+            ref={ref}
+            className={`border-1 border-black ${className || ''} ${active ? 'bg-slate-400' : ''} ${reversed ? 'reversed' : ''}`}
+        />
+    );
+}
