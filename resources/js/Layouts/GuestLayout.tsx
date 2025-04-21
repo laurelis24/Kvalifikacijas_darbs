@@ -9,7 +9,7 @@ export default function Guest({ children }: PropsWithChildren) {
                 <div className="mx-auto flex w-full flex-col p-2 backdrop-blur-[1px] md:max-w-[550px]">
                     <div className="self-center">
                         <Link href="/">
-                            <ApplicationLogo className="size-20 fill-current" />
+                            <ApplicationLogo className="size-52 fill-current" />
                         </Link>
                     </div>
 

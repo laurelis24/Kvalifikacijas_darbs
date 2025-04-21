@@ -55,10 +55,9 @@ export default function LocationMarker(props: Props) {
                           props.setPosition(new LatLng(e.latlng.lat, e.latlng.lng));
                           props.setData('coordinates', { latitude: e.latlng.lat, longitude: e.latlng.lng });
                           map.flyTo(e.latlng, map.getZoom());
-                      } else if (props.method === "update" && props.position){
+                      } else if (props.method === 'update' && props.position) {
                           map.flyTo(L.latLng(props.position.lat, props.position.lng), map.getZoom());
                       }
-                     
                   },
               },
     );

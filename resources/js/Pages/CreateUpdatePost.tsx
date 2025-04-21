@@ -6,8 +6,8 @@ import LocationMarker from '@/Components/LocationMarker';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SelectInput from '@/Components/SelectInput';
 import TextEditorInput from '@/Components/TextEditor/TextEditorInput';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import TextInput from '@/Components/TextInput';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Map from '@/Pages/Map';
 import { CategoryProps } from '@/types';
 import { router, useForm } from '@inertiajs/react';
@@ -16,7 +16,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { createEditor, Editor, Transforms } from 'slate';
 import { withHistory } from 'slate-history';
 import { withReact } from 'slate-react';
-
 
 interface Post {
     id: number;
@@ -34,16 +33,26 @@ interface Post {
     }[];
 }
 
-export default function CreateUpdatePost({ categories, post }: { categories: CategoryProps[], post?:  Post}) {
+export default function CreateUpdatePost({ categories, post }: { categories: CategoryProps[]; post?: Post }) {
     const MAX_FILES = 3;
     const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
-    const [position, setPosition] = useState<LatLng>(post ? new LatLng(post.coordinates.latitude, post.coordinates.longitude) : new LatLng(56.946285, 24.105078));
+    const [position, setPosition] = useState<LatLng>(
+        post ? new LatLng(post.coordinates.latitude, post.coordinates.longitude) : new LatLng(56.946285, 24.105078),
+    );
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
-    const { data, setData, errors, post:postOrUpdate, reset, processing, progress } = useForm({
-        title: post ? post.title : "",
-        category: post ? post.category_id : (categories?.[0].id || 1),
-        description: post ? post.description : "",
+    const {
+        data,
+        setData,
+        errors,
+        post: postOrUpdate,
+        reset,
+        processing,
+        progress,
+    } = useForm({
+        title: post ? post.title : '',
+        category: post ? post.category_id : categories?.[0].id || 1,
+        description: post ? post.description : '',
         coordinates: post ? post.coordinates : { latitude: position.lat, longitude: position.lng },
         images: [] as File[],
     });
@@ -73,21 +82,19 @@ export default function CreateUpdatePost({ categories, post }: { categories: Cat
             return;
         }
 
-        if (!post){
-           postOrUpdate(route('posts.create'), {
-            onSuccess: () => {
-                resetForm();
-            },
-        }); 
+        if (!post) {
+            postOrUpdate(route('posts.create'), {
+                onSuccess: () => {
+                    resetForm();
+                },
+            });
         } else {
-            
-        postOrUpdate(route('posts.update', { post: post.id }), {
-            onSuccess: () => {
-                router.visit(route('posts.show', { post: post.id }));
-            },
-        });
+            postOrUpdate(route('posts.update', { post: post.id }), {
+                onSuccess: () => {
+                    router.visit(route('posts.show', { post: post.id }));
+                },
+            });
         }
-        
     };
 
     const handleImageInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,110 +120,113 @@ export default function CreateUpdatePost({ categories, post }: { categories: Cat
     };
 
     return (
-         <AuthenticatedLayout>
-                   
-                  
-        <section className="flex flex-col items-center gap-2 border-2 border-red-400">
-            <div className="w-1/2 min-w-80">
-                <header>
-                    <h2 className="text-lg font-medium text-gray-900">ahahahsash</h2>
+        <AuthenticatedLayout>
+            <section className="flex flex-col items-center gap-2 border-2 border-red-400">
+                <div className="w-1/2 min-w-80">
+                    <header>
+                        <h2 className="text-lg font-medium text-gray-900">ahahahsash</h2>
 
-                    <p className="mt-1 text-sm text-gray-600">Apraksts...</p>
-                    {progress && (
-                        <progress value={progress.percentage} max={100}>
-                            {progress.percentage}
-                        </progress>
-                    )}
-                </header>
-
-                <form onSubmit={handleSubmit} className="mt-6 space-y-6">
-                    <div>
-                        <InputLabel htmlFor="title" value={'Create post'} />
-
-                        <TextInput
-                            id="title"
-                            required
-                            value={data.title}
-                            onChange={(e) => setData('title', e.target.value)}
-                            type="text"
-                            className="mt-1 w-full"
-                            autoComplete="current-title"
-                        />
-
-                        <InputError message={errors.title} className="mt-2" />
-                    </div>
-                    <div>
-                        <InputLabel htmlFor="category" value={'Kategorija'} />
-
-                        <SelectInput
-                            required
-                            id="category"
-                            value={data.category}
-                            onChange={(e) => {
-                                setData('category', +e.target.value);
-                            }}
-                            categories={categories}
-                        />
-
-                        <InputError message={errors.category} className="mt-2" />
-                    </div>
-                    <div>
-                        <TextEditorInput method={post ? "update" : "create"} postDescription={data.description} setDescription={handleSetDescription} editor={editor} />
-                        <InputError message={errors.description} className="mt-2" />
-                    </div>
-                    <div>
-                        <InputLabel htmlFor="images" value="Upload image" />
-                        <FileInput type="file" className="hidden" multiple onChange={handleImageInput} />
-
-                        {imagePreviews.length > 0 ? (
-                            <ul className="flex justify-center gap-10">
-                                {imagePreviews.map((image, idx) => {
-                                    return (
-                                        <li key={idx}>
-                                            <img src={image} alt={`image${idx + 1}`} className="h-24 w-24" />
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        ) : (
-                            <ul className="flex justify-center gap-10">
-                                {post?.media.map((media, idx) => {
-                                    return (
-                                        <li key={media.id}>
-                                            {/* Image link */}
-                                            <img
-                                                src={`../../storage/${media.file_path}`}
-                                                alt={`image${idx + 1}`}
-                                                className="h-24 w-24"
-                                            />
-                                        </li>
-                                    );
-                                })}
-                            </ul>
+                        <p className="mt-1 text-sm text-gray-600">Apraksts...</p>
+                        {progress && (
+                            <progress value={progress.percentage} max={100}>
+                                {progress.percentage}
+                            </progress>
                         )}
-                    </div>
+                    </header>
 
-                    <div>
-                        <InputError message={errors.coordinates} className="mt-2" />
+                    <form onSubmit={handleSubmit} className="mt-6 space-y-6">
+                        <div>
+                            <InputLabel htmlFor="title" value={'Create post'} />
 
-                        <Map className="h-96">
-                            <LocationMarker
-                                color={changeLocationMarkerColor()}
-                                position={position}
-                                setPosition={setPosition}
-                                setData={setData}
-                                method={post ? "update" : "create"}
+                            <TextInput
+                                id="title"
+                                required
+                                value={data.title}
+                                onChange={(e) => setData('title', e.target.value)}
+                                type="text"
+                                className="mt-1 w-full"
+                                autoComplete="current-title"
                             />
-                        </Map>
-                    </div>
 
-                    <div className="flex items-center gap-4">
-                        <PrimaryButton disabled={processing}>Save</PrimaryButton>
-                    </div>
-                </form>
-            </div>
-        </section>
-        <Footer />
+                            <InputError message={errors.title} className="mt-2" />
+                        </div>
+                        <div>
+                            <InputLabel htmlFor="category" value={'Kategorija'} />
+
+                            <SelectInput
+                                required
+                                id="category"
+                                value={data.category}
+                                onChange={(e) => {
+                                    setData('category', +e.target.value);
+                                }}
+                                categories={categories}
+                            />
+
+                            <InputError message={errors.category} className="mt-2" />
+                        </div>
+                        <div>
+                            <TextEditorInput
+                                method={post ? 'update' : 'create'}
+                                postDescription={data.description}
+                                setDescription={handleSetDescription}
+                                editor={editor}
+                            />
+                            <InputError message={errors.description} className="mt-2" />
+                        </div>
+                        <div>
+                            <InputLabel htmlFor="images" value="Upload image" />
+                            <FileInput type="file" className="hidden" multiple onChange={handleImageInput} />
+
+                            {imagePreviews.length > 0 ? (
+                                <ul className="flex justify-center gap-10">
+                                    {imagePreviews.map((image, idx) => {
+                                        return (
+                                            <li key={idx}>
+                                                <img src={image} alt={`image${idx + 1}`} className="h-24 w-24" />
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            ) : (
+                                <ul className="flex justify-center gap-10">
+                                    {post?.media.map((media, idx) => {
+                                        return (
+                                            <li key={media.id}>
+                                                {/* Image link */}
+                                                <img
+                                                    src={`../../storage/${media.file_path}`}
+                                                    alt={`image${idx + 1}`}
+                                                    className="h-24 w-24"
+                                                />
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            )}
+                        </div>
+
+                        <div>
+                            <InputError message={errors.coordinates} className="mt-2" />
+
+                            <Map className="h-96">
+                                <LocationMarker
+                                    color={changeLocationMarkerColor()}
+                                    position={position}
+                                    setPosition={setPosition}
+                                    setData={setData}
+                                    method={post ? 'update' : 'create'}
+                                />
+                            </Map>
+                        </div>
+
+                        <div className="flex items-center gap-4">
+                            <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            <Footer />
         </AuthenticatedLayout>
     );
 }
