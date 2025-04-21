@@ -2,6 +2,7 @@ import FileInput from '@/Components/FileInput';
 import Footer from '@/Components/Footer';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
+import LoadingSpinner from '@/Components/loaders/LoadingSpinner';
 import LocationMarker from '@/Components/LocationMarker';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SelectInput from '@/Components/SelectInput';
@@ -12,6 +13,7 @@ import Map from '@/Pages/Map';
 import { CategoryProps } from '@/types';
 import { ArrowUpTrayIcon } from '@heroicons/react/16/solid';
 import { router, useForm } from '@inertiajs/react';
+import imageCompression from 'browser-image-compression';
 import { LatLng } from 'leaflet';
 import { useEffect, useMemo, useState } from 'react';
 import { createEditor, Editor, Transforms } from 'slate';
@@ -37,6 +39,7 @@ interface Post {
 export default function CreateUpdatePost({ categories, post }: { categories: CategoryProps[]; post?: Post }) {
     const MAX_FILES = 3;
     const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+    const [loadingImages, setLoadingImages] = useState(false);
 
     const [position, setPosition] = useState<LatLng>(
         post ? new LatLng(post.coordinates.latitude, post.coordinates.longitude) : new LatLng(56.946285, 24.105078),
@@ -98,17 +101,36 @@ export default function CreateUpdatePost({ categories, post }: { categories: Cat
         }
     };
 
-    const handleImageInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) return;
         const selectedFiles = Array.from(e.target.files);
-
         if (selectedFiles.length > MAX_FILES) {
             alert(`Jūs varat augšupielādēt ne vairāk kā ${MAX_FILES} attēlus."`);
             e.target.value = ''; // Reset file input
             setImagePreviews([]);
             return;
         }
-        setData('images', selectedFiles);
+
+        resizeImages(selectedFiles);
+    };
+
+    const resizeImages = async (selectedFiles: File[]) => {
+        const resizeOptions = {
+            maxSizeMB: 2,
+            maxWidthOrHeight: 1920,
+            useWebWorker: true,
+        };
+
+        try {
+            setLoadingImages(true);
+            console.log(true);
+            const resizedImages = await Promise.all(selectedFiles.map((file) => imageCompression(file, resizeOptions)));
+            setData('images', resizedImages);
+        } catch (error) {
+            console.error('Image resize failed:', error);
+        } finally {
+            setLoadingImages(false);
+        }
     };
 
     const handleSetDescription = (description: string) => {
@@ -123,20 +145,19 @@ export default function CreateUpdatePost({ categories, post }: { categories: Cat
     return (
         <AuthenticatedLayout>
             <section className="flex flex-col items-center gap-2">
-                <div className="mt-10 w-1/2 min-w-80">
+                <div className="mt-10 w-full min-w-80 p-6 md:w-3/4 lg:w-1/2">
                     <header>
-                        <h2 className="text-2xl font-medium text-gray-900">
+                        <h2 className="text-center text-2xl font-medium text-gray-900 lg:text-start">
                             {post ? 'Labot notikumu' : 'Jauns notikums'}
                         </h2>
 
-                        {!post && (
-                            <p className="mt-1 text-sm text-gray-600">
-                                Ievadiet notikuma nosaukumu, izvēlieties kategoriju, aprakstu, augšupielādējiet līdz 3
-                                attēliem un atzīmējiet atrašanās vietu kartē. Lai augšupielādētu vairāk par 1 attēlu,
-                                izvēloties attēli jāatzīmē vairāki attēli vienlaicīgi. Atļautie atttēlu formāti: png,
-                                jpg, jpeg.
-                            </p>
-                        )}
+                        <p className="mt-1 text-center text-sm text-gray-600 lg:text-start">
+                            Ievadiet notikuma nosaukumu, izvēlieties kategoriju, aprakstu, augšupielādējiet līdz 3
+                            attēliem un atzīmējiet atrašanās vietu kartē. Lai augšupielādētu vairāk par 1 attēlu,
+                            izvēloties attēli jāatzīmē vairāki attēli vienlaicīgi. Atļautie atttēlu formāti: png, jpg,
+                            jpeg.
+                        </p>
+
                         {progress && (
                             <progress value={progress.percentage} max={100}>
                                 {progress.percentage}
@@ -187,32 +208,31 @@ export default function CreateUpdatePost({ categories, post }: { categories: Cat
                         <div>
                             <FileInput type="file" className="hidden" multiple onChange={handleImageInput} />
 
-                            {imagePreviews.length > 0 ? (
-                                <ul className="flex justify-center gap-10">
-                                    {imagePreviews.map((image, idx) => {
-                                        return (
-                                            <li key={idx}>
-                                                <img src={image} alt={`image${idx + 1}`} className="h-24 w-24" />
-                                            </li>
-                                        );
-                                    })}
-                                </ul>
+                            {loadingImages ? (
+                                <LoadingSpinner className="size-24" />
                             ) : (
                                 <ul className="flex justify-center gap-10">
-                                    {post?.media.map((media, idx) => {
-                                        return (
-                                            <li key={media.id}>
-                                                {/* Image link */}
-                                                <img
-                                                    src={`../../storage/${media.file_path}`}
-                                                    alt={`image${idx + 1}`}
-                                                    className="h-24 w-24"
-                                                />
-                                            </li>
-                                        );
-                                    })}
+                                    {imagePreviews.length > 0
+                                        ? imagePreviews.map((image, idx) => {
+                                              return (
+                                                  <li key={idx}>
+                                                      <PreviewImage src={image} alt={`image${idx + 1}`} />
+                                                  </li>
+                                              );
+                                          })
+                                        : post?.media.map((media, idx) => {
+                                              return (
+                                                  <li key={media.id}>
+                                                      <PreviewImage
+                                                          src={`../../storage/${media.file_path}`}
+                                                          alt={`image${idx + 1}`}
+                                                      />
+                                                  </li>
+                                              );
+                                          })}
                                 </ul>
                             )}
+
                             <div className="flex items-center justify-center p-10">
                                 <label
                                     htmlFor="images"
@@ -247,4 +267,8 @@ export default function CreateUpdatePost({ categories, post }: { categories: Cat
             <Footer />
         </AuthenticatedLayout>
     );
+}
+
+function PreviewImage({ className, src, alt }: { className?: string; src: string; alt: string }) {
+    return <img src={src} alt={alt} className={`w-32 rounded-lg shadow-md shadow-slate-900 lg:w-80 ${className}`} />;
 }
