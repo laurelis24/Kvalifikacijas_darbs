@@ -81,7 +81,7 @@ export default function TextEditorInput({ setDescription, editor, postDescriptio
                     }
                 }}
                 spellCheck
-                className="min-h-24 rounded-md border-2 border-gray-200 bg-white shadow-sm focus:outline-indigo-500"
+                className="min-h-52 rounded-md border-2 border-gray-200 bg-white shadow-sm focus:outline-indigo-500"
             />
         </Slate>
     );
