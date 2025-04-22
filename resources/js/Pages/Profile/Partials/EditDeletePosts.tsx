@@ -91,7 +91,7 @@ export default function EditDeletePosts({ posts, className = '' }: Props) {
                                                 <Dropdown.Content>
                                                     <Dropdown.Link href={route('posts.edit', { post: post.id })}>
                                                         <PencilIcon className="mr-2 inline-block size-6" />
-                                                        Rediģēt
+                                                        Labot
                                                     </Dropdown.Link>
                                                     <button
                                                         onClick={() =>

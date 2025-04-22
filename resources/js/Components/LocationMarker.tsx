@@ -1,3 +1,4 @@
+import { convertToLatvianTime } from '@/utils/date';
 import { ChatBubbleBottomCenterTextIcon } from '@heroicons/react/16/solid';
 import { Link } from '@inertiajs/react';
 import axios from 'axios';
@@ -11,6 +12,7 @@ interface Props {
     post?: {
         id: number;
         title: string;
+        created_at: string;
         random_media: {
             id: number;
             file_path: string;
@@ -93,6 +95,9 @@ export default function LocationMarker(props: Props) {
                                         ? `${props.post?.title.slice(0, 100)}...`
                                         : props.post?.title.trim()}
                                 </h1>
+                                <p className="text-center text-gray-600">
+                                    {convertToLatvianTime(props.post?.created_at)}
+                                </p>
                                 {props?.post?.random_media && (
                                     <img
                                         className="h-32 w-full rounded-md shadow-sm shadow-gray-300"
@@ -147,9 +152,12 @@ function WeatherComponent({ postId, comments_count }: { postId: number; comments
                 {loading ? (
                     <LoadingSpinner className="size-4" />
                 ) : (
-                    <div className="flex w-full items-center">
-                        <img className="size-8" src={weather?.icon} />
-                        <span className="text-sm text-gray-600">{weather?.temp_c}°C</span>
+                    <div className="w-full">
+                        <small>Laikapstākļi šobrīd:</small>
+                        <div className="flex items-center">
+                            <img className="size-8" src={weather?.icon} />
+                            <span className="text-sm text-gray-600">{weather?.temp_c}°C</span>
+                        </div>
                     </div>
                 )}
 

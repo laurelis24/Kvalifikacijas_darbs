@@ -4,11 +4,13 @@ import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { Leaf } from '@/Components/TextEditor/TextEditorInput';
 import Everyone from '@/Layouts/EveryoneLayout';
+import { PageProps } from '@/types';
 import { convertToLatvianTime } from '@/utils/date';
 import {
     ArrowPathIcon,
     ChatBubbleBottomCenterTextIcon,
     EllipsisHorizontalCircleIcon,
+    PencilIcon,
     TrashIcon,
     UserCircleIcon,
 } from '@heroicons/react/16/solid';
@@ -18,12 +20,14 @@ import { FormEventHandler, useEffect, useState } from 'react';
 import { createEditor } from 'slate';
 import { Editable, Slate } from 'slate-react';
 
-interface Props {
+interface Props extends PageProps {
     post: {
         id: number;
         title: string;
         description: string;
+        username: string;
         created_at: string;
+        owner: boolean;
         media: {
             id: number;
             file_path: string;
@@ -44,15 +48,8 @@ interface Props {
     }[];
 }
 
-interface Comment {
-    id: number;
-    comment: string;
-    created_at: string;
-    username: string;
-    owner: boolean;
-}
-
 export default function PostView(props: Props) {
+    const user = props.auth.user;
     const editor = createEditor();
 
     return (
@@ -63,6 +60,7 @@ export default function PostView(props: Props) {
                     <div className="flex min-h-[500px] flex-col justify-between rounded-xl bg-white p-6 shadow-xl">
                         <div className="rounded-lg">
                             <h1 className="text-xl font-bold">{props.post.title}</h1>
+                            <p className="text-sm text-gray-500">{props.post.username}</p>
                             <p className="text-sm text-gray-500">{convertToLatvianTime(props.post.created_at)}</p>
                             <div className="mt-6">
                                 <Slate editor={editor} initialValue={JSON.parse(props.post.description)}>
@@ -71,26 +69,38 @@ export default function PostView(props: Props) {
                             </div>
                         </div>
 
-                        {/* <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-                            {props.post.media.map((image, idx) => {
-                                return (
-                                    <img
-                                        key={image.id}
-                                        src={`../../storage/${image.file_path}`}
-                                        className="h-72 w-full rounded-xl shadow-lg"
-                                        alt={`Bilde-${idx}`}
-                                    />
-                                );
-                            })}
-                        </div> */}
-                        {/* <ImageGalery media={props.post.media} /> */}
-
                         <ImageGalery media={props.post.media} />
                         <LocationMarker
                             title={props.post.category.title}
                             color={props.post.category.color}
                             className={'absolute left-0 top-0 size-8'}
                         />
+                        {user &&
+                            (props.post.owner ||
+                                user.roles.some((role) => role === 'admin' || role === 'moderator')) && (
+                                <div className="flex justify-end gap-6">
+                                    <Link
+                                        href={route('posts.edit', { post: props.post.id })}
+                                        className="inline-flex w-32 items-center justify-center rounded-md border border-transparent bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 active:bg-gray-900"
+                                    >
+                                        <PencilIcon className="size-6" />
+                                        Labot
+                                    </Link>
+                                    <Link
+                                        onClick={(e) => {
+                                            if (!confirm(`Vai tiešām vēlaties dzēst ierakstu: ${props.post.title}?`)) {
+                                                e.preventDefault();
+                                            }
+                                        }}
+                                        method="delete"
+                                        href={route('posts.delete', { post: props.post.id })}
+                                        className="inline-flex w-32 items-center justify-center rounded-md border border-transparent bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 active:bg-gray-900"
+                                    >
+                                        <TrashIcon className="size-6" />
+                                        Dzēst
+                                    </Link>
+                                </div>
+                            )}
                     </div>
                     <CommentSection post_id={props.post.id} comments_count={props.post.comment_count} />
                 </div>
@@ -114,6 +124,13 @@ export default function PostView(props: Props) {
     );
 }
 
+interface Comment {
+    id: number;
+    comment: string;
+    created_at: string;
+    username: string;
+    owner: boolean;
+}
 function CommentSection({ post_id, comments_count }: { post_id: number; comments_count: number }) {
     const user = usePage().props.auth.user;
     const [comments, setComments] = useState<Comment[]>([]);
