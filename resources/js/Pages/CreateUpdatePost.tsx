@@ -259,7 +259,7 @@ export default function CreateUpdatePost({ categories, post }: { categories: Cat
                         </div>
 
                         <div className="flex justify-end">
-                            <PrimaryButton disabled={processing}>Saglabāt</PrimaryButton>
+                            <PrimaryButton disabled={processing}>{post ? 'Labot' : 'Saglabāt'}</PrimaryButton>
                         </div>
                     </form>
                 </div>

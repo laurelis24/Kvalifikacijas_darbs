@@ -129,7 +129,9 @@ class PostController extends Controller
             'id' => $post->id,
             'title' => $post->title,
             'description' => $post->description,
+            'username' => $post->user->username,
             'created_at' => $post->created_at,
+            'owner' => auth()->id() === $post->user_id,
             'media' => $post->media->map(fn ($media) => [
                 'id' => $media->id,
                 'file_path' => $media->file_path,
