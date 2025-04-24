@@ -1,12 +1,12 @@
-import DangerButton from '@/Components/DangerButton';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import Modal from '@/Components/Modal';
-import SecondaryButton from '@/Components/SecondaryButton';
-import TextInput from '@/Components/TextInput';
-import { User } from '@/types';
-import { useForm } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import DangerButton from "@/Components/DangerButton";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import Modal from "@/Components/Modal";
+import SecondaryButton from "@/Components/SecondaryButton";
+import TextInput from "@/Components/TextInput";
+import { User } from "@/types";
+import { useForm } from "@inertiajs/react";
+import { FormEventHandler } from "react";
 
 interface Props {
     show: boolean;
@@ -20,8 +20,8 @@ interface Role {
 }
 export default function EditUserForm(props: Props) {
     // console.log()
-    const adminChecked = props.user.roles.includes('admin');
-    const moderatorChecked = props.user.roles.includes('moderator');
+    const adminChecked = props.user.roles.includes("admin");
+    const moderatorChecked = props.user.roles.includes("moderator");
 
     const {
         data,
@@ -76,7 +76,7 @@ export default function EditUserForm(props: Props) {
                         type="checkbox"
                         name="admincheckbox"
                         checked={data.adminChecked}
-                        onChange={(e) => setData('adminChecked', e.target.checked)}
+                        onChange={(e) => setData("adminChecked", e.target.checked)}
                         className="mt-1 block"
                         isFocused
                     />
@@ -90,7 +90,7 @@ export default function EditUserForm(props: Props) {
                         type="checkbox"
                         name="moderatorcheckbox"
                         checked={data.moderatorChecked}
-                        onChange={(e) => setData('moderatorChecked', e.target.checked)}
+                        onChange={(e) => setData("moderatorChecked", e.target.checked)}
                         className="mt-1 block"
                         isFocused
                     />

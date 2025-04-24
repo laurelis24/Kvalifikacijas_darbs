@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -69,6 +70,14 @@ Route::middleware('auth')->group(function () {
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     // });
 
+    Route::post('api/ping-online', function () {
+        if (Auth::check()) {
+            Cache::put('user-is-online-'.Auth::id(), true, now()->addMinutes(5));
+        }
+
+        return response()->noContent(); // 204
+    });
+
     // / User posts
     Route::get('/posts/create', [PostController::class, 'create'])
         ->name('posts.create');
@@ -90,7 +99,7 @@ Route::middleware('auth')->group(function () {
         ->name('posts.comment.delete');
 
     Route::middleware([RoleMiddleware::class.':admin'])->prefix('admin')->group(function () {
-        Route::get('/', [UserController::class, 'statistics']);
+        Route::get('/dashboard', [AdminController::class, 'statistics']);
 
         // Admin user management
         Route::get('/users', [UserController::class, 'index']);

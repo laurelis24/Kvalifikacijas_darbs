@@ -1,12 +1,12 @@
-import DangerButton from '@/Components/DangerButton';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import Modal from '@/Components/Modal';
-import SecondaryButton from '@/Components/SecondaryButton';
-import TextInput from '@/Components/TextInput';
-import { User } from '@/types';
-import { useForm } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import DangerButton from "@/Components/DangerButton";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import Modal from "@/Components/Modal";
+import SecondaryButton from "@/Components/SecondaryButton";
+import TextInput from "@/Components/TextInput";
+import { User } from "@/types";
+import { useForm } from "@inertiajs/react";
+import { FormEventHandler } from "react";
 
 interface Props {
     show: boolean;
@@ -24,13 +24,9 @@ export default function BanUserForm(props: Props) {
         errors,
         clearErrors,
     } = useForm({
-        duration: '',
-        reason: '',
+        duration: "",
+        reason: "",
     });
-
-    // const confirmUserBanForm = () => {
-    //     props.onClose(true);
-    // };
 
     const banUser: FormEventHandler = (e) => {
         e.preventDefault();
@@ -72,7 +68,7 @@ export default function BanUserForm(props: Props) {
                         max={525000}
                         required
                         value={data.duration}
-                        onChange={(e) => setData('duration', e.target.value)}
+                        onChange={(e) => setData("duration", e.target.value)}
                         className="mt-1 block w-3/4"
                         isFocused
                         placeholder="Duration"
@@ -87,7 +83,7 @@ export default function BanUserForm(props: Props) {
                         name="reason"
                         required
                         value={data.reason}
-                        onChange={(e) => setData('reason', e.target.value)}
+                        onChange={(e) => setData("reason", e.target.value)}
                         className="mt-1 block w-3/4"
                         placeholder="Reason"
                     />

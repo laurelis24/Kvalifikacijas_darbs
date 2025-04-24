@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { createEditor } from 'slate';
-import { Editable, Slate, withReact } from 'slate-react';
+import { useState } from "react";
+import { createEditor } from "slate";
+import { Editable, Slate, withReact } from "slate-react";
 
 const initialValue = [
     {
-        type: 'paragraph',
-        children: [{ text: 'A line of text in a paragraph.' }],
+        type: "paragraph",
+        children: [{ text: "A line of text in a paragraph." }],
     },
 ];
 

@@ -1,12 +1,12 @@
-import Everyone from '@/Layouts/EveryoneLayout';
+import Everyone from "@/Layouts/EveryoneLayout";
 //import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide } from "swiper/react";
 
-import { Autoplay, EffectCoverflow, Pagination } from 'swiper/modules';
+import { Autoplay, EffectCoverflow, Pagination } from "swiper/modules";
 
-import 'swiper/css';
-import 'swiper/css/effect-coverflow';
-import 'swiper/css/navigation';
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/navigation";
 
 export default function About() {
     return (
@@ -41,50 +41,50 @@ export default function About() {
 function Slider() {
     const usedTech = [
         {
-            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/1200px-Laravel.svg.png',
-            url: 'https://laravel.com/',
-            name: 'Laravel',
+            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/1200px-Laravel.svg.png",
+            url: "https://laravel.com/",
+            name: "Laravel",
         },
         {
-            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Openstreetmap_logo.svg/256px-Openstreetmap_logo.svg.png',
-            url: 'https://www.openstreetmap.org/',
-            name: 'OpenStreetmap',
+            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Openstreetmap_logo.svg/256px-Openstreetmap_logo.svg.png",
+            url: "https://www.openstreetmap.org/",
+            name: "OpenStreetmap",
         },
         {
-            image: 'https://research.binus.ac.id/geoecoai/wp-content/uploads/sites/21/2024/08/Screenshot-2024-08-13-171059.png',
-            url: 'https://react-leaflet.js.org/',
-            name: 'React Leaflet',
+            image: "https://research.binus.ac.id/geoecoai/wp-content/uploads/sites/21/2024/08/Screenshot-2024-08-13-171059.png",
+            url: "https://react-leaflet.js.org/",
+            name: "React Leaflet",
         },
         {
-            image: 'https://cdn.weatherapi.com/v4/images/weatherapi_logo.png',
-            url: 'https://www.weatherapi.com/',
-            name: 'Weather API',
+            image: "https://cdn.weatherapi.com/v4/images/weatherapi_logo.png",
+            url: "https://www.weatherapi.com/",
+            name: "Weather API",
         },
         {
-            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Npm-logo.svg/1200px-Npm-logo.svg.png',
-            url: 'https://www.npmjs.com/',
-            name: 'Node package manager',
+            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Npm-logo.svg/1200px-Npm-logo.svg.png",
+            url: "https://www.npmjs.com/",
+            name: "Node package manager",
         },
-        { image: 'https://inertiajs.com/twitter-card.png', url: 'https://inertiajs.com/', name: 'Inertia JS' },
+        { image: "https://inertiajs.com/twitter-card.png", url: "https://inertiajs.com/", name: "Inertia JS" },
         {
-            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/React_Logo_SVG.svg/120px-React_Logo_SVG.svg.png',
-            url: 'https://react.dev/',
-            name: 'React JS',
-        },
-        {
-            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Typescript.svg/250px-Typescript.svg.png',
-            url: 'https://www.typescriptlang.org/',
-            name: 'TypeScript',
+            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/React_Logo_SVG.svg/120px-React_Logo_SVG.svg.png",
+            url: "https://react.dev/",
+            name: "React JS",
         },
         {
-            image: 'https://upload.wikimedia.org/wikipedia/en/thumb/d/dd/MySQL_logo.svg/120px-MySQL_logo.svg.png',
-            url: 'https://www.mysql.com/',
-            name: 'MySql',
+            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Typescript.svg/250px-Typescript.svg.png",
+            url: "https://www.typescriptlang.org/",
+            name: "TypeScript",
+        },
+        {
+            image: "https://upload.wikimedia.org/wikipedia/en/thumb/d/dd/MySQL_logo.svg/120px-MySQL_logo.svg.png",
+            url: "https://www.mysql.com/",
+            name: "MySql",
         },
     ];
     return (
         <Swiper
-            effect={'coverflow'}
+            effect={"coverflow"}
             grabCursor={true}
             centeredSlides={true}
             slidesPerView={1}

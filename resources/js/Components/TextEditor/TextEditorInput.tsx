@@ -1,10 +1,10 @@
-import isHotkey from 'is-hotkey';
-import { useCallback } from 'react';
-import { BaseEditor, Descendant, Editor } from 'slate';
-import { HistoryEditor } from 'slate-history';
-import { Editable, ReactEditor, RenderLeafProps, Slate, useSlate } from 'slate-react';
-import { Hotkeys, SvgType, TextFormat } from './TextEditorEnums';
-import { Button, Icon, Toolbar } from './TextEditorIndex';
+import isHotkey from "is-hotkey";
+import { useCallback } from "react";
+import { BaseEditor, Descendant, Editor } from "slate";
+import { HistoryEditor } from "slate-history";
+import { Editable, ReactEditor, RenderLeafProps, Slate, useSlate } from "slate-react";
+import { Hotkeys, SvgType, TextFormat } from "./TextEditorEnums";
+import { Button, Icon, Toolbar } from "./TextEditorIndex";
 
 //import {Button, Icon, Toolbar}
 
@@ -24,7 +24,7 @@ interface LeafProps {
     };
 }
 
-declare module 'slate' {
+declare module "slate" {
     interface CustomTypes {
         Editor: BaseEditor & ReactEditor;
         Element: CustomElement;
@@ -34,8 +34,8 @@ declare module 'slate' {
 
 const initialValue: Descendant[] = [
     {
-        type: 'paragraph',
-        children: [{ text: '' }],
+        type: "paragraph",
+        children: [{ text: "" }],
     },
 ];
 
@@ -43,7 +43,7 @@ interface Props {
     setDescription: (description: string) => void; // Function to update form state
     editor: BaseEditor & ReactEditor & HistoryEditor;
     postDescription?: string;
-    method: 'create' | 'update';
+    method: "create" | "update";
 }
 
 export default function TextEditorInput({ setDescription, editor, postDescription, method }: Props) {
@@ -58,7 +58,7 @@ export default function TextEditorInput({ setDescription, editor, postDescriptio
         <Slate
             editor={editor}
             initialValue={
-                method === 'create' ? initialValue : postDescription ? JSON.parse(postDescription) : initialValue
+                method === "create" ? initialValue : postDescription ? JSON.parse(postDescription) : initialValue
             }
             onValueChange={handleEditorChange}
         >

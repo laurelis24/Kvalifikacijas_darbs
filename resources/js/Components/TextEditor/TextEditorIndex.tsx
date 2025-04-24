@@ -1,4 +1,4 @@
-import { PropsWithChildren, Ref } from 'react';
+import { PropsWithChildren, Ref } from "react";
 
 interface BaseProps {
     className?: string;
@@ -11,12 +11,12 @@ interface BaseProps {
 
 export function Menu({ className, ref, ...props }: PropsWithChildren<BaseProps> & { ref?: Ref<HTMLDivElement> }) {
     return (
-        <div {...props} data-test-id="menu" ref={ref} className={`flex gap-2 rounded-lg border ${className || ''}`} />
+        <div {...props} data-test-id="menu" ref={ref} className={`flex gap-2 rounded-lg border ${className || ""}`} />
     );
 }
 
 export function Toolbar({ className, ref, ...props }: PropsWithChildren<BaseProps> & { ref?: Ref<HTMLDivElement> }) {
-    return <Menu {...props} ref={ref} className={`p-2 ${className || ''}`} />;
+    return <Menu {...props} ref={ref} className={`p-2 ${className || ""}`} />;
 }
 
 export function Icon({
@@ -34,7 +34,7 @@ export function Icon({
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className={`size-6 ${className || ''}`}
+            className={`size-6 ${className || ""}`}
         >
             <path strokeLinejoin="round" d={svgType} />
         </svg>
@@ -51,7 +51,7 @@ export function Button({
         <span
             {...props}
             ref={ref}
-            className={`cursor-pointer rounded-full border p-4 duration-200 hover:border-slate-800 ${className || ''} ${active ? 'bg-slate-800 text-white' : ''} ${reversed ? 'reversed' : ''}`}
+            className={`cursor-pointer rounded-full border p-4 duration-200 hover:border-slate-800 ${className || ""} ${active ? "bg-slate-800 text-white" : ""} ${reversed ? "reversed" : ""}`}
         />
     );
 }

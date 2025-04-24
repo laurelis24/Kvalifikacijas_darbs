@@ -1,6 +1,6 @@
-import { InertiaLinkProps, Link } from '@inertiajs/react';
+import { InertiaLinkProps, Link } from "@inertiajs/react";
 
-export default function ResponsiveNavLink({ className = '', children, ...props }: InertiaLinkProps) {
+export default function ResponsiveNavLink({ className = "", children, ...props }: InertiaLinkProps) {
     return (
         <Link
             {...props}

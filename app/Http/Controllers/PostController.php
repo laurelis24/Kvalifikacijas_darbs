@@ -132,6 +132,10 @@ class PostController extends Controller
             'username' => $post->user->username,
             'created_at' => $post->created_at,
             'owner' => auth()->id() === $post->user_id,
+            'coordinates' => [
+                'latitude' => (float) $post->coordinates['latitude'],
+                'longitude' => (float) $post->coordinates['longitude'],
+            ],
             'media' => $post->media->map(fn ($media) => [
                 'id' => $media->id,
                 'file_path' => $media->file_path,

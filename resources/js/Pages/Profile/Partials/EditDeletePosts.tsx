@@ -1,9 +1,9 @@
-import Dropdown from '@/Components/Dropdown';
-import Modal from '@/Components/Modal';
-import SecondaryButton from '@/Components/SecondaryButton';
-import { EllipsisHorizontalCircleIcon, PencilIcon, TrashIcon } from '@heroicons/react/16/solid';
-import { Link } from '@inertiajs/react';
-import { useState } from 'react';
+import Dropdown from "@/Components/Dropdown";
+import Modal from "@/Components/Modal";
+import SecondaryButton from "@/Components/SecondaryButton";
+import { EllipsisHorizontalCircleIcon, PencilIcon, TrashIcon } from "@heroicons/react/16/solid";
+import { Link } from "@inertiajs/react";
+import { useState } from "react";
 
 interface Props {
     posts: {
@@ -18,9 +18,9 @@ interface Props {
     className?: string;
 }
 
-export default function EditDeletePosts({ posts, className = '' }: Props) {
+export default function EditDeletePosts({ posts, className = "" }: Props) {
     const [confirmingPostDeletion, setConfirmingPostDeletion] = useState(false);
-    const [post, setPost] = useState({ id: -1, title: '' });
+    const [post, setPost] = useState({ id: -1, title: "" });
 
     const confirmPostDeletion = (data: { id: number; title: string }) => {
         setConfirmingPostDeletion(true);
@@ -65,7 +65,7 @@ export default function EditDeletePosts({ posts, className = '' }: Props) {
                                         </div>
 
                                         <div className="min-w-0 flex-1">
-                                            <Link href={route('posts.show', { post: post.id })}>
+                                            <Link href={route("posts.show", { post: post.id })}>
                                                 <p className="truncate text-lg font-medium text-gray-900">
                                                     {post.title}
                                                 </p>
@@ -89,7 +89,7 @@ export default function EditDeletePosts({ posts, className = '' }: Props) {
                                                 </Dropdown.Trigger>
 
                                                 <Dropdown.Content>
-                                                    <Dropdown.Link href={route('posts.edit', { post: post.id })}>
+                                                    <Dropdown.Link href={route("posts.edit", { post: post.id })}>
                                                         <PencilIcon className="mr-2 inline-block size-6" />
                                                         Labot
                                                     </Dropdown.Link>
@@ -129,7 +129,7 @@ export default function EditDeletePosts({ posts, className = '' }: Props) {
 
                             <Link
                                 method="delete"
-                                href={route('posts.delete', { post: post.id })}
+                                href={route("posts.delete", { post: post.id })}
                                 className="inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 active:bg-red-700"
                             >
                                 Dzēst ierakstu

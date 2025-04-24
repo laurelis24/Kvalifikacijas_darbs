@@ -1,11 +1,11 @@
-import Dropdown from '@/Components/Dropdown';
-import ImageGalery from '@/Components/ImageGalery';
-import InputError from '@/Components/InputError';
-import PrimaryButton from '@/Components/PrimaryButton';
-import { Leaf } from '@/Components/TextEditor/TextEditorInput';
-import Everyone from '@/Layouts/EveryoneLayout';
-import { PageProps } from '@/types';
-import { convertToLatvianTime } from '@/utils/date';
+import Dropdown from "@/Components/Dropdown";
+import ImageGalery from "@/Components/ImageGalery";
+import InputError from "@/Components/InputError";
+import PrimaryButton from "@/Components/PrimaryButton";
+import { Leaf } from "@/Components/TextEditor/TextEditorInput";
+import Everyone from "@/Layouts/EveryoneLayout";
+import { PageProps } from "@/types";
+import { convertToLatvianTime } from "@/utils/date";
 import {
     ArrowPathIcon,
     ChatBubbleBottomCenterTextIcon,
@@ -13,12 +13,12 @@ import {
     PencilIcon,
     TrashIcon,
     UserCircleIcon,
-} from '@heroicons/react/16/solid';
-import { Link, useForm, usePage } from '@inertiajs/react';
-import axios from 'axios';
-import { FormEventHandler, useEffect, useState } from 'react';
-import { createEditor } from 'slate';
-import { Editable, Slate } from 'slate-react';
+} from "@heroicons/react/16/solid";
+import { Link, useForm, usePage } from "@inertiajs/react";
+import axios from "axios";
+import { FormEventHandler, useEffect, useState } from "react";
+import { createEditor } from "slate";
+import { Editable, Slate } from "slate-react";
 
 interface Props extends PageProps {
     post: {
@@ -28,6 +28,10 @@ interface Props extends PageProps {
         username: string;
         created_at: string;
         owner: boolean;
+        coordinates?: {
+            latitude: number;
+            longitude: number;
+        };
         media: {
             id: number;
             file_path: string;
@@ -73,14 +77,21 @@ export default function PostView(props: Props) {
                         <LocationMarker
                             title={props.post.category.title}
                             color={props.post.category.color}
-                            className={'absolute left-0 top-0 size-8'}
+                            className={"absolute left-0 top-0 size-8"}
                         />
+                        {props.post?.coordinates && (
+                            <div>
+                                <strong>Koordinātes: </strong>
+                                <p>{props.post.coordinates.latitude.toFixed(2)}</p>
+                                <p>{props.post.coordinates.longitude.toFixed(2)}</p>
+                            </div>
+                        )}
                         {user &&
                             (props.post.owner ||
-                                user.roles.some((role) => role === 'admin' || role === 'moderator')) && (
+                                user.roles.some((role) => role === "admin" || role === "moderator")) && (
                                 <div className="flex justify-end gap-6">
                                     <Link
-                                        href={route('posts.edit', { post: props.post.id })}
+                                        href={route("posts.edit", { post: props.post.id })}
                                         className="inline-flex w-32 items-center justify-center rounded-md border border-transparent bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 active:bg-gray-900"
                                     >
                                         <PencilIcon className="size-6" />
@@ -93,7 +104,7 @@ export default function PostView(props: Props) {
                                             }
                                         }}
                                         method="delete"
-                                        href={route('posts.delete', { post: props.post.id })}
+                                        href={route("posts.delete", { post: props.post.id })}
                                         className="inline-flex w-32 items-center justify-center rounded-md border border-transparent bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 active:bg-gray-900"
                                     >
                                         <TrashIcon className="size-6" />
@@ -143,12 +154,12 @@ function CommentSection({ post_id, comments_count }: { post_id: number; comments
         reset,
         errors,
     } = useForm({
-        comment: '',
+        comment: "",
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        create(route('posts.comment.store', post_id), {
+        create(route("posts.comment.store", post_id), {
             preserveScroll: true,
             preserveState: true,
             onFinish: () => {
@@ -170,22 +181,22 @@ function CommentSection({ post_id, comments_count }: { post_id: number; comments
 
     const fetchComments = async (page: number = 1) => {
         try {
-            const response = await axios.get(route('posts.comments', { post: post_id, page }));
+            const response = await axios.get(route("posts.comments", { post: post_id, page }));
             setComments((prevComments) =>
                 page === 1 ? response.data.comments : [...prevComments, ...response.data.comments],
             );
             setPages(response.data.comments_meta);
         } catch (error) {
-            console.error('Error loading comments:', error);
+            console.error("Error loading comments:", error);
         }
     };
 
     const fetchLatestComment = async () => {
         try {
-            const response = await axios.get(route('posts.comments.latest', { post: post_id }));
+            const response = await axios.get(route("posts.comments.latest", { post: post_id }));
             setComments((prevComments) => [response.data, ...prevComments]);
         } catch (error) {
-            console.error('Error loading comments:', error);
+            console.error("Error loading comments:", error);
         }
     };
 
@@ -196,7 +207,7 @@ function CommentSection({ post_id, comments_count }: { post_id: number; comments
                     <h2 className="text-lg font-bold text-gray-900 lg:text-2xl">Komentāri ({comments_count})</h2>
                 </div>
 
-                {user?.roles?.some((role) => role === 'admin' || role === 'user' || role === 'moderator') && (
+                {user?.roles?.some((role) => role === "admin" || role === "user" || role === "moderator") && (
                     <form onSubmit={submit} className="mb-6 shadow-sm">
                         <div className="mb-4 rounded-lg rounded-t-lg border border-gray-200 bg-white px-4 py-2 shadow-sm shadow-gray-400">
                             <label htmlFor="comment" className="sr-only">
@@ -210,7 +221,7 @@ function CommentSection({ post_id, comments_count }: { post_id: number; comments
                                 placeholder="Rakstīt komentāru..."
                                 required
                                 value={data.comment}
-                                onChange={(e) => setData('comment', e.target.value)}
+                                onChange={(e) => setData("comment", e.target.value)}
                             ></textarea>
                         </div>
                         <InputError message={errors.comment} className="mt-2" />
@@ -238,7 +249,7 @@ function CommentSection({ post_id, comments_count }: { post_id: number; comments
                                         </p>
                                     </div>
                                     {(comment.owner ||
-                                        user?.roles?.some((role) => role === 'admin' || role === 'moderator')) && (
+                                        user?.roles?.some((role) => role === "admin" || role === "moderator")) && (
                                         <Dropdown>
                                             <Dropdown.Trigger>
                                                 <span className="inline-flex rounded-md">
@@ -255,7 +266,7 @@ function CommentSection({ post_id, comments_count }: { post_id: number; comments
                                                 <Dropdown.Link
                                                     preserveScroll
                                                     method="delete"
-                                                    href={route('posts.comment.delete', { comment: comment.id })}
+                                                    href={route("posts.comment.delete", { comment: comment.id })}
                                                     onFinish={() => fetchComments(1)}
                                                 >
                                                     <TrashIcon className="mr-2 inline-block size-6" />
@@ -298,11 +309,11 @@ function LatestCommentedPost({
 }) {
     return (
         <Link
-            href={route('posts.show', { post: id })}
+            href={route("posts.show", { post: id })}
             key={id}
             className="relative cursor-pointer rounded-lg bg-white p-4 shadow-sm transition hover:shadow-md"
         >
-            <LocationMarker color={color} className={'size-4'} />
+            <LocationMarker color={color} className={"size-4"} />
             <div className="pl-4">
                 <h3 className="font-medium">{title}</h3>
                 <p className="text-sm opacity-90">{convertToLatvianTime(created_at)}</p>

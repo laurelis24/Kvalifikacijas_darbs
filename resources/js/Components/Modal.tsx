@@ -1,16 +1,16 @@
-import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react';
-import { PropsWithChildren } from 'react';
+import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/react";
+import { PropsWithChildren } from "react";
 
 export default function Modal({
     children,
     show = false,
-    maxWidth = '2xl',
+    maxWidth = "2xl",
     closeable = true,
     imageGalery = false,
     onClose = () => {},
 }: PropsWithChildren<{
     show: boolean;
-    maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '4xl' | '6xl';
+    maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "4xl" | "6xl";
     imageGalery?: boolean;
     closeable?: boolean;
     onClose: CallableFunction;
@@ -22,13 +22,13 @@ export default function Modal({
     };
 
     const maxWidthClass = {
-        sm: 'sm:max-w-sm',
-        md: 'sm:max-w-md',
-        lg: 'sm:max-w-lg',
-        xl: 'sm:max-w-xl',
-        '2xl': 'sm:max-w-2xl',
-        '4xl': 'sm:max-w-4xl',
-        '6xl': 'sm:max-w-4xl',
+        sm: "sm:max-w-sm",
+        md: "sm:max-w-md",
+        lg: "sm:max-w-lg",
+        xl: "sm:max-w-xl",
+        "2xl": "sm:max-w-2xl",
+        "4xl": "sm:max-w-4xl",
+        "6xl": "sm:max-w-4xl",
     }[maxWidth];
 
     const style = imageGalery
@@ -51,7 +51,7 @@ export default function Modal({
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                 >
-                    <div className={`absolute inset-0 ${imageGalery ? 'bg-gray-900/90' : 'bg-gray-500/75'}`}></div>
+                    <div className={`absolute inset-0 ${imageGalery ? "bg-gray-900/90" : "bg-gray-500/75"}`}></div>
                 </TransitionChild>
 
                 <TransitionChild

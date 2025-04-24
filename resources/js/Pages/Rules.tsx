@@ -1,8 +1,8 @@
-import Everyone from '@/Layouts/EveryoneLayout';
-import { NumberedListIcon } from '@heroicons/react/16/solid';
+import Everyone from "@/Layouts/EveryoneLayout";
+import { NumberedListIcon } from "@heroicons/react/16/solid";
 
 export default function Rules() {
-    const rules = ['Nesniegt nepatiesas ziņas', 'Ievērot cenzūru', 'Neizmantot mājaslapas kartes citiem mērķiem'];
+    const rules = ["Nesniegt nepatiesas ziņas", "Ievērot cenzūru", "Neizmantot mājaslapas kartes citiem mērķiem"];
     return (
         <Everyone>
             <div className="flex min-h-screen justify-center bg-gray-100 p-4">
