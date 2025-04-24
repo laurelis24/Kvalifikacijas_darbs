@@ -1,11 +1,11 @@
-import { convertToLatvianTime } from '@/utils/date';
-import { ChatBubbleBottomCenterTextIcon } from '@heroicons/react/16/solid';
-import { Link } from '@inertiajs/react';
-import axios from 'axios';
-import L, { LatLng, LatLngBounds } from 'leaflet';
-import { useEffect, useState } from 'react';
-import { Marker, Popup, useMapEvents } from 'react-leaflet';
-import LoadingSpinner from './loaders/LoadingSpinner';
+import { convertToLatvianTime } from "@/utils/date";
+import { ChatBubbleBottomCenterTextIcon } from "@heroicons/react/16/solid";
+import { Link } from "@inertiajs/react";
+import axios from "axios";
+import L, { LatLng, LatLngBounds } from "leaflet";
+import { useEffect, useState } from "react";
+import { Marker, Popup, useMapEvents } from "react-leaflet";
+import LoadingSpinner from "./loaders/LoadingSpinner";
 
 interface Props {
     position: LatLng | null;
@@ -28,7 +28,7 @@ interface Props {
     setPosition?: CallableFunction;
     setData?: CallableFunction;
     readOnly?: boolean;
-    method?: 'create' | 'update';
+    method?: "create" | "update";
     color: string;
 }
 
@@ -48,17 +48,17 @@ export default function LocationMarker(props: Props) {
 
                           if (latviaBounds.contains(coords)) {
                               props.setPosition(coords);
-                              props.setData('coordinates', { latitude: coords.lat, longitude: coords.lng });
+                              props.setData("coordinates", { latitude: coords.lat, longitude: coords.lng });
                           }
                       }
                   },
 
                   locationfound(e) {
-                      if (props.setData && props.setPosition && props.method !== 'update') {
+                      if (props.setData && props.setPosition && props.method !== "update") {
                           props.setPosition(new LatLng(e.latlng.lat, e.latlng.lng));
-                          props.setData('coordinates', { latitude: e.latlng.lat, longitude: e.latlng.lng });
+                          props.setData("coordinates", { latitude: e.latlng.lat, longitude: e.latlng.lng });
                           map.flyTo(e.latlng, map.getZoom());
-                      } else if (props.method === 'update' && props.position) {
+                      } else if (props.method === "update" && props.position) {
                           map.flyTo(L.latLng(props.position.lat, props.position.lng), map.getZoom());
                       }
                   },
@@ -73,7 +73,7 @@ export default function LocationMarker(props: Props) {
 
     const generateCustomIcon = () => {
         return L.divIcon({
-            className: 'custom-marker',
+            className: "custom-marker",
             html: `<svg class="aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="${props.color}" viewBox="0 0 24 24">
               <path fill-rule="evenodd" d="M11.906 1.994a8.002 8.002 0 0 1 8.09 8.421 7.996 7.996 0 0 1-1.297 3.957.996.996 0 0 1-.133.204l-.108.129c-.178.243-.37.477-.573.699l-5.112 6.224a1 1 0 0 1-1.545 0L5.982 15.26l-.002-.002a18.146 18.146 0 0 1-.309-.38l-.133-.163a.999.999 0 0 1-.13-.202 7.995 7.995 0 0 1 6.498-12.518ZM15 9.997a3 3 0 1 1-5.999 0 3 3 0 0 1 5.999 0Z" clip-rule="evenodd"/>
             </svg>
@@ -88,7 +88,7 @@ export default function LocationMarker(props: Props) {
             <Popup keepInView>
                 {props.post?.id ? (
                     <div className="min-w-60 max-w-xs overflow-hidden rounded-md bg-white p-4 shadow-lg md:max-w-sm">
-                        <Link href={route('posts.show', { post: props.post?.id })}>
+                        <Link href={route("posts.show", { post: props.post?.id })}>
                             <div className="h-full w-full p-2">
                                 <h1 className="transition-color w-full text-center text-sm text-gray-600 duration-150 hover:text-gray-900">
                                     {props.post?.title.length > 100
@@ -127,7 +127,7 @@ function WeatherComponent({ postId, comments_count }: { postId: number; comments
         const fetchWeather = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(route('weather', { post: postId }), {
+                const response = await axios.get(route("weather", { post: postId }), {
                     signal: controller.signal,
                 });
 

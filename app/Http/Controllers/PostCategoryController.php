@@ -15,7 +15,7 @@ class PostCategoryController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Admin/ManageCategories', [
+        return Inertia::render('Admin/Categories', [
             'categories' => PostCategory::select('id', 'title', 'description', 'color')->get(),
         ]);
     }

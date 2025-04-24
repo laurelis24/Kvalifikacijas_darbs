@@ -1,9 +1,9 @@
-import ImageGallery from 'react-image-gallery';
-import 'react-image-gallery/styles/css/image-gallery.css';
+import ImageGallery from "react-image-gallery";
+import "react-image-gallery/styles/css/image-gallery.css";
 
 export default function ImageGalery({ media }: { media: { id: number; file_path: string; media_type: string }[] }) {
     const galleryItems = media
-        .filter((item) => item.media_type === 'image')
+        .filter((item) => item.media_type === "image")
         .map((item) => ({
             original: `../../storage/${item.file_path}`,
         }));

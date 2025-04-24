@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -90,7 +91,7 @@ Route::middleware('auth')->group(function () {
         ->name('posts.comment.delete');
 
     Route::middleware([RoleMiddleware::class.':admin'])->prefix('admin')->group(function () {
-        Route::get('/', [UserController::class, 'statistics']);
+        Route::get('/dashboard', [AdminController::class, 'statistics']);
 
         // Admin user management
         Route::get('/users', [UserController::class, 'index']);

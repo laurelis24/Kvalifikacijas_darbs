@@ -1,12 +1,12 @@
-import L from 'leaflet';
-import 'leaflet.fullscreen';
-import 'leaflet.fullscreen/Control.FullScreen.css';
-import 'leaflet.locatecontrol';
-import { LocateControl } from 'leaflet.locatecontrol';
-import 'leaflet.locatecontrol/dist/L.Control.Locate.css';
-import 'leaflet/dist/leaflet.css';
-import { PropsWithChildren, useEffect } from 'react';
-import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import L from "leaflet";
+import "leaflet.fullscreen";
+import "leaflet.fullscreen/Control.FullScreen.css";
+import "leaflet.locatecontrol";
+import { LocateControl } from "leaflet.locatecontrol";
+import "leaflet.locatecontrol/dist/L.Control.Locate.css";
+import "leaflet/dist/leaflet.css";
+import { PropsWithChildren, useEffect } from "react";
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
 
 interface Props {
     className?: string;
@@ -41,7 +41,7 @@ const FullscreenControl = () => {
 
     useEffect(() => {
         const fullscreenControl = (L as any).control.fullscreen({
-            position: 'topleft',
+            position: "topleft",
         });
 
         map.addControl(fullscreenControl);
@@ -56,7 +56,7 @@ const LocateControlButton = () => {
     useEffect(() => {
         const locateControler = new LocateControl({
             strings: {
-                title: 'My location',
+                title: "My location",
             },
             drawCircle: false,
             flyTo: true,

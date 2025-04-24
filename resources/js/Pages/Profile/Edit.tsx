@@ -1,11 +1,11 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { PageProps } from '@/types';
-import { ExclamationTriangleIcon } from '@heroicons/react/16/solid';
-import { Head, usePage } from '@inertiajs/react';
-import DeleteUserForm from './Partials/DeleteUserForm';
-import EditDeletePosts from './Partials/EditDeletePosts';
-import UpdatePasswordForm from './Partials/UpdatePasswordForm';
-import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { PageProps } from "@/types";
+import { ExclamationTriangleIcon } from "@heroicons/react/16/solid";
+import { Head, usePage } from "@inertiajs/react";
+import DeleteUserForm from "./Partials/DeleteUserForm";
+import EditDeletePosts from "./Partials/EditDeletePosts";
+import UpdatePasswordForm from "./Partials/UpdatePasswordForm";
+import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm";
 
 interface Post {
     id: number;

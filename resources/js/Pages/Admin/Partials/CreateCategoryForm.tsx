@@ -1,16 +1,16 @@
-import DangerButton from '@/Components/DangerButton';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import Modal from '@/Components/Modal';
-import SecondaryButton from '@/Components/SecondaryButton';
-import TextInput from '@/Components/TextInput';
-import { useForm } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import DangerButton from "@/Components/DangerButton";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import Modal from "@/Components/Modal";
+import SecondaryButton from "@/Components/SecondaryButton";
+import TextInput from "@/Components/TextInput";
+import { useForm } from "@inertiajs/react";
+import { FormEventHandler } from "react";
 
 interface Props {
     show: boolean;
     onClose: CallableFunction;
-    method: 'post' | 'put';
+    method: "post" | "put";
     category?: {
         id: number;
         title: string;
@@ -21,16 +21,16 @@ interface Props {
 
 export default function CreateOrEditCategoryForm(props: Props) {
     const { data, setData, processing, post, reset, errors, clearErrors } = useForm({
-        title: props.method === 'put' ? props.category?.title : '',
-        description: props.method === 'put' ? props.category?.description : '',
-        color: props.method === 'put' ? props.category?.color : '#FFFFFF',
+        title: props.method === "put" ? props.category?.title : "",
+        description: props.method === "put" ? props.category?.description : "",
+        color: props.method === "put" ? props.category?.color : "#FFFFFF",
     });
 
     const createCategory: FormEventHandler = (e) => {
         e.preventDefault();
 
         post(
-            props.method === 'put' && props.category ? `categories/update/${props.category.id}` : `categories/create`,
+            props.method === "put" && props.category ? `categories/update/${props.category.id}` : `categories/create`,
             {
                 preserveScroll: true,
                 onSuccess: () => closeModal(),
@@ -48,7 +48,7 @@ export default function CreateOrEditCategoryForm(props: Props) {
     return (
         <Modal show={props.show} onClose={props.onClose}>
             <form onSubmit={createCategory} className="p-6">
-                <h2 className="text-lg font-medium text-gray-900">{props.method === 'put' ? 'Update' : 'Create'}</h2>
+                <h2 className="text-lg font-medium text-gray-900">{props.method === "put" ? "Update" : "Create"}</h2>
 
                 <p className="mt-1 text-sm text-gray-600">Create category for Posts...</p>
 
@@ -62,7 +62,7 @@ export default function CreateOrEditCategoryForm(props: Props) {
                         name="title"
                         required
                         value={data.title}
-                        onChange={(e) => setData('title', e.target.value)}
+                        onChange={(e) => setData("title", e.target.value)}
                         className="mt-1 block w-3/4"
                         isFocused
                         placeholder="Title"
@@ -77,7 +77,7 @@ export default function CreateOrEditCategoryForm(props: Props) {
                         name="description"
                         required
                         value={data.description}
-                        onChange={(e) => setData('description', e.target.value)}
+                        onChange={(e) => setData("description", e.target.value)}
                         className="mt-1 block w-3/4"
                         placeholder="Description"
                     />
@@ -92,7 +92,7 @@ export default function CreateOrEditCategoryForm(props: Props) {
                         name="color"
                         required
                         value={data.color}
-                        onChange={(e) => setData('color', e.target.value)}
+                        onChange={(e) => setData("color", e.target.value)}
                         className="mt-1 block size-32"
                     />
 

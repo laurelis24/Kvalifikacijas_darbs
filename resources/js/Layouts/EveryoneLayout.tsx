@@ -1,7 +1,7 @@
-import Footer from '@/Components/Footer';
-import Navbar from '@/Pages/components/Navbar';
-import { usePage } from '@inertiajs/react';
-import { PropsWithChildren, ReactNode } from 'react';
+import Footer from "@/Components/Footer";
+import Navbar from "@/Pages/components/Navbar";
+import { usePage } from "@inertiajs/react";
+import { PropsWithChildren, ReactNode } from "react";
 
 export default function Everyone({ header, children }: PropsWithChildren<{ header?: ReactNode }>) {
     const user = usePage().props.auth.user;

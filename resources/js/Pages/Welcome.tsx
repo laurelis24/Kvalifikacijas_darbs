@@ -1,14 +1,14 @@
-import Dropdown from '@/Components/Dropdown';
-import LocationMarker from '@/Components/LocationMarker';
-import { PageProps } from '@/types';
-import { ChevronDownIcon, PlusIcon } from '@heroicons/react/16/solid';
-import { Head, Link } from '@inertiajs/react';
-import { LatLng } from 'leaflet';
-import MarkerClusterGroup from 'react-leaflet-markercluster';
-import Map from './Map';
+import Dropdown from "@/Components/Dropdown";
+import LocationMarker from "@/Components/LocationMarker";
+import { PageProps } from "@/types";
+import { ChevronDownIcon, PlusIcon } from "@heroicons/react/16/solid";
+import { Head, Link } from "@inertiajs/react";
+import { LatLng } from "leaflet";
+import MarkerClusterGroup from "react-leaflet-markercluster";
+import Map from "./Map";
 //import 'leaflet/dist/leaflet.css'
-import Everyone from '@/Layouts/EveryoneLayout';
-import 'react-leaflet-markercluster/styles';
+import Everyone from "@/Layouts/EveryoneLayout";
+import "react-leaflet-markercluster/styles";
 
 interface Props extends PageProps {
     posts: {
@@ -51,13 +51,13 @@ export default function Welcome({ auth, posts, categories, filter, canLogin, can
 
     const locationMarkerColor = (categoryId: number) => {
         const foundColor = categories.find((category) => category.id === categoryId);
-        return foundColor?.color || '#ffffff';
+        return foundColor?.color || "#ffffff";
     };
 
     const sortBy = [
-        { type: 'newest', text: 'Pēc jaunākā' },
-        { type: 'oldest', text: 'Pēc vecākā' },
-        { type: 'most_commented', text: 'Visvairāk komentāru' },
+        { type: "newest", text: "Pēc jaunākā" },
+        { type: "oldest", text: "Pēc vecākā" },
+        { type: "most_commented", text: "Visvairāk komentāru" },
     ];
     const postCount = [5, 20, 30, 50, 100];
 
@@ -89,8 +89,8 @@ export default function Welcome({ auth, posts, categories, filter, canLogin, can
                                         <Dropdown.Link
                                             key={sort.type}
                                             className="flex items-center gap-2"
-                                            href={route('main', { sort: sort.type, per_page: filter.per_page })}
-                                            cacheFor={'1m'}
+                                            href={route("main", { sort: sort.type, per_page: filter.per_page })}
+                                            cacheFor={"1m"}
                                         >
                                             {sort.text}
                                         </Dropdown.Link>
@@ -118,8 +118,8 @@ export default function Welcome({ auth, posts, categories, filter, canLogin, can
                                         <Dropdown.Link
                                             key={count}
                                             className="flex items-center gap-2"
-                                            href={route('main', { sort: filter.sort, per_page: count })}
-                                            cacheFor={'1m'}
+                                            href={route("main", { sort: filter.sort, per_page: count })}
+                                            cacheFor={"1m"}
                                         >
                                             {count}
                                         </Dropdown.Link>
@@ -133,7 +133,7 @@ export default function Welcome({ auth, posts, categories, filter, canLogin, can
                         <li className="flex">
                             {user && !user.is_banned && (
                                 <Link
-                                    href={route('posts.create')}
+                                    href={route("posts.create")}
                                     className={`mb-2 inline-flex items-center rounded-md border border-transparent bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:outline-none active:bg-gray-900`}
                                 >
                                     <PlusIcon className="inline-block size-6" />

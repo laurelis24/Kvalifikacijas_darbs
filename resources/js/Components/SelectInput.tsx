@@ -1,5 +1,5 @@
-import { CategoryProps } from '@/types';
-import { InputHTMLAttributes } from 'react';
+import { CategoryProps } from "@/types";
+import { InputHTMLAttributes } from "react";
 //import { select } from 'slate';
 
 export default function SelectInput({

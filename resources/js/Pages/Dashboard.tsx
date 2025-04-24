@@ -1,11 +1,11 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, usePage } from '@inertiajs/react';
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head, usePage } from "@inertiajs/react";
 
 export default function Dashboard() {
     const user = usePage().props.auth.user;
     console.log(user);
     const isAdmin = () => {
-        return user.roles.includes('admin');
+        return user.roles.includes("admin");
     };
 
     return (

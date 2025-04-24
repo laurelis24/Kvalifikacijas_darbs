@@ -1,15 +1,15 @@
-import Dropdown from '@/Components/Dropdown';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { User } from '@/types';
-import { Head } from '@inertiajs/react';
-import { SetStateAction, useState } from 'react';
-import AdminNavigation from './Partials/AdminNavigation';
-import CreateCategoryForm from './Partials/CreateCategoryForm';
+import Dropdown from "@/Components/Dropdown";
+import { User } from "@/types";
+import { Head } from "@inertiajs/react";
+import { SetStateAction, useState } from "react";
+import AdminPanel from "./AdminPanel";
+import CreateCategoryForm from "./Partials/CreateCategoryForm";
 
 interface Props {
     categories: CategoryProps[];
     auth: User;
 }
+
 interface CategoryProps {
     id: number;
     title: string;
@@ -17,9 +17,19 @@ interface CategoryProps {
     color: string;
 }
 
-export default function ManageCategories(props: Props) {
+export default function Categories(props: Props) {
+    return (
+        <AdminPanel>
+            <CategoriesList categories={props.categories} />
+        </AdminPanel>
+    );
+}
+
+const CategoriesList = ({ categories }: { categories: CategoryProps[] }) => {
     const [createCategoryForm, setCreateCategoryForm] = useState(false);
     const [category, setCategory] = useState<CategoryProps>();
+
+    console.log(categories)
 
     const confirmForm = (action: React.Dispatch<SetStateAction<boolean>>) => {
         action(true);
@@ -35,21 +45,48 @@ export default function ManageCategories(props: Props) {
     };
 
     return (
-        <AuthenticatedLayout>
+        <>
             <Head title="Categories" />
-            <div className="flex">
-                <AdminNavigation />
-                <div>
-                    <button onClick={() => confirmForm(setCreateCategoryForm)}>+ Category</button>
-                    <ul role="list" className="divide-y divide-gray-100">
-                        {props.categories.map((category) => (
-                            <li key={category.id} className="flex justify-between gap-x-6 py-5">
-                                <div className="flex min-w-0 gap-x-4">
-                                    <div className="min-w-0 flex-auto">
-                                        <p className="text-sm/6 font-semibold text-gray-900">{category.title}</p>
-                                        <p className="mt-1 truncate text-xs/5 text-gray-500">{category.description}</p>
-                                    </div>
-                                </div>
+            <div className="mx-auto max-w-3xl px-4 py-6">
+                <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                    <h2 className="mb-4 text-2xl font-semibold sm:mb-0">Categories</h2>
+                    <button
+                        onClick={() => confirmForm(setCreateCategoryForm)}
+                        className="rounded-lg bg-blue-600 px-4 py-2 text-sm text-white transition hover:bg-blue-700"
+                    >
+                        Add Category
+                    </button>
+                </div>
+
+                <ul className="space-y-4">
+                    {categories.map((category) => (
+                        <li
+                            key={category.id}
+                            className="flex flex-col relative rounded-xl bg-white p-4 shadow-sm transition hover:shadow-md sm:flex-row sm:items-center sm:justify-between"
+                        >
+                            <svg
+                                            className="size-5 absolute left-0 top-0"
+                                            aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="24"
+                                            height="24"
+                                            fill={category.color}
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M11.906 1.994a8.002 8.002 0 0 1 8.09 8.421 7.996 7.996 0 0 1-1.297 3.957.996.996 0 0 1-.133.204l-.108.129c-.178.243-.37.477-.573.699l-5.112 6.224a1 1 0 0 1-1.545 0L5.982 15.26l-.002-.002a18.146 18.146 0 0 1-.309-.38l-.133-.163a.999.999 0 0 1-.13-.202 7.995 7.995 0 0 1 6.498-12.518ZM15 9.997a3 3 0 1 1-5.999 0 3 3 0 0 1 5.999 0Z"
+                                                clipRule="evenodd"
+                                            />
+                                        </svg>
+                            <div>
+                                <p className="text-lg font-medium text-gray-800">{category.title}</p>
+                                <p className="text-sm text-gray-500">{category.description}</p>
+                            </div>
+                            <div className="relative mt-3 sm:ml-4 sm:mt-0">
+                                <button className="rounded-full p-2 text-gray-500 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-300"></button>
+                                {/* You can toggle this dropdown with state */}
+
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                         <span className="inline-flex rounded-md">
@@ -98,23 +135,22 @@ export default function ManageCategories(props: Props) {
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+                {createCategoryForm && (
+                    <CreateCategoryForm method="post" show={createCategoryForm} onClose={closeCreateCategoryForm} />
+                )}
+                {category && (
+                    <CreateCategoryForm
+                        category={category}
+                        method="put"
+                        show={createCategoryForm}
+                        onClose={closeCreateCategoryForm}
+                    />
+                )}
             </div>
-
-            {createCategoryForm && (
-                <CreateCategoryForm method="post" show={createCategoryForm} onClose={closeCreateCategoryForm} />
-            )}
-            {category && (
-                <CreateCategoryForm
-                    category={category}
-                    method="put"
-                    show={createCategoryForm}
-                    onClose={closeCreateCategoryForm}
-                />
-            )}
-        </AuthenticatedLayout>
+        </>
     );
-}
+};
