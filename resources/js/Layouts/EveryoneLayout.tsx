@@ -1,10 +1,14 @@
 import Footer from "@/Components/Footer";
+import usePingOnline from "@/Components/hooks/usePingOnline";
 import Navbar from "@/Pages/components/Navbar";
 import { usePage } from "@inertiajs/react";
 import { PropsWithChildren, ReactNode } from "react";
 
 export default function Everyone({ header, children }: PropsWithChildren<{ header?: ReactNode }>) {
     const user = usePage().props.auth.user;
+    if (user) {
+        usePingOnline();
+    }
 
     return (
         <div className="min-h-screen bg-gray-100">

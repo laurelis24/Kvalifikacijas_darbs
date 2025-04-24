@@ -181,7 +181,7 @@ export default function Navbar({ user }: { user: User }) {
                             </ResponsiveNavLink>
 
                             {user.roles.includes("admin") && (
-                                <ResponsiveNavLink href={"/admin"} className="flex items-center gap-2">
+                                <ResponsiveNavLink href={"/admin/dashboard"} className="flex items-center gap-2">
                                     <WrenchScrewdriverIcon className="size-4" />
                                     Admin
                                 </ResponsiveNavLink>

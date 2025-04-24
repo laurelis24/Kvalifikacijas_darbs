@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -34,6 +35,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        Cache::put('user-is-online-'.Auth::id(), true, now()->addMinutes(5));
+
         return back();
     }
 
@@ -42,6 +45,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        Cache::forget('user-is-online-'.Auth::id());
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

@@ -70,6 +70,14 @@ Route::middleware('auth')->group(function () {
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     // });
 
+    Route::post('api/ping-online', function () {
+        if (Auth::check()) {
+            Cache::put('user-is-online-'.Auth::id(), true, now()->addMinutes(5));
+        }
+
+        return response()->noContent(); // 204
+    });
+
     // / User posts
     Route::get('/posts/create', [PostController::class, 'create'])
         ->name('posts.create');

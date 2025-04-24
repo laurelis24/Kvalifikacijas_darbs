@@ -29,7 +29,7 @@ const CategoriesList = ({ categories }: { categories: CategoryProps[] }) => {
     const [createCategoryForm, setCreateCategoryForm] = useState(false);
     const [category, setCategory] = useState<CategoryProps>();
 
-    console.log(categories)
+    console.log(categories);
 
     const confirmForm = (action: React.Dispatch<SetStateAction<boolean>>) => {
         action(true);
@@ -62,23 +62,23 @@ const CategoriesList = ({ categories }: { categories: CategoryProps[] }) => {
                     {categories.map((category) => (
                         <li
                             key={category.id}
-                            className="flex flex-col relative rounded-xl bg-white p-4 shadow-sm transition hover:shadow-md sm:flex-row sm:items-center sm:justify-between"
+                            className="relative flex flex-col rounded-xl bg-white p-4 shadow-sm transition hover:shadow-md sm:flex-row sm:items-center sm:justify-between"
                         >
                             <svg
-                                            className="size-5 absolute left-0 top-0"
-                                            aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            fill={category.color}
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M11.906 1.994a8.002 8.002 0 0 1 8.09 8.421 7.996 7.996 0 0 1-1.297 3.957.996.996 0 0 1-.133.204l-.108.129c-.178.243-.37.477-.573.699l-5.112 6.224a1 1 0 0 1-1.545 0L5.982 15.26l-.002-.002a18.146 18.146 0 0 1-.309-.38l-.133-.163a.999.999 0 0 1-.13-.202 7.995 7.995 0 0 1 6.498-12.518ZM15 9.997a3 3 0 1 1-5.999 0 3 3 0 0 1 5.999 0Z"
-                                                clipRule="evenodd"
-                                            />
-                                        </svg>
+                                className="absolute left-0 top-0 size-5"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                fill={category.color}
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    fillRule="evenodd"
+                                    d="M11.906 1.994a8.002 8.002 0 0 1 8.09 8.421 7.996 7.996 0 0 1-1.297 3.957.996.996 0 0 1-.133.204l-.108.129c-.178.243-.37.477-.573.699l-5.112 6.224a1 1 0 0 1-1.545 0L5.982 15.26l-.002-.002a18.146 18.146 0 0 1-.309-.38l-.133-.163a.999.999 0 0 1-.13-.202 7.995 7.995 0 0 1 6.498-12.518ZM15 9.997a3 3 0 1 1-5.999 0 3 3 0 0 1 5.999 0Z"
+                                    clipRule="evenodd"
+                                />
+                            </svg>
                             <div>
                                 <p className="text-lg font-medium text-gray-800">{category.title}</p>
                                 <p className="text-sm text-gray-500">{category.description}</p>

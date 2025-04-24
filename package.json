@@ -51,6 +51,7 @@
         "react-image-gallery": "^1.4.0",
         "react-leaflet": "^5.0.0-rc.2",
         "react-leaflet-markercluster": "^5.0.0-rc.0",
+        "recharts": "^2.15.3",
         "slate": "^0.112.0",
         "slate-history": "^0.110.3",
         "slate-react": "^0.112.1",
