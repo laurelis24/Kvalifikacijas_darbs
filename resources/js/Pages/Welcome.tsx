@@ -55,11 +55,11 @@ export default function Welcome({ auth, posts, categories, filter, canLogin, can
     };
 
     const sortBy = [
-        { type: "newest", text: "Pēc jaunākā" },
-        { type: "oldest", text: "Pēc vecākā" },
-        { type: "most_commented", text: "Visvairāk komentāru" },
+        { type: "newest", text: "Jaunākie notikmi" },
+        { type: "oldest", text: "Vecākie notikumi" },
+        { type: "most_commented", text: "Visvairāk komentētie notikumi" },
     ];
-    const postCount = [5, 20, 30, 50, 100];
+    const postCount = [10, 50, 100, 500, 1000];
 
     return (
         <Everyone>
@@ -68,16 +68,16 @@ export default function Welcome({ auth, posts, categories, filter, canLogin, can
                 <div className="mb-10 mt-10">
                     <h1 className="text-center text-lg font-bold sm:text-2xl">Karte</h1>
                 </div>
-                <div className="mx-auto flex justify-between sm:px-6 lg:px-8">
-                    <div className="flex">
+                <div className="mx-auto mb-2 flex justify-around sm:justify-between sm:px-6 lg:px-8">
+                    <div className="flex flex-col gap-2 md:flex-row">
                         <Dropdown>
                             <Dropdown.Trigger>
-                                <span className="inline-flex rounded-md">
+                                <span className="w-full rounded-md">
                                     <button
                                         type="button"
-                                        className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                        className="inline-flex w-full items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
                                     >
-                                        Kārtot
+                                        Filtrēt
                                         <ChevronDownIcon className="-me-0.5 ms-2 h-4 w-4" />
                                     </button>
                                 </span>
@@ -101,10 +101,10 @@ export default function Welcome({ auth, posts, categories, filter, canLogin, can
 
                         <Dropdown>
                             <Dropdown.Trigger>
-                                <span className="inline-flex rounded-md">
+                                <span className="w-full rounded-md">
                                     <button
                                         type="button"
-                                        className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                        className="inline-flex w-full items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
                                     >
                                         Skaits
                                         <ChevronDownIcon className="-me-0.5 ms-2 h-4 w-4" />

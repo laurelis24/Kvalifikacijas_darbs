@@ -33,9 +33,9 @@ export default function Navbar({ user }: { user: User }) {
                                 <NavLink href={route("main")} active={route().current("main")}>
                                     Sākums
                                 </NavLink>
-                                <NavLink href={route("history")} active={route().current("history")}>
+                                {/* <NavLink href={route("history")} active={route().current("history")}>
                                     Notikumu vēsture
-                                </NavLink>
+                                </NavLink> */}
                                 <NavLink href={route("about")} active={route().current("about")}>
                                     Par lietotni
                                 </NavLink>
@@ -144,9 +144,9 @@ export default function Navbar({ user }: { user: User }) {
                     <ResponsiveNavLink href={route("main")} active={route().current("main")}>
                         Sākums
                     </ResponsiveNavLink>
-                    <ResponsiveNavLink href={route("history")} active={route().current("history")}>
+                    {/* <ResponsiveNavLink href={route("history")} active={route().current("history")}>
                         Notikumu vēsture
-                    </ResponsiveNavLink>
+                    </ResponsiveNavLink> */}
                     <ResponsiveNavLink href={route("about")} active={route().current("about")}>
                         Par projektu
                     </ResponsiveNavLink>

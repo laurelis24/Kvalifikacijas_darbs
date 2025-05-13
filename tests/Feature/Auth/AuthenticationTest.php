@@ -2,6 +2,24 @@
 
 use App\Models\User;
 
+test('registration screen can be rendered', function () {
+    $response = $this->get('/register');
+    $response->assertStatus(200);
+});
+
+test('new users can register', function () {
+    $response = $this->post('/register', [
+        'username' => 'laurelis',
+        'name' => 'Test User',
+        'email' => 'tesdt@example.com',
+        'password' => 'password',
+        'password_confirmation' => 'password',
+    ]);
+
+    $this->assertAuthenticated();
+    $response->assertRedirect(route('main', absolute: false));
+});
+
 test('login screen can be rendered', function () {
     $response = $this->get('/login');
 
@@ -9,22 +27,26 @@ test('login screen can be rendered', function () {
 });
 
 test('users can authenticate using the login screen', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+        'password' => bcrypt('password123'),
+    ]);
 
     $response = $this->post('/login', [
-        'email' => $user->email,
-        'password' => 'password',
+        'username' => $user->username,
+        'password' => 'password123',
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    $response->assertRedirect(route('main', absolute: false));
 });
 
 test('users can not authenticate with invalid password', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+        'password' => bcrypt('password123'),
+    ]);
 
     $this->post('/login', [
-        'email' => $user->email,
+        'username' => $user->username,
         'password' => 'wrong-password',
     ]);
 

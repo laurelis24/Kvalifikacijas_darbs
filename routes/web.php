@@ -17,10 +17,6 @@ Route::get('/rules', function () {
     return Inertia::render('Rules');
 })->name('rules');
 
-Route::get('/history', function () {
-    return Inertia::render('PostHistory');
-})->name('history');
-
 Route::get('/', [PostController::class, 'index'])->name('main');
 Route::get('/weather/{post}', [PostController::class, 'weather'])->name('weather');
 Route::get('/posts/show/{post}', [PostController::class, 'show'])->name('posts.show');
