@@ -101,7 +101,7 @@ export default function LocationMarker(props: Props) {
                                 {props?.post?.random_media && (
                                     <img
                                         className="h-32 w-full rounded-md shadow-sm shadow-gray-300"
-                                        src={`storage/${props.post?.random_media.file_path}`}
+                                        src={`/storage/images/${props.post?.random_media.file_path}`}
                                         alt="Picture"
                                     />
                                 )}
