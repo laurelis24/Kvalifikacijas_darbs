@@ -19,10 +19,10 @@ class PostController extends Controller
     {
         $validated = $request->validate([
             'sort' => 'in:newest,oldest,most_commented',
-            'per_page' => 'integer|min:5|max:100',
+            'per_page' => 'integer|min:10|max:1000',
         ]);
         $sort = $validated['sort'] ?? 'newest';
-        $perPage = $validated['per_page'] ?? 20;
+        $perPage = $validated['per_page'] ?? 50;
 
         $categories = PostCategory::select('id', 'title', 'description', 'color')->get();
         $query = Post::with(['randomMedia:id,file_path,media_type,post_id'])
