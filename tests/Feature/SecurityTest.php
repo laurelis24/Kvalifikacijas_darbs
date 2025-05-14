@@ -171,3 +171,29 @@ test('only admin can unban user', function () {
 
     expect($this->user->isBanned())->toBeFalse();
 });
+
+test('only admin can manage user roles', function () {
+    auth()->logout();
+    $this
+        ->put("admin/users/manage/roles/{$this->user->id}", Utils::userManageRolesParam())
+        ->assertRedirect();
+
+    expect($this->user->hasRole(Roles::ADMIN))->toBeFalse();
+
+    $this->actingAs($this->user)
+        ->put("admin/users/manage/roles/{$this->user->id}", Utils::userManageRolesParam())
+        ->assertForbidden();
+    expect($this->user->hasRole(Roles::ADMIN))->toBeFalse();
+
+    $this->actingAs($this->moderator)
+        ->put("admin/users/manage/roles/{$this->user->id}", Utils::userManageRolesParam())
+        ->assertForbidden();
+
+    expect($this->user->hasRole(Roles::ADMIN))->toBeFalse();
+
+    $this->actingAs($this->admin)
+        ->put("admin/users/manage/roles/{$this->user->id}", Utils::userManageRolesParam())
+        ->assertRedirect();
+
+    expect($this->user->hasRole(Roles::ADMIN))->toBeTrue();
+});

@@ -35,4 +35,13 @@ class Utils
 
         ];
     }
+
+    public static function userManageRolesParam()
+    {
+        return [
+            'adminChecked' => true,
+            'moderatorChecked' => false,
+
+        ];
+    }
 }
