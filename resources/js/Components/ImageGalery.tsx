@@ -5,7 +5,7 @@ export default function ImageGalery({ media }: { media: { id: number; file_path:
     const galleryItems = media
         .filter((item) => item.media_type === "image")
         .map((item) => ({
-            original: `../../storage/${item.file_path}`,
+            original: `/storage/images/${item.file_path}`,
         }));
 
     return (
