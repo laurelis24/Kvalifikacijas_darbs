@@ -93,7 +93,7 @@ class PostController extends Controller
 
                 $post->media()->create(
                     ['media_type' => 'image',
-                        'file_path' => $path]
+                        'file_path' => basename($path)]
                 );
             }
         }

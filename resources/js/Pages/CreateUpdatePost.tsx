@@ -225,7 +225,7 @@ export default function CreateUpdatePost({ categories, post }: { categories: Cat
                                               return (
                                                   <li key={media.id}>
                                                       <PreviewImage
-                                                          src={`../../storage/${media.file_path}`}
+                                                          src={`/storage/images/${media.file_path}`}
                                                           alt={`image${idx + 1}`}
                                                       />
                                                   </li>
