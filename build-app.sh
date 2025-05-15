@@ -12,4 +12,3 @@ npm run build
 
 
 php artisan storage:link --force
-php artisan migrate --force
