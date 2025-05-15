@@ -6,7 +6,7 @@
         "dev": "vite",
         "lint": "eslint resources/js --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore --fix",
         "format": "npx prettier --write . && ./vendor/bin/pint",
-        "seed": "php artisan db:seed"
+        "seed": "php artisan db:seed --force"
     },
     "devDependencies": {
         "@headlessui/react": "^2.0.0",
