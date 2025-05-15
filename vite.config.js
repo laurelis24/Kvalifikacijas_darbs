@@ -22,4 +22,7 @@ export default defineConfig({
             host: "192.168.8.68",
         },
     },
+    // server:{
+    //     https:true
+    // }
 });
