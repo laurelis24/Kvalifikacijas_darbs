@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Post;
 use App\Models\PostCategory;
 use App\Models\Role;
 use App\Models\User;
@@ -19,39 +18,51 @@ class DatabaseSeeder extends Seeder
     {
 
         $roles = Roles::all();
-
         foreach ($roles as $role) {
             Role::firstOrCreate(['name' => $role]);
         }
 
         $admin = User::create([
-            'name' => 'Lauris',
-            'username' => 'laurelis',
-            'email' => 'test@inbox.lv',
-            'password' => Hash::make('12345678'), // Set a password
+            'name' => env('ADMIN_NAME'),
+            'username' => env('ADMIN_USERNAME'),
+            'email' => env('ADMIN_EMAIL'),
+            'password' => Hash::make(env('ADMIN_PASSWORD')),
         ]);
 
-        $moderator = User::create([
-            'name' => 'Lauris',
-            'username' => 'moderator',
-            'email' => 'mod@inbox.lv',
-            'password' => Hash::make('12345678'), // Set a password
+        $admin->roles()->attach(Role::where('name', Roles::USER)->first()->id);
+        $admin->roles()->attach(Role::where('name', Roles::ADMIN)->first()->id);
+
+        PostCategory::create([
+            'title' => 'Negadījums',
+            'description' => 'Situācija, kurā noticis ceļu satiksmes negadījums, kritiens vai cits negaidīts incidents, kas var apdraudēt cilvēku drošību vai traucēt apkārtējo vidi.',
+            'color' => '#FF0000',
         ]);
-        $user = User::create([
-            'name' => 'Lauris',
-            'username' => 'user',
-            'email' => 'user@inbox.lv',
-            'password' => Hash::make('12345678'), // Set a password
+        PostCategory::create([
+            'title' => 'Vētras postījumi',
+            'description' => 'Dabas stihiju radīti bojājumi, piemēram, nolauzti koki, applūdušas teritorijas vai sabojāta infrastruktūra, kas var apdraudēt apkārtējo vidi un satiksmi.',
+            'color' => '#ffd700',
+        ]);
+        PostCategory::create([
+            'title' => 'Pārkāpums',
+            'description' => 'Situācijas, kurās tiek pārkāpti noteikumi vai likumi, piemēram, nelikumīga stāvēšana, trokšņošana, sabiedriskā kārtība vai citas darbības, kas traucē apkārtējo vidi un cilvēku drošību.',
+            'color' => '#4f4d4d',
         ]);
 
-        $admin->roles()->attach(1);
-        $admin->roles()->attach(3);
+        PostCategory::create([
+            'title' => 'Dzīvnieku migrācija',
+            'description' => 'Savvaļas dzīvnieku novērojumi vai kustība, piemēram, migrējošu dzīvnieku parādīšanās noteiktā teritorijā vai dzīvnieku ceļojumu ceļu atzīmēšana.',
+            'color' => '#0b7309',
+        ]);
+        PostCategory::create([
+            'title' => 'Lidojošie objekti un dabas parādības',
+            'description' => 'Kategorija attiecas uz novērojumiem par objektiem, kas pārvietojas debesīs vai uz dabas parādībām, kas var ietvert meteorus, komētas, ziemeļblāzmas, neredzētus lidojošus objektus, cilvēku radītus lidojošus objektus un citus neparastus novērojumus',
+            'color' => '#1e90ff',
+        ]);
 
-        $moderator->roles()->attach(2);
-        $user->roles()->attach(3);
-
-        User::factory(10)->create();
-        PostCategory::factory(5)->create();
-        Post::factory(30)->create();
+        PostCategory::create([
+            'title' => 'Cits',
+            'description' => 'Kategorija tiek izmantota gadījumos, kad novērojumi vai notikumi neiederas nevienā no iepriekšējām kategorijām, un tos nevar klasificēt zem jebkura specifiska nosaukuma.',
+            'color' => '#a9a9a9',
+        ]);
     }
 }
