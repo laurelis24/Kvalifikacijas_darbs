@@ -6,6 +6,7 @@ namespace App\Providers;
 // use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\RateLimiter;
 use App\InertiaHttpGateway;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Ssr\HttpGateway;
