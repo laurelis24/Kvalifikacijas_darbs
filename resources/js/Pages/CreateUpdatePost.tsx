@@ -12,7 +12,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Map from "@/Pages/Map";
 import { CategoryProps } from "@/types";
 import { ArrowUpTrayIcon } from "@heroicons/react/16/solid";
-import { router, useForm } from "@inertiajs/react";
+import { Head, router, useForm } from "@inertiajs/react";
 import imageCompression from "browser-image-compression";
 import { LatLng } from "leaflet";
 import { useEffect, useMemo, useState } from "react";
@@ -145,6 +145,7 @@ export default function CreateUpdatePost({ categories, post }: { categories: Cat
 
     return (
         <AuthenticatedLayout>
+            <Head title={post ? "Labot notikumu" : "Jauns notikums"} />
             <section className="flex flex-col items-center gap-2">
                 <div className="mt-10 w-full min-w-80 p-6 md:w-3/4 lg:w-1/2">
                     <header>

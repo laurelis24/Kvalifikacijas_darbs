@@ -131,15 +131,13 @@ export default function Welcome({ auth, posts, categories, filter, canLogin, can
 
                     <ul>
                         <li className="flex">
-                            {user && !user.is_banned && (
-                                <Link
-                                    href={route("posts.create")}
-                                    className={`mb-2 inline-flex items-center rounded-md border border-transparent bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:outline-none active:bg-gray-900`}
-                                >
-                                    <PlusIcon className="inline-block size-6" />
-                                    Jauns notikums
-                                </Link>
-                            )}
+                            <Link
+                                href={route("posts.create")}
+                                className={`mb-2 inline-flex items-center rounded-md border border-transparent bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:outline-none active:bg-gray-900`}
+                            >
+                                <PlusIcon className="inline-block size-6" />
+                                Jauns notikums
+                            </Link>
                         </li>
                     </ul>
                 </div>

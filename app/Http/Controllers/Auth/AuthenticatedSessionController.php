@@ -37,7 +37,7 @@ class AuthenticatedSessionController extends Controller
 
         Cache::put('user-is-online-'.Auth::id(), true, now()->addMinutes(5));
 
-        return back();
+        return redirect()->intended(route('main'));
     }
 
     /**

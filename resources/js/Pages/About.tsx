@@ -49,7 +49,7 @@ function Slider() {
         },
         {
             image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Openstreetmap_logo.svg/256px-Openstreetmap_logo.svg.png",
-            url: "https://www.openstreetmap.org/",
+            url: "https://www.openstreetmap.org/about",
             name: "OpenStreetmap",
         },
         {
