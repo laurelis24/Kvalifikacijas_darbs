@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import { Autoplay, EffectCoverflow, Pagination } from "swiper/modules";
 
+import { Head } from "@inertiajs/react";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
@@ -11,6 +12,7 @@ import "swiper/css/navigation";
 export default function About() {
     return (
         <Everyone>
+            <Head title="Par lietotni" />
             <main>
                 <section className="bg-white px-6 py-12 md:px-12 lg:px-24">
                     <div className="mx-auto max-w-4xl text-center">

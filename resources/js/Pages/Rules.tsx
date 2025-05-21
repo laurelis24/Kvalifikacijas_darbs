@@ -1,10 +1,12 @@
 import Everyone from "@/Layouts/EveryoneLayout";
 import { NumberedListIcon } from "@heroicons/react/16/solid";
+import { Head } from "@inertiajs/react";
 
 export default function Rules() {
     const rules = ["Nesniegt nepatiesas ziņas", "Ievērot cenzūru", "Neizmantot mājaslapas kartes citiem mērķiem"];
     return (
         <Everyone>
+            <Head title="Noteikumi" />
             <div className="flex min-h-screen justify-center bg-gray-100 p-4">
                 <div className="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-xl sm:p-10">
                     <div className="mb-8 flex items-center justify-center gap-2">
