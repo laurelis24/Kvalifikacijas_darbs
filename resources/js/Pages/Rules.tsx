@@ -3,7 +3,7 @@ import { NumberedListIcon } from "@heroicons/react/16/solid";
 import { Head } from "@inertiajs/react";
 
 export default function Rules() {
-    const rules = ["Nesniegt nepatiesas ziņas", "Ievērot cenzūru", "Neizmantot mājaslapas kartes citiem mērķiem"];
+    const rules = ["Nesniegt nepatiesas ziņas", "Ievērot ētiku", "Neizmantot mājaslapas kartes citiem mērķiem"];
     return (
         <Everyone>
             <Head title="Noteikumi" />

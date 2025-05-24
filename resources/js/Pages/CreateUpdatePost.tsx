@@ -117,7 +117,7 @@ export default function CreateUpdatePost({ categories, post }: { categories: Cat
 
     const resizeImages = async (selectedFiles: File[]) => {
         const resizeOptions = {
-            maxSizeMB: 2,
+            maxSizeMB: 1,
             maxWidthOrHeight: 1920,
             useWebWorker: true,
         };
