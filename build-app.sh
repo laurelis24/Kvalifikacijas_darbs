@@ -11,4 +11,4 @@ set -x  # NEW: Print each command as it's run
 npm run build
 
 
-#php artisan storage:link --force
+php artisan storage:link --force
